@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "370229023048",
+    "project_id": "packandgo-86489",
+    "storage_bucket": "packandgo-86489.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:370229023048:android:ec009379c7add1d642a37d",
+        "android_client_info": {
+          "package_name": "com.example.packandgo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "370229023048-ss00idgfurdjbnt3avu5mpgg1ds8c1g6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6C5j8eZRPFe1KU8QityoB5FMJYQYsLNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "370229023048-ss00idgfurdjbnt3avu5mpgg1ds8c1g6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
