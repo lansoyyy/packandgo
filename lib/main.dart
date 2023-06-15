@@ -1,7 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:packandgo/utils/routes.dart';
-import 'package:packandgo/views/web/screens/auth/login_screen.dart';
+import 'package:packandgo/views/web/screens/auth/landing_screen.dart';
+
 import 'package:packandgo/views/web/screens/home_screen.dart';
 
 void main() async {
@@ -26,10 +27,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Pack and Go',
-      home: const LoginScreen(),
+      home: const LandingScreen(),
       routes: {
         Routes.homepage: (context) => const HomeScreen(),
-        Routes.loginpage: (context) => const LoginScreen(),
+        Routes.loginpage: (context) => const LandingScreen(),
       },
     );
   }
