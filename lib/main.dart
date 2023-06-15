@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:packandgo/utils/routes.dart';
 import 'package:packandgo/views/web/screens/home_screen.dart';
 
 void main() async {
@@ -14,9 +15,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Pack and Go',
-      home: HomeScreen(),
+      home: const HomeScreen(),
+      routes: {
+        Routes.homepage: (context) => const HomeScreen(),
+      },
     );
   }
 }
