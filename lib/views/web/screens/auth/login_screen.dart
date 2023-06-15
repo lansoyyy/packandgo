@@ -3,6 +3,7 @@ import 'package:packandgo/utils/colors.dart';
 import 'package:packandgo/widgets/button_widget.dart';
 import 'package:packandgo/widgets/text_widget.dart';
 import 'package:packandgo/widgets/textfield_widget.dart';
+import 'package:packandgo/widgets/toast_widget.dart';
 
 import '../../../../utils/routes.dart';
 
@@ -79,7 +80,10 @@ class LoginScreen extends StatelessWidget {
             height: 45,
             width: 500,
             label: 'Login',
-            onPressed: () {},
+            onPressed: () {
+              showToast('Logged in successfuly!');
+              Navigator.pushNamed(context, Routes.homepage);
+            },
           ),
           const SizedBox(
             height: 20,
