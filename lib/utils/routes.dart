@@ -1,3 +1,3 @@
 class Routes {
-  static const homepage = '/homepage', aboutuspage = '/aboutuspage';
+  static const homepage = '/homepage', loginpage = '/loginpage';
 }
