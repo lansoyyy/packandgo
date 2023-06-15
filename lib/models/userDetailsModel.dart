@@ -1,38 +1,34 @@
 // ignore_for_file: file_names
 
 class UserDetailsMODEL {
-  String? fullname;
-  String? gender;
-  String? phoneNumber;
-  String? email;
-  String? department;
   String? userType;
+  String? firstname;
+  String? lastname;
+  String? contactNumber;
+  String? email;
 
   UserDetailsMODEL(
-      {this.fullname,
-      this.gender,
-      this.phoneNumber,
-      this.email,
-      this.department,
-      this.userType});
+      {this.userType,
+      this.firstname,
+      this.lastname,
+      this.contactNumber,
+      this.email});
 
   UserDetailsMODEL.fromJson(Map<String, dynamic> json) {
-    fullname = json['fullname'];
-    gender = json['gender'];
-    phoneNumber = json['phone_number'];
+    userType = json['userType'];
+    firstname = json['firstname'];
+    lastname = json['lastname'];
+    contactNumber = json['contactNumber'];
     email = json['email'];
-    department = json['department'];
-    userType = json['user_type'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['fullname'] = this.fullname;
-    data['gender'] = this.gender;
-    data['phone_number'] = this.phoneNumber;
-    data['email'] = this.email;
-    data['department'] = this.department;
-    data['user_type'] = this.userType;
+    data['userType'] = userType;
+    data['firstname'] = firstname;
+    data['lastname'] = lastname;
+    data['contactNumber'] = contactNumber;
+    data['email'] = email;
     return data;
   }
 }

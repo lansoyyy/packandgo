@@ -38,6 +38,7 @@ dependencies:
   firebase_core:
   cloud_firestore:
   fluttertoast:
+  shared_preferences: ^2.1.2
 
 dev_dependencies:
   flutter_test:
