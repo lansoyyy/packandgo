@@ -1,7 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:packandgo/widgets/button_widget.dart';
 import 'package:packandgo/widgets/text_widget.dart';
+
+import '../../../../utils/routes.dart';
 
 class LandingScreen extends StatelessWidget {
   const LandingScreen({super.key});
@@ -31,7 +32,9 @@ class LandingScreen extends StatelessWidget {
                   ),
                   const Expanded(child: SizedBox()),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.loginpage);
+                    },
                     child: TextRegular(
                       text: 'Login',
                       fontSize: 16,

@@ -9,6 +9,7 @@ class ButtonWidget extends StatelessWidget {
   final double? fontSize;
   final double? height;
   final Color? color;
+  final double? radius;
 
   const ButtonWidget(
       {Key? key,
@@ -17,12 +18,14 @@ class ButtonWidget extends StatelessWidget {
       this.width = 300,
       this.fontSize = 18,
       this.height = 50,
+      this.radius = 100,
       this.color = Colors.purple})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(radius!)),
         minWidth: width,
         height: height,
         color: color,
