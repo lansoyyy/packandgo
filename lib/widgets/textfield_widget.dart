@@ -11,18 +11,21 @@ class TextFieldWidget extends StatefulWidget {
   final int? maxLine;
   final TextInputType? inputType;
   final bool? isPassword;
+  final validator;
 
-  TextFieldWidget(
-      {super.key,
-      required this.label,
-      this.hint = '',
-      required this.controller,
-      this.isObscure = false,
-      this.width = 300,
-      this.height = 40,
-      this.maxLine = 1,
-      this.isPassword = false,
-      this.inputType = TextInputType.text});
+  TextFieldWidget({
+    super.key,
+    required this.label,
+    this.hint = '',
+    required this.controller,
+    this.isObscure = false,
+    this.width = 300,
+    this.height = 40,
+    this.maxLine = 1,
+    this.isPassword = false,
+    this.inputType = TextInputType.text,
+    this.validator,
+  });
 
   @override
   State<TextFieldWidget> createState() => _TextFieldWidgetState();
@@ -67,6 +70,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
             maxLines: widget.maxLine,
             obscureText: widget.isObscure!,
             controller: widget.controller,
+            validator: widget.validator,
           ),
         ),
       ],

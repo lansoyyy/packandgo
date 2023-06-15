@@ -3,6 +3,8 @@ import 'package:packandgo/utils/colors.dart';
 import 'package:packandgo/widgets/text_widget.dart';
 import 'package:packandgo/widgets/toast_widget.dart';
 
+import '../../../../queries/queries.dart';
+import '../../../../queries/streamQuery.dart';
 import '../../../../utils/routes.dart';
 import '../../../../widgets/button_widget.dart';
 import '../../../../widgets/textfield_widget.dart';
@@ -26,202 +28,274 @@ class _SignupScreenState extends State<SignupScreen> {
   bool check3 = false;
   bool isLoading = false;
 
+  final _form = GlobalKey<FormState>();
+  var auth = AuthQuery();
+  var userDetailsQuery = Queries();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-          child: !isLoading
-              ? Column(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      height: 80,
-                      color: primary,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 50, right: 50),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            TextBold(
-                              text: 'Pack & Go',
-                              fontSize: 38,
-                              color: Colors.white,
-                            ),
-                            const Expanded(
-                              child: SizedBox(),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pushNamed(context, Routes.loginpage);
-                              },
-                              child: TextRegular(
-                                text: 'Login',
-                                fontSize: 16,
+        body: !isLoading
+            ? SingleChildScrollView(
+                child: Form(
+                  key: _form,
+                  child: Column(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: 80,
+                        color: primary,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 50, right: 50),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              TextBold(
+                                text: 'Pack & Go',
+                                fontSize: 38,
                                 color: Colors.white,
                               ),
-                            ),
-                          ],
+                              const Expanded(
+                                child: SizedBox(),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, Routes.loginpage);
+                                },
+                                child: TextRegular(
+                                  text: 'Login',
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    TextBold(
-                      text: 'Signup',
-                      fontSize: 38,
-                      color: Colors.black,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Checkbox(
-                          value: check1,
-                          onChanged: (value) {
-                            setState(() {
-                              check1 = !check1;
-                              check2 = false;
-                              check3 = false;
-                            });
-                          },
-                        ),
-                        const SizedBox(
-                          width: 300,
-                          child: Text(
-                            'New Customer',
-                            style: TextStyle(fontFamily: 'QRegular'),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      TextBold(
+                        text: 'Signup',
+                        fontSize: 38,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Checkbox(
+                            value: check1,
+                            onChanged: (value) {
+                              setState(() {
+                                check1 = !check1;
+                                check2 = false;
+                                check3 = false;
+                              });
+                            },
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Checkbox(
-                          value: check2,
-                          onChanged: (value) {
-                            setState(() {
-                              check2 = !check2;
-                              check1 = false;
-                              check3 = false;
-                            });
-                          },
-                        ),
-                        const SizedBox(
-                          width: 300,
-                          child: Text(
-                            'PUJ/Jeepney Operator',
-                            style: TextStyle(fontFamily: 'QRegular'),
+                          const SizedBox(
+                            width: 300,
+                            child: Text(
+                              'New Customer',
+                              style: TextStyle(fontFamily: 'QRegular'),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Checkbox(
-                          value: check3,
-                          onChanged: (value) {
-                            setState(() {
-                              check3 = !check3;
-                              check1 = false;
-                              check2 = false;
-                            });
-                          },
-                        ),
-                        const SizedBox(
-                          width: 300,
-                          child: Text(
-                            'Moving Service Business Owner',
-                            style: TextStyle(fontFamily: 'QRegular'),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Checkbox(
+                            value: check2,
+                            onChanged: (value) {
+                              setState(() {
+                                check2 = !check2;
+                                check1 = false;
+                                check3 = false;
+                              });
+                            },
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextFieldWidget(
+                          const SizedBox(
+                            width: 300,
+                            child: Text(
+                              'PUJ/Jeepney Operator',
+                              style: TextStyle(fontFamily: 'QRegular'),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Checkbox(
+                            value: check3,
+                            onChanged: (value) {
+                              setState(() {
+                                check3 = !check3;
+                                check1 = false;
+                                check2 = false;
+                              });
+                            },
+                          ),
+                          const SizedBox(
+                            width: 300,
+                            child: Text(
+                              'Moving Service Business Owner',
+                              style: TextStyle(fontFamily: 'QRegular'),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFieldWidget(
                         width: 500,
                         label: 'First Name',
-                        controller: firstnameController),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFieldWidget(
+                        controller: firstnameController,
+                        // validator: (value) {
+                        //   return firstnameController.text.isEmpty
+                        //       ? "This field is required"
+                        //       : null;
+                        // },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFieldWidget(
                         width: 500,
                         label: 'Last Name',
-                        controller: lastnameController),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFieldWidget(
+                        controller: lastnameController,
+                        // validator: (value) {
+                        //   return lastnameController.text.isEmpty
+                        //       ? "This field is required"
+                        //       : null;
+                        // },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFieldWidget(
                         inputType: TextInputType.number,
                         width: 500,
                         label: 'Contact Number',
-                        controller: contactnumberController),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFieldWidget(
+                        controller: contactnumberController,
+                        // validator: (value) {
+                        //   return contactnumberController.text.isEmpty
+                        //       ? "This field is required"
+                        //       : null;
+                        // },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFieldWidget(
                         width: 500,
                         label: 'Email',
-                        controller: emailController),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFieldWidget(
+                        controller: emailController,
+                        // validator: (value) {
+                        //   return emailController.text.isEmpty
+                        //       ? "This field is required"
+                        //       : null;
+                        // },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFieldWidget(
                         isObscure: true,
                         isPassword: true,
                         width: 500,
                         label: 'Password',
-                        controller: passwordController),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ButtonWidget(
-                      radius: 5,
-                      color: Colors.green[500],
-                      height: 45,
-                      width: 500,
-                      label: 'Signup',
-                      onPressed: () {
-                        showToast('Account created successfuly!');
-                        Navigator.pushNamed(context, Routes.loginpage);
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TextRegular(
-                          text: 'Already have an account?',
-                          fontSize: 12,
-                          color: Colors.black,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, Routes.loginpage);
-                          },
-                          child: TextBold(
-                            text: 'Login',
-                            fontSize: 14,
+                        controller: passwordController,
+                        // validator: (value) {
+                        //   return passwordController.text.isEmpty
+                        //       ? "This field is required"
+                        //       : null;
+                        // },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ButtonWidget(
+                        radius: 5,
+                        color: Colors.green[500],
+                        height: 45,
+                        width: 500,
+                        label: 'Signup',
+                        onPressed: () async {
+                          print(
+                              "firstname: ${firstnameController.text} \nlastname: ${lastnameController.text} \ncontact number :${contactnumberController.text} \nemail: ${emailController.text} \npassword: ${passwordController.text}");
+
+                          if (_form.currentState!.validate()) {
+                            _form.currentState!.save();
+                            setState(() => isLoading = true);
+                            // var userDetailsAPI = Queries();
+                            var response =
+                                await auth.signUpWithEmailAndPassword(
+                              email: emailController.text,
+                              password: passwordController.text,
+                            );
+                            print("see response ${response!.uid}");
+
+                            var userDetailsData = {
+                              "uid": response.uid,
+                              "firstname": firstnameController.text,
+                              "lastname": lastnameController.text,
+                              "email": emailController.text,
+                              "contact_number": contactnumberController.text,
+                              "user_type": check1
+                                  ? "customer"
+                                  : check2
+                                      ? "operator"
+                                      : check3
+                                          ? "owner"
+                                          : "customer",
+                              "status": true
+                            };
+                            var userDetailsResponse = await userDetailsQuery
+                                .push("user-details", userDetailsData);
+                            print("user details response $userDetailsResponse");
+                            // showToast('Account created successfuly!');
+                            // Navigator.pushNamed(context, Routes.loginpage);
+                            setState(() => isLoading = false);
+                          }
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextRegular(
+                            text: 'Already have an account?',
+                            fontSize: 12,
                             color: Colors.black,
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                  ],
-                )
-              : const Center(child: CircularProgressIndicator())),
-    );
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, Routes.loginpage);
+                            },
+                            child: TextBold(
+                              text: 'Login',
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            : const Center(child: CircularProgressIndicator()));
   }
 }

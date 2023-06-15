@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Queries {
   String id = "";
   final db = FirebaseFirestore.instance;
-  // final dbs = FirebaseStorage.instance;
 
   Future push(root, data) async {
     var ref = await db.collection(root).add(data);
