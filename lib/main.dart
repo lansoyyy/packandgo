@@ -5,7 +5,15 @@ import 'package:packandgo/views/web/screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+      name: "packandgo-86489",
+      options: const FirebaseOptions(
+          authDomain: "packandgo-86489.firebaseapp.com",
+          apiKey: "AIzaSyBBnZDZEdz0iafvxFjx-77cR4cJRmzgoeQ",
+          appId: "1:370229023048:web:2939922840604ae142a37d",
+          messagingSenderId: "370229023048",
+          projectId: "packandgo-86489",
+          storageBucket: "packandgo-86489.appspot.com"));
   runApp(const MyApp());
 }
 
