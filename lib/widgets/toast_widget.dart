@@ -1,8 +1,8 @@
 import 'package:fluttertoast/fluttertoast.dart';
 
-Future<bool?> showToast(msg) {
+Future<bool?> showToast(msg, {toastLength = Toast.LENGTH_SHORT}) {
   return Fluttertoast.showToast(
-    toastLength: Toast.LENGTH_SHORT,
+    toastLength: toastLength,
     msg: msg,
   );
 }

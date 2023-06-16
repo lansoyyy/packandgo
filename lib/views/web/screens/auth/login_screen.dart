@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:packandgo/utils/colors.dart';
 import 'package:packandgo/widgets/button_widget.dart';
 import 'package:packandgo/widgets/text_widget.dart';
@@ -25,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     emailController.text = "admin@gmail.com";
-    passwordController.text = "admin";
+    passwordController.text = "password";
     super.initState();
   }
 
@@ -102,29 +105,25 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () async {
                       if (_form.currentState!.validate()) {
                         _form.currentState!.save();
-                        setState(() {
-                          isLoading = true;
-                        });
+                        setState(() => isLoading = true);
                         var response = await auth.signInWithEmailAndPassword(
                           email: emailController.text,
                           password: passwordController.text,
                           context: context,
                         );
-                        print("see response $response");
+
                         if (!response['error']) {
                           await userDetailsQuery
                               .getUserData(response['user-data'].uid);
-                          // loginUser();
                           showToast('Logged in successfuly!');
                           Navigator.pushNamed(context, Routes.homepage);
-                        } else {}
-
-                        setState(() {
-                          isLoading = false;
-                        });
-                        print("working");
-                      } else {
-                        print("asdfasdfasd");
+                        } else {
+                          showToast(
+                            response['error-message'],
+                            toastLength: Toast.LENGTH_LONG,
+                          );
+                        }
+                        setState(() => isLoading = false);
                       }
                     },
                   ),

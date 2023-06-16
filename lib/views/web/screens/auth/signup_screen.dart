@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:packandgo/services/emailChecker.dart';
 import 'package:packandgo/utils/colors.dart';
 import 'package:packandgo/widgets/text_widget.dart';
 import 'package:packandgo/widgets/toast_widget.dart';
@@ -31,6 +34,16 @@ class _SignupScreenState extends State<SignupScreen> {
   final _form = GlobalKey<FormState>();
   var auth = AuthQuery();
   var userDetailsQuery = Queries();
+
+  @override
+  void initState() {
+    firstnameController.text = "Jhon";
+    lastnameController.text = "Doe";
+    contactnumberController.text = "3894756354";
+    emailController.text = "admin@gmail.com";
+    passwordController.text = "password";
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -198,9 +211,13 @@ class _SignupScreenState extends State<SignupScreen> {
                         label: 'Email',
                         controller: emailController,
                         // validator: (value) {
-                        //   return emailController.text.isEmpty
-                        //       ? "This field is required"
-                        //       : null;
+                        //   if (emailController.text.isEmpty) {
+                        //     return "This field is required";
+                        //   } else if (isValidEmail(emailController.text)) {
+                        //     return "Please enter a valid email";
+                        //   } else {
+                        //     return null;
+                        //   }
                         // },
                       ),
                       const SizedBox(
@@ -240,28 +257,32 @@ class _SignupScreenState extends State<SignupScreen> {
                               email: emailController.text,
                               password: passwordController.text,
                             );
-                            print("see response ${response!.uid}");
+                            if (response != null) {
+                              var userDetailsData = {
+                                "uid": response.uid,
+                                "firstname": firstnameController.text,
+                                "lastname": lastnameController.text,
+                                "email": emailController.text,
+                                "contact_number": contactnumberController.text,
+                                "user_type": check1
+                                    ? "customer"
+                                    : check2
+                                        ? "operator"
+                                        : check3
+                                            ? "owner"
+                                            : "customer",
+                                "status": true
+                              };
 
-                            var userDetailsData = {
-                              "uid": response.uid,
-                              "firstname": firstnameController.text,
-                              "lastname": lastnameController.text,
-                              "email": emailController.text,
-                              "contact_number": contactnumberController.text,
-                              "user_type": check1
-                                  ? "customer"
-                                  : check2
-                                      ? "operator"
-                                      : check3
-                                          ? "owner"
-                                          : "customer",
-                              "status": true
-                            };
-                            var userDetailsResponse = await userDetailsQuery
-                                .push("user-details", userDetailsData);
-                            print("user details response $userDetailsResponse");
-                            // showToast('Account created successfuly!');
-                            // Navigator.pushNamed(context, Routes.loginpage);
+                              await userDetailsQuery.push(
+                                  "user-details", userDetailsData);
+
+                              showToast('Account created successfuly!');
+                              Navigator.pushNamed(context, Routes.loginpage);
+                            } else {
+                              showToast('Email already used!');
+                            }
+
                             setState(() => isLoading = false);
                           }
                         },
