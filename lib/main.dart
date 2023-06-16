@@ -1,3 +1,8 @@
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_typing_uninitialized_variables
+
+import 'dart:convert';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:packandgo/utils/routes.dart';
@@ -5,6 +10,7 @@ import 'package:packandgo/views/web/screens/auth/landing_screen.dart';
 import 'package:packandgo/views/web/screens/auth/login_screen.dart';
 import 'package:packandgo/views/web/screens/auth/signup_screen.dart';
 import 'package:packandgo/views/web/screens/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,11 +24,18 @@ void main() async {
         projectId: "packandgo-86489",
         storageBucket: "packandgo-86489.appspot.com"),
   );
-  runApp(const MyApp());
+
+  final SharedPreferences userData = await SharedPreferences.getInstance();
+  var details = userData.getString('userDetails');
+  var userDetails = details != null ? json.decode(details) : null;
+  runApp(MyApp(userDetails));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  var userDetails;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  MyApp(this.userDetails);
 
   // This widget is the root of your application.
   @override
@@ -38,5 +51,21 @@ class MyApp extends StatelessWidget {
         Routes.signuppage: (context) => const SignupScreen(),
       },
     );
+  }
+
+  // User Auto login
+  Widget loginUser(context) {
+    if (userDetails != null && _auth.currentUser != null) {
+      // if (userDetails['user_type'] == 'division-administrator') {
+      //   return DivAdminDashboard();
+      // } else if (userDetails['user_type'] == 'school-head-administrator') {
+      //   return SchoolAdminDashboard();
+      // } else {
+      //   return TeacherDashboard();
+      // }
+      return HomeScreen();
+    } else {
+      return LandingScreen();
+    }
   }
 }
