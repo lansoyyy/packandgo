@@ -8,10 +8,12 @@ Widget inputField({
   @required validator,
   prefixIcon,
   suffixIcon,
+  onSuffixTap,
+  onPrefixTap,
   hint = "",
   borderRadius = 5.0,
-  borderColor = const Color(0xFF664805),
-  borderWidth = 2.0,
+  borderColor = const Color(0xff000000),
+  borderWidth = 1.0,
   onFocusBorderColor = const Color(0xFF9E9E9E),
   type = TextInputType.text,
   onChange = "",
@@ -29,7 +31,7 @@ Widget inputField({
   label = "",
   isDense = false,
 }) {
-  if (isDense) verticalPadding = 10.0;
+  if (isDense) verticalPadding = 15.0;
   return TextFormField(
     textAlign: textAlign,
     inputFormatters: inputFormatters,
@@ -45,8 +47,18 @@ Widget inputField({
       filled: true,
       fillColor: fieldColor,
       isDense: isDense,
-      prefixIcon: prefixIcon,
-      suffix: suffixIcon,
+      prefixIcon: prefixIcon != null
+          ? GestureDetector(
+              child: prefixIcon,
+              onTap: onSuffixTap,
+            )
+          : null,
+      suffix: suffixIcon != null
+          ? GestureDetector(
+              child: suffixIcon,
+              onTap: onSuffixTap,
+            )
+          : null,
       hintText: hint,
       labelText: label,
       hintStyle: TextStyle(color: Colors.grey[600]),
@@ -56,21 +68,15 @@ Widget inputField({
       ),
       errorStyle: TextStyle(),
       border: OutlineInputBorder(
-        borderSide: hasBorder
-            ? BorderSide(color: borderColor, width: borderWidth)
-            : BorderSide(width: 0, style: BorderStyle.none),
+        borderSide: hasBorder ? BorderSide(color: borderColor, width: borderWidth) : BorderSide(width: 0, style: BorderStyle.none),
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: hasBorder
-            ? BorderSide(color: onFocusBorderColor, width: borderWidth)
-            : BorderSide(width: 0, style: BorderStyle.none),
+        borderSide: hasBorder ? BorderSide(color: onFocusBorderColor, width: borderWidth) : BorderSide(width: 0, style: BorderStyle.none),
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       enabledBorder: OutlineInputBorder(
-        borderSide: hasBorder
-            ? BorderSide(color: borderColor, width: borderWidth)
-            : BorderSide(width: 0, style: BorderStyle.none),
+        borderSide: hasBorder ? BorderSide(color: borderColor, width: borderWidth) : BorderSide(width: 0, style: BorderStyle.none),
         borderRadius: BorderRadius.circular(borderRadius),
       ),
     ),
