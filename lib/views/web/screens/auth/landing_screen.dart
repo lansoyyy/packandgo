@@ -97,7 +97,13 @@ class LandingScreen extends StatelessWidget {
                           SizedBox(height: 100),
                           Text("CHOOSE A VEHICLE"),
                           Text("From Public to Private UVs, versatility is the key"),
-                          Text("Learn More"),
+                          TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              "Learn More",
+                              style: TextStyle(color: Colors.blue),
+                            ),
+                          )
                         ],
                       ),
                     ),

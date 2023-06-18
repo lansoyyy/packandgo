@@ -39,6 +39,8 @@ dependencies:
   cloud_firestore:
   fluttertoast:
   shared_preferences: ^2.1.2
+  fa_stepper: ^0.0.2
+  flutter_verification_code: ^1.1.6
 
 dev_dependencies:
   flutter_test:
