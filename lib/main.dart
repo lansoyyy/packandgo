@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:packandgo/utils/routes.dart';
 import 'package:packandgo/views/web/screens/auth/landing_screen.dart';
+import 'package:packandgo/views/web/screens/auth/learn_more_screen.dart';
 import 'package:packandgo/views/web/screens/auth/login_screen.dart';
 import 'package:packandgo/views/web/screens/auth/signup_screen.dart';
 import 'package:packandgo/views/web/screens/home_screen.dart';
@@ -28,6 +29,7 @@ void main() async {
   final SharedPreferences userData = await SharedPreferences.getInstance();
   var details = userData.getString('userDetails');
   var userDetails = details != null ? json.decode(details) : null;
+  print("suer details $userDetails");
   runApp(MyApp(userDetails));
 }
 
@@ -49,6 +51,7 @@ class MyApp extends StatelessWidget {
         Routes.landingpage: (context) => const LandingScreen(),
         Routes.loginpage: (context) => LoginScreen(),
         Routes.signuppage: (context) => const SignupScreen(),
+        Routes.learnmore: (context) => LearnMore(),
       },
     );
   }

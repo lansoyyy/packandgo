@@ -52,7 +52,10 @@ class LandingScreen extends StatelessWidget {
                           height: 45,
                           width: 125,
                           label: 'SIGNUP',
-                          onPressed: () {},
+                          color: primary,
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.signuppage);
+                          },
                         ),
                       ],
                     ),
@@ -88,17 +91,27 @@ class LandingScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Card(
+                    color: primary,
                     elevation: 4,
-                    child: Padding(
+                    child: Container(
                       padding: EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      margin: EdgeInsets.only(top: 10),
+                      color: Colors.white,
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        direction: Axis.vertical,
                         children: [
                           SizedBox(height: 100),
                           Text("CHOOSE A VEHICLE"),
-                          Text("From Public to Private UVs, versatility is the key"),
+                          Text(
+                            "From Public to Private UVs, \nversatility is the key",
+                            textAlign: TextAlign.center,
+                          ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(context, Routes.learnmore, arguments: {"learn-type": "vehicle"});
+                            },
                             child: Text(
                               "Learn More",
                               style: TextStyle(color: Colors.blue),
@@ -111,16 +124,26 @@ class LandingScreen extends StatelessWidget {
                   SizedBox(width: 20),
                   Card(
                     elevation: 4,
-                    child: Padding(
+                    color: primary,
+                    child: Container(
                       padding: EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      margin: EdgeInsets.only(top: 10),
+                      color: Colors.white,
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        direction: Axis.vertical,
                         children: [
                           SizedBox(height: 100),
                           Text("CHOOSE A LOADER"),
-                          Text("Eficientcy and care in every load"),
+                          Text(
+                            "Eficientcy and care in every \nload",
+                            textAlign: TextAlign.center,
+                          ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(context, Routes.learnmore, arguments: {"learn-type": "loader"});
+                            },
                             child: Text(
                               "Learn More",
                               style: TextStyle(color: Colors.blue),

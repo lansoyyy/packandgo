@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 
 class TextRegular extends StatelessWidget {
@@ -16,8 +18,7 @@ class TextRegular extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style:
-          TextStyle(fontSize: fontSize, color: color, fontFamily: 'QRegular'),
+      style: TextStyle(fontSize: fontSize, color: color, fontFamily: 'QRegular'),
     );
   }
 }
@@ -38,11 +39,39 @@ class TextBold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: TextStyle(
-          fontSize: fontSize,
-          color: color,
-          fontFamily: 'QBold',
-          fontWeight: FontWeight.w900),
+      style: TextStyle(fontSize: fontSize, color: color, fontFamily: 'QBold', fontWeight: FontWeight.w900),
     );
   }
+}
+
+Widget textWidget({
+  required text,
+  isBold = false,
+  isBullet = false,
+  caps = false,
+  vGap = 10.0,
+  hyGap = 0.0,
+}) {
+  return Container(
+      padding: EdgeInsets.symmetric(vertical: vGap, horizontal: hyGap),
+      child: Row(
+        children: [
+          if (isBullet)
+            Text(
+              "    •  ",
+              style: TextStyle(
+                fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          Container(
+            width: 500,
+            child: Text(
+              caps ? text.toString().toUpperCase() : text,
+              style: TextStyle(
+                fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          )
+        ],
+      ));
 }

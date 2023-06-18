@@ -125,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 20),
                   ButtonWidget(
                     radius: 5,
-                    color: Colors.green[500],
+                    color: primary,
                     height: 45,
                     width: 500,
                     label: 'Login',

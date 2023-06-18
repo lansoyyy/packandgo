@@ -270,7 +270,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                   ),
                                   SizedBox(height: 20),
                                   Text("Kindly enter your phone number and we will send you a security code."),
-                                  labelText(label: "Contact Number"),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: labelText(label: "Contact Number"),
+                                  ),
                                   inputField(
                                     controller: contactnumberController,
                                     isDense: true,
@@ -342,7 +345,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               color: primary,
                               height: 45,
                               width: 500,
-                              label: 'Continue',
+                              label: _currentStep == 2 ? "Verify" : 'Continue',
                               onPressed: () async {
                                 if (_form.currentState!.validate()) {
                                   _form.currentState!.save();
@@ -373,8 +376,6 @@ class _SignupScreenState extends State<SignupScreen> {
 
                                         await userDetailsQuery.push("user-details", userDetailsData);
 
-                                        // showToast('Account created successfuly!');
-                                        // Navigator.pushNamed(context, Routes.loginpage);
                                         _currentStep += 1;
                                       } else {
                                         showToast('Email already used!');
@@ -384,6 +385,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                       _currentStep += 1;
                                       break;
                                     case 2:
+                                      showToast('Account created successfuly!');
+                                      Navigator.pushNamed(context, Routes.loginpage);
                                       _currentStep += 1;
                                       break;
                                     default:
