@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, sized_box_for_whitespace, prefer_const_constructors
+// ignore_for_file: use_build_context_synchronously, sized_box_for_whitespace, prefer_const_constructors, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,8 +8,14 @@ import 'package:packandgo/widgets/button_widget.dart';
 import 'package:packandgo/widgets/custom_widgets.dart';
 import 'package:packandgo/widgets/input_field.dart';
 import 'package:packandgo/widgets/text_widget.dart';
-import 'package:packandgo/widgets/textfield_widget.dart';
 import 'package:packandgo/widgets/toast_widget.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+
 import '../../../../queries/queries.dart';
 import '../../../../queries/streamQuery.dart';
 import '../../../../utils/routes.dart';
@@ -28,6 +34,9 @@ class _LoginScreenState extends State<LoginScreen> {
   var userDetailsQuery = Queries();
   bool isLoading = false;
   bool isObscure = true;
+
+  var loggedIn = false;
+  var firebaseAuth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -78,6 +87,35 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 20),
                   Container(
                     width: 500,
+                    alignment: Alignment.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CustomWidgets.socialButtonRect(
+                          'Login with Facebook',
+                          facebookColor,
+                          FontAwesomeIcons.facebookF,
+                          onTap: () {
+                            Fluttertoast.showToast(msg: 'I am facebook');
+                          },
+                        ),
+                        SizedBox(width: 10),
+                        CustomWidgets.socialButtonRect(
+                          'Login with Google',
+                          googleColor,
+                          FontAwesomeIcons.googlePlusG,
+                          onTap: () async {
+                            await _handleSignIn("G");
+                            // Fluttertoast.showToast(msg: 'I am google');
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Align(alignment: Alignment.center, child: Text("or")),
+                  Container(
+                    width: 500,
                     alignment: Alignment.centerLeft,
                     child: labelText(label: "Email"),
                   ),
@@ -125,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 20),
                   ButtonWidget(
                     radius: 5,
-                    color: primary,
+                    color: green,
                     height: 45,
                     width: 500,
                     label: 'Login',
@@ -166,5 +204,78 @@ class _LoginScreenState extends State<LoginScreen> {
             )
           : const Center(child: CircularProgressIndicator()),
     );
+  }
+
+  Future<int> _handleSignIn(String type) async {
+    switch (type) {
+      case "FB":
+        FacebookLoginResult facebookLoginResult = await _handleFBSignIn();
+        final accessToken = facebookLoginResult.accessToken!.token;
+        if (facebookLoginResult.status == FacebookLoginStatus.success) {
+          final facebookAuthCred = FacebookAuthProvider.credential(accessToken);
+          final user = await firebaseAuth.signInWithCredential(facebookAuthCred);
+          print("User : ${user.additionalUserInfo}");
+          return 1;
+        } else {
+          return 0;
+        }
+      case "G":
+        try {
+          GoogleSignInAccount googleSignInAccount = await _handleGoogleSignIn();
+          final googleAuth = await googleSignInAccount.authentication;
+          final googleAuthCred = GoogleAuthProvider.credential(idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+          final user = await firebaseAuth.signInWithCredential(googleAuthCred);
+          // print("User : $user");
+          if (user.credential!.accessToken != null) {
+            showToast('Logged in successfuly!');
+            Navigator.pushNamed(context, Routes.homepage);
+          }
+          return 1;
+        } catch (error) {
+          print("some error $error");
+          showToast('Something went wrong! $error');
+          return 0;
+        }
+    }
+    return 0;
+  }
+
+  Future _handleFBSignIn() async {
+    // Trigger the sign-in flow
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+
+    // Create a credential from the access token
+    final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+    // Once signed in, return the UserCredential
+    var response = FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+    print("whats response $response");
+    return response;
+  }
+
+  // Future<FacebookLoginResult> _handleFBSignIn() async {
+  //   FacebookLogin facebookLogin = FacebookLogin();
+  //   FacebookLoginResult facebookLoginResult = await facebookLogin.logIn(['email', 'public_profile']);
+  //   switch (facebookLoginResult.status) {
+  //     // case FacebookLoginStatus.cancelledByUser:
+  //     //   print("Cancelled");
+  //     //   break;
+  //     // case FacebookLoginStatus.error:
+  //     //   print("error");
+  //     //   break;
+  //     // case FacebookLoginStatus.loggedIn:
+  //     //   print("Logged In");
+  //     //   break;
+  //   }
+  //   return facebookLoginResult;
+  // }
+
+  Future _handleGoogleSignIn() async {
+    GoogleSignIn googleSignIn = GoogleSignIn(
+      scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly'],
+      clientId: "370229023048-9p71ocm86lavkn5bi9u5779e1bi47tvg.apps.googleusercontent.com",
+    );
+    GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+    return googleSignInAccount;
   }
 }

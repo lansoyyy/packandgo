@@ -342,7 +342,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             const SizedBox(height: 20),
                             ButtonWidget(
                               radius: 5,
-                              color: primary,
+                              color: green,
                               height: 45,
                               width: 500,
                               label: _currentStep == 2 ? "Verify" : 'Continue',

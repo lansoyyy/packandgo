@@ -41,6 +41,10 @@ dependencies:
   shared_preferences: ^2.1.2
   fa_stepper: ^0.0.2
   flutter_verification_code: ^1.1.6
+  google_sign_in: ^6.1.4
+  font_awesome_flutter: ^10.4.0
+  flutter_login_facebook: ^1.8.0
+  flutter_facebook_auth: ^5.0.11
 
 dev_dependencies:
   flutter_test:

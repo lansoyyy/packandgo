@@ -55,8 +55,7 @@ formDialog({
   AlertDialog alert = AlertDialog(
     title: Text(
       "${title.toUpperCase()}",
-      style: TextStyle(
-          color: Colors.black, fontWeight: fontWeight, fontSize: fontSize),
+      style: TextStyle(color: Colors.black, fontWeight: fontWeight, fontSize: fontSize),
       textAlign: TextAlign.center,
     ),
     content: SizedBox(
@@ -159,8 +158,7 @@ Widget dropdownMenu({
   hasBorder = false,
 }) {
   return Container(
-    padding: EdgeInsets.symmetric(
-        horizontal: 8.0, vertical: isDense && !kIsWeb ? 5.0 : 0.0),
+    padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: isDense && !kIsWeb ? 5.0 : 0.0),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(5.0),
       color: fieldColor,
@@ -182,8 +180,7 @@ Widget dropdownMenu({
               elevation: 8,
               onChanged: onChanged,
               isDense: isDense,
-              items:
-                  dataSelections.map<DropdownMenuItem<String>>((String value) {
+              items: dataSelections.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem(
                   value: value.toString(),
                   child: Text(value.toString()),
@@ -463,18 +460,12 @@ Widget drawer({
               children: [
                 Text(
                   'T-SET',
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white),
                 ),
                 SizedBox(height: 20),
                 Text(
                   "Teacher's Self Evaluation Tool",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white),
                 ),
               ],
             ),
@@ -671,12 +662,7 @@ Widget infoCard({
   );
 }
 
-showAlertDialog(
-    {@required context,
-    @required title,
-    content = const SizedBox(),
-    barrierDismissible = true,
-    actions = ''}) {
+showAlertDialog({@required context, @required title, content = const SizedBox(), barrierDismissible = true, actions = ''}) {
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: title,
@@ -710,8 +696,7 @@ showAlertDialog(
     barrierDismissible: barrierDismissible,
     context: context,
     builder: (BuildContext context) {
-      return WillPopScope(
-          onWillPop: () async => barrierDismissible, child: alert);
+      return WillPopScope(onWillPop: () async => barrierDismissible, child: alert);
     },
   );
 }
@@ -734,4 +719,56 @@ Widget titleText({
       ),
     ),
   );
+}
+
+class CustomWidgets {
+  static Widget socialButtonRect(title, color, icon, {Function? onTap}) {
+    return InkWell(
+      onTap: () {
+        onTap!();
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+        decoration: BoxDecoration(color: color, borderRadius: BorderRadius.all(Radius.circular(5))),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              icon,
+              color: Colors.white,
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 20),
+              child: Text(title, style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w400)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static Widget socialButtonCircle(color, icon, {iconColor, Function? onTap}) {
+    return InkWell(
+      onTap: () {
+        onTap!();
+      },
+      child: Container(
+          //width: 50.0,
+          //height: 50.0,
+          padding: const EdgeInsets.all(20.0),
+          //I used some padding without fixed width and height
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            // You can use like this way or like the below line
+            //borderRadius: new BorderRadius.circular(30.0),
+            color: color,
+          ),
+          child: Icon(
+            icon,
+            color: iconColor,
+          ) // You can add a Icon instead of text also, like below.
+          //child: new Icon(Icons.arrow_forward, size: 50.0, color: Colors.black38)),
+          ), //
+    );
+  }
 }
