@@ -19,11 +19,8 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime selectedDateTime = DateTime.now();
 
   Future<void> _selectDateTime(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDateTime,
-        firstDate: DateTime(1900),
-        lastDate: DateTime(2100));
+    final DateTime? picked =
+        await showDatePicker(context: context, initialDate: selectedDateTime, firstDate: DateTime(1900), lastDate: DateTime(2100));
     if (picked != null) {
       setState(() {
         selectedDateTime = DateTime(
@@ -36,8 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
 
-    final TimeOfDay? timePicked =
-        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    final TimeOfDay? timePicked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
     if (timePicked != null) {
       setState(() {
         selectedDateTime = DateTime(
@@ -55,100 +51,104 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: double.infinity,
-            height: 80,
-            color: primary,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 50, right: 50),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextBold(
-                    text: 'Pack & Go',
-                    fontSize: 38,
-                    color: Colors.white,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      // Navigator.pushNamed(context, Routes.signuppage);
-                    },
-                    child: TextRegular(
-                      text: 'Records',
-                      fontSize: 16,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          IndexedStack(
-            index: currentIndex,
-            children: [
-              MapTab(),
-              const LocationTab(),
-              const LoaderTab(),
-            ],
-          ),
-          const Expanded(child: SizedBox()),
-          const Divider(),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: SizedBox(
+      body: SingleChildScrollView(
+          child: Container(
+        height: 1000,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
               width: double.infinity,
               height: 80,
+              color: primary,
               child: Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    currentIndex != 0
-                        ? ButtonWidget(
-                            textColor: Colors.black,
-                            radius: 5,
-                            color: Colors.white,
-                            height: 45,
-                            width: 150,
-                            label: 'Back',
-                            onPressed: () {
-                              setState(() {
-                                currentIndex--;
-                              });
-                            },
-                          )
-                        : const SizedBox(),
-                    const SizedBox(
-                      width: 20,
+                    TextBold(
+                      text: 'Pack & Go',
+                      fontSize: 38,
+                      color: Colors.white,
                     ),
-                    ButtonWidget(
-                      radius: 5,
-                      color: primary,
-                      height: 45,
-                      width: 150,
-                      label: 'Continue',
+                    TextButton(
                       onPressed: () {
-                        if (currentIndex == 1) {
-                          _selectDateTime(context);
-                        } else {
-                          setState(() {
-                            currentIndex++;
-                          });
-                        }
+                        // Navigator.pushNamed(context, Routes.signuppage);
                       },
+                      child: TextRegular(
+                        text: 'Records',
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
-          ),
-        ],
-      ),
+            IndexedStack(
+              index: currentIndex,
+              children: [
+                MapTab(),
+                const LocationTab(),
+                const LoaderTab(),
+              ],
+            ),
+            const Expanded(child: SizedBox()),
+            const Divider(),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                width: double.infinity,
+                height: 80,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 50, right: 50),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      currentIndex != 0
+                          ? ButtonWidget(
+                              textColor: Colors.black,
+                              radius: 5,
+                              color: Colors.white,
+                              height: 45,
+                              width: 150,
+                              label: 'Back',
+                              onPressed: () {
+                                setState(() {
+                                  currentIndex--;
+                                });
+                              },
+                            )
+                          : const SizedBox(),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      ButtonWidget(
+                        radius: 5,
+                        color: primary,
+                        height: 45,
+                        width: 150,
+                        label: 'Continue',
+                        onPressed: () {
+                          if (currentIndex == 1) {
+                            _selectDateTime(context);
+                          } else {
+                            setState(() {
+                              currentIndex++;
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      )),
     );
   }
 }
