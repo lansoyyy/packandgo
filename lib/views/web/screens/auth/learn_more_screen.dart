@@ -15,7 +15,7 @@ import '../../../../queries/streamQuery.dart';
 import '../../../../utils/routes.dart';
 
 class LearnMore extends StatefulWidget {
-  LearnMore({super.key});
+  const LearnMore({super.key});
   @override
   State<LearnMore> createState() => _LearnMoreState();
 }
@@ -37,7 +37,9 @@ class _LearnMoreState extends State<LearnMore> {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic>? params = (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?) ?? {"learn-type": "vehicle"};
+    final Map<String, dynamic> params =
+        (ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?) ??
+            {"learn-type": "vehicle"};
 
     return Scaffold(
       body: !isLoading
@@ -74,34 +76,56 @@ class _LearnMoreState extends State<LearnMore> {
                   ),
                 ),
                 SizedBox(height: 50),
-                if (params!["learn-type"] == "vehicle")
+                if (params["learn-type"] == "vehicle")
                   Container(
                     width: 500,
                     height: 1000,
                     child: Wrap(
                       direction: Axis.vertical,
                       children: [
-                        textWidget(text: "CHOOSE A VEHICLE", caps: true, isBold: true),
-                        textWidget(text: "Learn More about Our Vehicle Options:"),
-                        textWidget(text: "Motorcycle: Perfect for quick and agile transportation needs.", isBullet: true),
                         textWidget(
-                            text: "500 kg Jeepney (Standard Type): Ideal for comfortable and spacious rides for a group of passengers.",
+                            text: "CHOOSE A VEHICLE", caps: true, isBold: true),
+                        textWidget(
+                            text: "Learn More about Our Vehicle Options:"),
+                        textWidget(
+                            text:
+                                "Motorcycle: Perfect for quick and agile transportation needs.",
                             isBullet: true),
                         textWidget(
-                            text: "800 kg Jeepney (Lawin Type): Designed to handle heavier loads while providing a smooth and reliable journey.",
+                            text:
+                                "500 kg Jeepney (Standard Type): Ideal for comfortable and spacious rides for a group of passengers.",
                             isBullet: true),
                         textWidget(
-                            text: "300 kg Taxi Sedan: A compact and efficient choice for individual or small group transportation.", isBullet: true),
-                        textWidget(text: "500 kg Taxi MPV: A larger taxi option with more seating capacity for a comfortable ride.", isBullet: true),
-                        textWidget(
-                            text: "6-Wheel Truck (Close Type): Suitable for medium-sized cargo transportation with added security.", isBullet: true),
-                        textWidget(
-                            text: "10-Wheel Truck (Close Type): Provides ample space and security for larger cargo shipments.", isBullet: true),
-                        textWidget(
-                            text: "6-Wheel Truck (Open Type): Ideal for transporting bulk materials or goods that do not require closed storage.",
+                            text:
+                                "800 kg Jeepney (Lawin Type): Designed to handle heavier loads while providing a smooth and reliable journey.",
                             isBullet: true),
-                        textWidget(text: "10-Wheel Truck (Open Type): Designed for heavy-duty hauling of larger loads.", isBullet: true),
-                        textWidget(text: "Choose the perfect vehicle for your specific transportation needs."),
+                        textWidget(
+                            text:
+                                "300 kg Taxi Sedan: A compact and efficient choice for individual or small group transportation.",
+                            isBullet: true),
+                        textWidget(
+                            text:
+                                "500 kg Taxi MPV: A larger taxi option with more seating capacity for a comfortable ride.",
+                            isBullet: true),
+                        textWidget(
+                            text:
+                                "6-Wheel Truck (Close Type): Suitable for medium-sized cargo transportation with added security.",
+                            isBullet: true),
+                        textWidget(
+                            text:
+                                "10-Wheel Truck (Close Type): Provides ample space and security for larger cargo shipments.",
+                            isBullet: true),
+                        textWidget(
+                            text:
+                                "6-Wheel Truck (Open Type): Ideal for transporting bulk materials or goods that do not require closed storage.",
+                            isBullet: true),
+                        textWidget(
+                            text:
+                                "10-Wheel Truck (Open Type): Designed for heavy-duty hauling of larger loads.",
+                            isBullet: true),
+                        textWidget(
+                            text:
+                                "Choose the perfect vehicle for your specific transportation needs."),
                       ],
                     ),
                   ),
@@ -112,10 +136,13 @@ class _LearnMoreState extends State<LearnMore> {
                     child: Wrap(
                       direction: Axis.vertical,
                       children: [
-                        textWidget(text: "CHOOSE A LOADER", caps: true, isBold: true),
-                        textWidget(text: "Learn More about Our Helper Services:"),
                         textWidget(
-                          text: "Motorcycle: Perfect for quick and agile transportation needs.",
+                            text: "CHOOSE A LOADER", caps: true, isBold: true),
+                        textWidget(
+                            text: "Learn More about Our Helper Services:"),
+                        textWidget(
+                          text:
+                              "Motorcycle: Perfect for quick and agile transportation needs.",
                         ),
                         textWidget(
                           text:
