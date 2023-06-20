@@ -95,8 +95,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           'Login with Facebook',
                           facebookColor,
                           FontAwesomeIcons.facebookF,
-                          onTap: () {
-                            Fluttertoast.showToast(msg: 'I am facebook');
+                          onTap: () async {
+                            await _handleSignIn("FB");
+                            // Fluttertoast.showToast(msg: 'I am facebook');
                           },
                         ),
                         SizedBox(width: 10),
@@ -177,7 +178,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           context: context,
                         );
                         if (!response['error']) {
-                          await userDetailsQuery.getUserData(response['user-data'].uid);
+                          await userDetailsQuery
+                              .getUserData(response['user-data'].uid);
                           showToast('Logged in successfuly!');
                           Navigator.pushNamed(context, Routes.homepage);
                         } else {
@@ -213,7 +215,8 @@ class _LoginScreenState extends State<LoginScreen> {
         final accessToken = facebookLoginResult.accessToken!.token;
         if (facebookLoginResult.status == FacebookLoginStatus.success) {
           final facebookAuthCred = FacebookAuthProvider.credential(accessToken);
-          final user = await firebaseAuth.signInWithCredential(facebookAuthCred);
+          final user =
+              await firebaseAuth.signInWithCredential(facebookAuthCred);
           print("User : ${user.additionalUserInfo}");
           return 1;
         } else {
@@ -223,7 +226,8 @@ class _LoginScreenState extends State<LoginScreen> {
         try {
           GoogleSignInAccount googleSignInAccount = await _handleGoogleSignIn();
           final googleAuth = await googleSignInAccount.authentication;
-          final googleAuthCred = GoogleAuthProvider.credential(idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+          final googleAuthCred = GoogleAuthProvider.credential(
+              idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
           final user = await firebaseAuth.signInWithCredential(googleAuthCred);
           // print("User : $user");
           if (user.credential!.accessToken != null) {
@@ -240,40 +244,49 @@ class _LoginScreenState extends State<LoginScreen> {
     return 0;
   }
 
-  Future _handleFBSignIn() async {
-    // Trigger the sign-in flow
-    final LoginResult loginResult = await FacebookAuth.instance.login();
+  // Future _handleFBSignIn() async {
+  //   // Trigger the sign-in flow
+  //   final LoginResult loginResult = await FacebookAuth.instance.login();
+  //   print("loginResult $loginResult");
 
-    // Create a credential from the access token
-    final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+  //   // Create a credential from the access token
+  //   // final OAuthCredential facebookAuthCredential =
+  //   //     FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
-    // Once signed in, return the UserCredential
-    var response = FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-    print("whats response $response");
-    return response;
-  }
-
-  // Future<FacebookLoginResult> _handleFBSignIn() async {
-  //   FacebookLogin facebookLogin = FacebookLogin();
-  //   FacebookLoginResult facebookLoginResult = await facebookLogin.logIn(['email', 'public_profile']);
-  //   switch (facebookLoginResult.status) {
-  //     // case FacebookLoginStatus.cancelledByUser:
-  //     //   print("Cancelled");
-  //     //   break;
-  //     // case FacebookLoginStatus.error:
-  //     //   print("error");
-  //     //   break;
-  //     // case FacebookLoginStatus.loggedIn:
-  //     //   print("Logged In");
-  //     //   break;
-  //   }
-  //   return facebookLoginResult;
+  //   // Once signed in, return the UserCredential
+  //   // var response =
+  //   //     FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+  //   // print("whats response $response");
+  //   // return response;
   // }
+
+  Future _handleFBSignIn() async {
+    FacebookLogin facebookLogin = FacebookLogin();
+    FacebookLoginResult facebookLoginResult = await facebookLogin.logIn(
+        permissions: [
+          FacebookPermission.email,
+          FacebookPermission.publicProfile
+        ]);
+    print("facebookLoginResult $facebookLoginResult");
+    // switch (facebookLoginResult.status) {
+    //   case FacebookLoginStatus.cancelledByUser:
+    //     print("Cancelled");
+    //     break;
+    //   case FacebookLoginStatus.error:
+    //     print("error");
+    //     break;
+    //   case FacebookLoginStatus.loggedIn:
+    //     print("Logged In");
+    //     break;
+    // }
+    return facebookLoginResult;
+  }
 
   Future _handleGoogleSignIn() async {
     GoogleSignIn googleSignIn = GoogleSignIn(
       scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly'],
-      clientId: "370229023048-9p71ocm86lavkn5bi9u5779e1bi47tvg.apps.googleusercontent.com",
+      clientId:
+          "370229023048-9p71ocm86lavkn5bi9u5779e1bi47tvg.apps.googleusercontent.com",
     );
     GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
     return googleSignInAccount;
