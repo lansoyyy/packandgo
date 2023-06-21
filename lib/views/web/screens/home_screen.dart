@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:packandgo/views/web/screens/home_tab/details_tab.dart';
 import 'package:packandgo/views/web/screens/home_tab/loader_tab.dart';
 import 'package:packandgo/views/web/screens/home_tab/location_tab.dart';
 import 'package:packandgo/views/web/screens/home_tab/map_tab.dart';
 
 import '../../../utils/colors.dart';
+import '../../../utils/routes.dart';
 import '../../../widgets/button_widget.dart';
 import '../../../widgets/text_widget.dart';
 
@@ -19,8 +21,11 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime selectedDateTime = DateTime.now();
 
   Future<void> _selectDateTime(BuildContext context) async {
-    final DateTime? picked =
-        await showDatePicker(context: context, initialDate: selectedDateTime, firstDate: DateTime(1900), lastDate: DateTime(2100));
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDateTime,
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2100));
     if (picked != null) {
       setState(() {
         selectedDateTime = DateTime(
@@ -33,7 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
 
-    final TimeOfDay? timePicked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    final TimeOfDay? timePicked =
+        await showTimePicker(context: context, initialTime: TimeOfDay.now());
     if (timePicked != null) {
       setState(() {
         selectedDateTime = DateTime(
@@ -52,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-          child: Container(
+          child: SizedBox(
         height: 1000,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -92,6 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 MapTab(),
                 const LocationTab(),
                 const LoaderTab(),
+                DetailsTab(),
               ],
             ),
             const Expanded(child: SizedBox()),
@@ -114,6 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: Colors.white,
                               height: 45,
                               width: 150,
+                              fontSize: 14,
                               label: 'Back',
                               onPressed: () {
                                 setState(() {
@@ -126,21 +134,61 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 20,
                       ),
                       ButtonWidget(
-                        radius: 5,
-                        color: primary,
-                        height: 45,
-                        width: 150,
-                        label: 'Continue',
-                        onPressed: () {
-                          if (currentIndex == 1) {
-                            _selectDateTime(context);
-                          } else {
-                            setState(() {
-                              currentIndex++;
-                            });
-                          }
-                        },
-                      ),
+                          radius: 5,
+                          color: primary,
+                          height: 45,
+                          width: 150,
+                          fontSize: 14,
+                          label: currentIndex != 3
+                              ? 'Continue'
+                              : 'Request Booking',
+                          onPressed: () {
+                            if (currentIndex == 1) {
+                              _selectDateTime(context);
+                            } else if (currentIndex == 3) {
+                              showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: TextRegular(
+                                        text: 'Booking Request Received',
+                                        fontSize: 18,
+                                        color: Colors.black,
+                                      ),
+                                      content: SizedBox(
+                                        width: 300,
+                                        height: 150,
+                                        child: Center(
+                                          child: TextRegular(
+                                            text:
+                                                'Thankyou for your booking request\n\nOur of our drivers will communicate with you in the chatbox to discuss the best price for your move service. Your booking status is currently set to pending until both parties agree on the cost.\n\nWe appreciate your business!',
+                                            fontSize: 14,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                                context, Routes.homepage);
+                                          },
+                                          child: TextRegular(
+                                            text: 'Close',
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            } else {
+                              setState(() {
+                                currentIndex++;
+                              });
+                            }
+                          })
                     ],
                   ),
                 ),

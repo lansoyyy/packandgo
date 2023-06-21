@@ -67,7 +67,8 @@ class LandingScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     TextRegular(
-                      text: 'In Pack & Go, we make sure\nyour items is delivered safely.',
+                      text:
+                          'In Pack & Go, we make sure\nyour items is delivered safely.',
                       fontSize: 28,
                       color: Colors.white,
                     ),
@@ -77,7 +78,9 @@ class LandingScreen extends StatelessWidget {
                       height: 45,
                       width: 150,
                       label: 'Book now',
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, Routes.loginpage);
+                      },
                     ),
                     const SizedBox(height: 200),
                   ],
@@ -110,7 +113,8 @@ class LandingScreen extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, Routes.learnmore, arguments: {"learn-type": "vehicle"});
+                              Navigator.pushNamed(context, Routes.learnmore,
+                                  arguments: {"learn-type": "vehicle"});
                             },
                             child: Text(
                               "Learn More",
@@ -142,7 +146,8 @@ class LandingScreen extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, Routes.learnmore, arguments: {"learn-type": "loader"});
+                              Navigator.pushNamed(context, Routes.learnmore,
+                                  arguments: {"learn-type": "loader"});
                             },
                             child: Text(
                               "Learn More",
@@ -162,7 +167,9 @@ class LandingScreen extends StatelessWidget {
               height: 45,
               width: 150,
               label: 'Book now',
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, Routes.loginpage);
+              },
             ),
             SizedBox(height: 300),
             Container(
