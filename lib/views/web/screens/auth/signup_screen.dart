@@ -8,7 +8,7 @@ import 'package:packandgo/widgets/toast_widget.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
 
 import '../../../../queries/queries.dart';
-import '../../../../queries/streamQuery.dart';
+import '../../../../queries/authQuery.dart';
 import '../../../../utils/routes.dart';
 import '../../../../widgets/button_widget.dart';
 import '../../../../widgets/custom_widgets.dart';

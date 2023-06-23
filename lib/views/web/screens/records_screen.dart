@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../../queries/streamQueries.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/routes.dart';
 import '../../../widgets/text_widget.dart';
@@ -14,6 +16,8 @@ class RecordsScreen extends StatefulWidget {
 class _RecordsScreenState extends State<RecordsScreen> {
   String nameSearched = '';
   final searchController = TextEditingController();
+  var streamQuery = StreamQuery();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,157 +114,162 @@ class _RecordsScreenState extends State<RecordsScreen> {
           const SizedBox(
             height: 20,
           ),
-          DataTable(dataRowHeight: 100, columns: [
-            DataColumn(
-              label: TextBold(
-                text: 'Status',
-                fontSize: 18,
-                color: Colors.black,
-              ),
-            ),
-            DataColumn(
-              label: TextBold(
-                text: 'Delivery Rate',
-                fontSize: 18,
-                color: Colors.black,
-              ),
-            ),
-            DataColumn(
-              label: TextBold(
-                text: 'Route',
-                fontSize: 18,
-                color: Colors.black,
-              ),
-            ),
-            DataColumn(
-              label: TextBold(
-                text: 'Driver/Mover',
-                fontSize: 18,
-                color: Colors.black,
-              ),
-            ),
-            DataColumn(
-              label: TextBold(
-                text: 'Type',
-                fontSize: 18,
-                color: Colors.black,
-              ),
-            ),
-            DataColumn(
-              label: TextBold(
-                text: 'Price',
-                fontSize: 18,
-                color: Colors.black,
-              ),
-            ),
-            DataColumn(
-              label: TextBold(
-                text: '',
-                fontSize: 0,
-                color: Colors.black,
-              ),
-            ),
-          ], rows: [
-            DataRow(
-              cells: [
-                DataCell(
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        height: 30,
-                        width: 125,
-                        child: Center(
-                          child: TextRegular(
-                              text: 'Pending',
-                              fontSize: 14,
-                              color: Colors.white),
-                        ),
-                      ),
-                      TextRegular(
-                          text: '2020300527',
-                          fontSize: 14,
-                          color: Colors.black),
-                    ],
+          StreamBuilder(
+            stream: streamQuery.getMultipleSnapsByData(roots: [
+              {"root": "user-details", "key": "uid", "value": _auth.currentUser!.uid},
+              {"root": "evaluations"},
+            ]),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              }
+
+              if (snapshot.hasData) {
+                final data = snapshot.data;
+
+                return DataTable(dataRowHeight: 100, columns: [
+                  DataColumn(
+                    label: TextBold(
+                      text: 'Status',
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-                DataCell(
-                  TextRegular(
-                      text: 'July 02, 2023 (3:30pm - 4:30pm)',
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-                DataCell(
-                  TextRegular(
-                      text: 'Cabahug Street - Wilson Street',
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-                DataCell(
-                  TextRegular(
-                      text: 'John Doe', fontSize: 14, color: Colors.black),
-                ),
-                DataCell(
-                  TextRegular(
-                      text: 'Motorcycle', fontSize: 14, color: Colors.black),
-                ),
-                DataCell(
-                  TextRegular(
-                      text: 'Not Set', fontSize: 14, color: Colors.black),
-                ),
-                DataCell(
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          height: 30,
-                          width: 125,
-                          child: Center(
-                            child: TextRegular(
-                                text: 'Cancel',
-                                fontSize: 14,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          height: 30,
-                          width: 125,
-                          child: Center(
-                            child: TextRegular(
-                                text: 'View',
-                                fontSize: 14,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ],
+                  DataColumn(
+                    label: TextBold(
+                      text: 'Delivery Rate',
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ])
+                  DataColumn(
+                    label: TextBold(
+                      text: 'Route',
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ),
+                  DataColumn(
+                    label: TextBold(
+                      text: 'Driver/Mover',
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ),
+                  DataColumn(
+                    label: TextBold(
+                      text: 'Type',
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ),
+                  DataColumn(
+                    label: TextBold(
+                      text: 'Price',
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ),
+                  DataColumn(
+                    label: TextBold(
+                      text: '',
+                      fontSize: 0,
+                      color: Colors.black,
+                    ),
+                  ),
+                ], rows: [
+                  dataRows()
+                ]);
+              } else {
+                return const Center(child: Text("No data available!"));
+              }
+            },
+          ),
         ],
       ),
+    );
+  }
+
+  DataRow dataRows() {
+    return DataRow(
+      cells: [
+        DataCell(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.orange,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                height: 30,
+                width: 125,
+                child: Center(
+                  child: TextRegular(text: 'Pending', fontSize: 14, color: Colors.white),
+                ),
+              ),
+              TextRegular(text: '2020300527', fontSize: 14, color: Colors.black),
+            ],
+          ),
+        ),
+        DataCell(
+          TextRegular(text: 'July 02, 2023 (3:30pm - 4:30pm)', fontSize: 14, color: Colors.black),
+        ),
+        DataCell(
+          TextRegular(text: 'Cabahug Street - Wilson Street', fontSize: 14, color: Colors.black),
+        ),
+        DataCell(
+          TextRegular(text: 'John Doe', fontSize: 14, color: Colors.black),
+        ),
+        DataCell(
+          TextRegular(text: 'Motorcycle', fontSize: 14, color: Colors.black),
+        ),
+        DataCell(
+          TextRegular(text: 'Not Set', fontSize: 14, color: Colors.black),
+        ),
+        DataCell(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  height: 30,
+                  width: 125,
+                  child: Center(
+                    child: TextRegular(text: 'Cancel', fontSize: 14, color: Colors.white),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  height: 30,
+                  width: 125,
+                  child: Center(
+                    child: TextRegular(text: 'View', fontSize: 14, color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

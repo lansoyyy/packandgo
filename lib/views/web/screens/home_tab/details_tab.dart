@@ -74,7 +74,7 @@ class DetailsTab extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
                       child: TextRegular(
-                        text: 'Lot 34, Block 19, House 36',
+                        text: dropoffController.text,
                         fontSize: 14,
                         color: Colors.grey,
                       ),
