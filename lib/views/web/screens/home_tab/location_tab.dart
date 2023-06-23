@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../widgets/text_widget.dart';
+import '../home_screen.dart';
 
 class LocationTab extends StatefulWidget {
   const LocationTab({super.key});
@@ -10,14 +11,6 @@ class LocationTab extends StatefulWidget {
 }
 
 class _LocationTabState extends State<LocationTab> {
-  final pickupUnitController = TextEditingController();
-  final dropoffUnitController = TextEditingController();
-  final pickupAdditionalController = TextEditingController();
-  final dropoffAdditionalController = TextEditingController();
-  bool check1 = true;
-  bool check2 = false;
-  bool check3 = false;
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

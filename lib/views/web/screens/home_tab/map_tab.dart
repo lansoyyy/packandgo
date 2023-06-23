@@ -4,9 +4,9 @@ import 'package:flutter_map/flutter_map.dart';
 import '../../../../widgets/text_widget.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../home_screen.dart';
+
 class MapTab extends StatelessWidget {
-  final pickupController = TextEditingController();
-  final dropoffController = TextEditingController();
   int currentIndex = 0;
 
   MapTab({super.key});
