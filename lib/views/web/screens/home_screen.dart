@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        // Navigator.pushNamed(context, Routes.signuppage);
+                        Navigator.pushNamed(context, Routes.recordspage);
                       },
                       child: TextRegular(
                         text: 'Records',
