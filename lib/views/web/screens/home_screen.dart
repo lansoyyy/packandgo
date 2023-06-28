@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:packandgo/views/web/screens/home_tab/details_tab.dart';
@@ -9,6 +10,8 @@ import 'package:packandgo/views/web/screens/home_tab/location_tab.dart';
 import 'package:packandgo/views/web/screens/home_tab/map_tab.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../queries/queries.dart';
+import '../../../services/generateRandomNumbers.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/routes.dart';
 import '../../../widgets/button_widget.dart';
@@ -16,8 +19,8 @@ import '../../../widgets/text_widget.dart';
 
 final pickupController = TextEditingController();
 final dropoffController = TextEditingController();
-final pickupUnitController = TextEditingController();
-final dropoffUnitController = TextEditingController();
+// final pickupUnitController = TextEditingController();
+// final dropoffUnitController = TextEditingController();
 final pickupAdditionalController = TextEditingController();
 final dropoffAdditionalController = TextEditingController();
 final newContactnumberController = TextEditingController();
@@ -85,6 +88,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (userDetails != null) {
+      newContactnumberController.text = userDetails['contact_number'] ?? "";
+      newEmailController.text = userDetails['email'] ?? "";
+    }
     return Scaffold(
       body: SingleChildScrollView(
           child: SizedBox(
@@ -169,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 150,
                         fontSize: 14,
                         label: currentIndex != 3 ? 'Continue' : 'Request Booking',
-                        onPressed: () {
+                        onPressed: () async {
                           switch (currentIndex) {
                             case 0:
                               setState(() => currentIndex++);
@@ -182,6 +189,38 @@ class _HomeScreenState extends State<HomeScreen> {
                               setState(() => currentIndex++);
                               break;
                             case 3:
+                              var details = {
+                                "pick-up-location": pickupController.text,
+                                "drop-off-location": dropoffController.text,
+                                "pickup-service": check1
+                                    ? 'use-stairs'
+                                    : check2
+                                        ? 'use-elevator'
+                                        : check3
+                                            ? 'ring-doorbell'
+                                            : '',
+                                "additional-pickup-location": pickupAdditionalController.text,
+                                "drop-off-service": check1
+                                    ? 'use-stairs'
+                                    : check2
+                                        ? 'use-elevator'
+                                        : check3
+                                            ? 'ring-doorbell'
+                                            : '',
+                                "additional-dropoff-location": dropoffAdditionalController.text,
+                                "date-time": "",
+                                "add-loader-and-unloader": "",
+                                "add-rearranger": "",
+                                "vehicle-type": "",
+                                "name": "${userDetails['firstname']} ${userDetails['lastname']}",
+                                "contact-number": "${userDetails['contact_number']}",
+                                "alternative-contact-number": newAlernativcontactnumberController.text,
+                                "email": newEmailController.text,
+                                "price": "",
+                                "booking-status": "pending",
+                                "booking-id": getRandomString(10),
+                              };
+                              await saveBookingDetails(bookingDetails: details);
                               bookingRequestDIalog();
                               break;
                             default:
@@ -197,6 +236,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       )),
     );
+  }
+
+  saveBookingDetails({required bookingDetails}) async {
+    var query = Queries();
+    await query.push("records", bookingDetails);
   }
 
   bookingRequestDIalog() {
@@ -226,6 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
               TextButton(
                 onPressed: () {
                   Navigator.pushNamed(context, Routes.homepage);
+                  clearControllers();
                 },
                 child: TextRegular(
                   text: 'Close',
@@ -236,5 +281,15 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           );
         });
+  }
+
+  clearControllers() {
+    pickupController.clear();
+    dropoffController.clear();
+    pickupAdditionalController.clear();
+    dropoffAdditionalController.clear();
+    newContactnumberController.clear();
+    newAlernativcontactnumberController.clear();
+    newEmailController.clear();
   }
 }

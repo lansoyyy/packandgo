@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:packandgo/widgets/textfield_widget.dart';
@@ -19,6 +20,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
   final searchController = TextEditingController();
   var streamQuery = StreamQuery();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  var recordsData = [];
 
   List statuses = ['All', 'Cancelled', 'Completed', 'Pending'];
 
@@ -167,8 +169,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                                   });
                                 },
                                 child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10, right: 10),
+                                  padding: const EdgeInsets.only(left: 10, right: 10),
                                   child: TextRegular(
                                     text: 'Status: ${statuses[i]}',
                                     fontSize: 14,
@@ -196,12 +197,8 @@ class _RecordsScreenState extends State<RecordsScreen> {
           ),
           StreamBuilder(
             stream: streamQuery.getMultipleSnapsByData(roots: [
-              {
-                "root": "user-details",
-                "key": "uid",
-                "value": _auth.currentUser!.uid
-              },
-              {"root": "evaluations"},
+              // {"root": "user-details", "key": "uid", "value": _auth.currentUser!.uid},
+              {"root": "records"},
             ]),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasError) {
@@ -214,60 +211,70 @@ class _RecordsScreenState extends State<RecordsScreen> {
 
               if (snapshot.hasData) {
                 final data = snapshot.data;
+                var snapshotList = snapshot.data as List<QuerySnapshot>;
+                recordsData = [];
+                snapshotList[0].docs.forEach((doc) {
+                  var value = doc.data()! as Map;
+                  value['id'] = doc.id;
+                  print("value $value");
+                  recordsData.add(value);
+                });
 
-                return DataTable(dataRowHeight: 100, columns: [
-                  DataColumn(
-                    label: TextBold(
-                      text: 'Status',
-                      fontSize: 18,
-                      color: Colors.black,
+                return DataTable(
+                  dataRowHeight: 100,
+                  columns: [
+                    DataColumn(
+                      label: TextBold(
+                        text: 'Status',
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                  DataColumn(
-                    label: TextBold(
-                      text: 'Delivery Rate',
-                      fontSize: 18,
-                      color: Colors.black,
+                    DataColumn(
+                      label: TextBold(
+                        text: 'Delivery Rate',
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                  DataColumn(
-                    label: TextBold(
-                      text: 'Route',
-                      fontSize: 18,
-                      color: Colors.black,
+                    DataColumn(
+                      label: TextBold(
+                        text: 'Route',
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                  DataColumn(
-                    label: TextBold(
-                      text: 'Driver/Mover',
-                      fontSize: 18,
-                      color: Colors.black,
+                    DataColumn(
+                      label: TextBold(
+                        text: 'Driver/Mover',
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                  DataColumn(
-                    label: TextBold(
-                      text: 'Type',
-                      fontSize: 18,
-                      color: Colors.black,
+                    DataColumn(
+                      label: TextBold(
+                        text: 'Type',
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                  DataColumn(
-                    label: TextBold(
-                      text: 'Price',
-                      fontSize: 18,
-                      color: Colors.black,
+                    DataColumn(
+                      label: TextBold(
+                        text: 'Price',
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                  DataColumn(
-                    label: TextBold(
-                      text: '',
-                      fontSize: 0,
-                      color: Colors.black,
+                    DataColumn(
+                      label: TextBold(
+                        text: '',
+                        fontSize: 0,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                ], rows: [
-                  dataRows()
-                ]);
+                  ],
+                  rows: dataRows(recordsData),
+                );
               } else {
                 return const Center(child: Text("No data available!"));
               }
@@ -278,119 +285,116 @@ class _RecordsScreenState extends State<RecordsScreen> {
     );
   }
 
-  DataRow dataRows() {
-    return DataRow(
-      cells: [
-        DataCell(
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.orange,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                height: 30,
-                width: 125,
-                child: Center(
-                  child: TextRegular(
-                      text: 'Pending', fontSize: 14, color: Colors.white),
-                ),
-              ),
-              TextRegular(
-                  text: '2020300527', fontSize: 14, color: Colors.black),
-            ],
-          ),
-        ),
-        DataCell(
-          TextRegular(
-              text: 'July 02, 2023 (3:30pm - 4:30pm)',
-              fontSize: 14,
-              color: Colors.black),
-        ),
-        DataCell(
-          TextRegular(
-              text: 'Cabahug Street - Wilson Street',
-              fontSize: 14,
-              color: Colors.black),
-        ),
-        DataCell(
-          TextRegular(text: 'John Doe', fontSize: 14, color: Colors.black),
-        ),
-        DataCell(
-          TextRegular(text: 'Motorcycle', fontSize: 14, color: Colors.black),
-        ),
-        DataCell(
-          TextRegular(text: 'Not Set', fontSize: 14, color: Colors.black),
-        ),
-        DataCell(
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return cancelDialog();
-                      });
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(5),
+  List<DataRow> dataRows(data) {
+    List<DataRow> dataRows = [];
+    data.forEach((value) {
+      dataRows.add(
+        DataRow(
+          cells: [
+            DataCell(
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    height: 30,
+                    width: 125,
+                    child: Center(
+                      child: TextRegular(text: value['booking-status'], fontSize: 14, color: Colors.white),
+                    ),
                   ),
-                  height: 30,
-                  width: 125,
-                  child: Center(
-                    child: TextRegular(
-                        text: 'Cancel', fontSize: 14, color: Colors.white),
-                  ),
-                ),
+                  TextRegular(text: value['booking-id'], fontSize: 14, color: Colors.black),
+                ],
               ),
-              const SizedBox(
-                height: 5,
-              ),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          content: viewDetailDialog(),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: TextRegular(
-                                text: 'Close',
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        );
-                      });
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(5),
+            ),
+            DataCell(
+              TextRegular(text: 'July 02, 2023 (3:30pm - 4:30pm)', fontSize: 14, color: Colors.black),
+            ),
+            DataCell(
+              TextRegular(text: value['drop-off-location'], fontSize: 14, color: Colors.black),
+            ),
+            DataCell(
+              TextRegular(text: value['name'], fontSize: 14, color: Colors.black),
+            ),
+            DataCell(
+              TextRegular(text: value['vehicle-type'], fontSize: 14, color: Colors.black),
+            ),
+            DataCell(
+              TextRegular(text: value['price'], fontSize: 14, color: Colors.black),
+            ),
+            DataCell(
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return cancelDialog();
+                          });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      height: 30,
+                      width: 125,
+                      child: Center(
+                        child: TextRegular(text: 'Cancel', fontSize: 14, color: Colors.white),
+                      ),
+                    ),
                   ),
-                  height: 30,
-                  width: 125,
-                  child: Center(
-                    child: TextRegular(
-                        text: 'View', fontSize: 14, color: Colors.white),
+                  const SizedBox(
+                    height: 5,
                   ),
-                ),
+                  GestureDetector(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              content: viewDetailDialog(),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: TextRegular(
+                                    text: 'Close',
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            );
+                          });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      height: 30,
+                      width: 125,
+                      child: Center(
+                        child: TextRegular(text: 'View', fontSize: 14, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ],
-    );
+      );
+    });
+
+    return dataRows;
   }
 
   viewDetailDialog() {
@@ -426,10 +430,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     ),
                     height: 50,
                     child: Center(
-                      child: TextRegular(
-                          text: 'Booking Details',
-                          fontSize: 18,
-                          color: Colors.white),
+                      child: TextRegular(text: 'Booking Details', fontSize: 18, color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -512,10 +513,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     ),
                     height: 50,
                     child: Center(
-                      child: TextRegular(
-                          text: 'Your Information',
-                          fontSize: 18,
-                          color: Colors.white),
+                      child: TextRegular(text: 'Your Information', fontSize: 18, color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -624,11 +622,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
             const SizedBox(
               height: 10,
             ),
-            option == 'Others'
-                ? TextFieldWidget(
-                    label: 'Please specify your reason',
-                    controller: othersController)
-                : const SizedBox(),
+            option == 'Others' ? TextFieldWidget(label: 'Please specify your reason', controller: othersController) : const SizedBox(),
           ],
         );
       }),

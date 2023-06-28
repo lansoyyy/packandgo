@@ -88,7 +88,7 @@ class _LocationTabState extends State<LocationTab> {
                 hintText: 'Unit or apartment number',
                 border: InputBorder.none,
               ),
-              controller: pickupUnitController,
+              controller: pickupController,
             ),
           ),
           const SizedBox(
@@ -225,7 +225,7 @@ class _LocationTabState extends State<LocationTab> {
                 hintText: 'Unit or apartment number',
                 border: InputBorder.none,
               ),
-              controller: dropoffUnitController,
+              controller: pickupController,
             ),
           ),
           const SizedBox(

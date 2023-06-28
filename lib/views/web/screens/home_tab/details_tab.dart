@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -217,9 +219,10 @@ class DetailsTab extends StatelessWidget {
                                         ),
                                         TextButton(
                                           onPressed: () {
-                                            newAlernativcontactnumberController.clear();
-                                            newContactnumberController.clear();
-                                            newEmailController.clear();
+                                            // clearing controllers should be done after request booking
+                                            // newAlernativcontactnumberController.clear();
+                                            // newContactnumberController.clear();
+                                            // newEmailController.clear();
                                             Navigator.pop(context);
                                           },
                                           child: TextRegular(
