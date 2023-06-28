@@ -119,7 +119,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.rectangle,
-                        border: Border.all(color: Colors.orange),
+                        border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: IconButton(
@@ -271,7 +271,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey,
+                  color: Colors.orange,
                   borderRadius: BorderRadius.circular(5),
                 ),
                 height: 30,
