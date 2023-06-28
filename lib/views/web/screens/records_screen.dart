@@ -18,6 +18,12 @@ class _RecordsScreenState extends State<RecordsScreen> {
   final searchController = TextEditingController();
   var streamQuery = StreamQuery();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  List statuses = ['All', 'Cancelled', 'Completed', 'Pending'];
+
+  String status = 'All';
+
+  int dropValue = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,6 +114,64 @@ class _RecordsScreenState extends State<RecordsScreen> {
                   fontSize: 24,
                   color: Colors.black,
                 ),
+                Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        border: Border.all(color: Colors.orange),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.refresh,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: DropdownButton(
+                          underline: const SizedBox(),
+                          value: dropValue,
+                          items: [
+                            for (int i = 0; i < statuses.length; i++)
+                              DropdownMenuItem(
+                                value: i,
+                                onTap: () {
+                                  setState(() {
+                                    status = statuses[i];
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
+                                  child: TextRegular(
+                                    text: 'Status: ${statuses[i]}',
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              dropValue = int.parse(value.toString());
+                            });
+                          }),
+                    ),
+                    const SizedBox(
+                      width: 50,
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -116,7 +180,11 @@ class _RecordsScreenState extends State<RecordsScreen> {
           ),
           StreamBuilder(
             stream: streamQuery.getMultipleSnapsByData(roots: [
-              {"root": "user-details", "key": "uid", "value": _auth.currentUser!.uid},
+              {
+                "root": "user-details",
+                "key": "uid",
+                "value": _auth.currentUser!.uid
+              },
               {"root": "evaluations"},
             ]),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -203,24 +271,32 @@ class _RecordsScreenState extends State<RecordsScreen> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.orange,
+                  color: Colors.grey,
                   borderRadius: BorderRadius.circular(5),
                 ),
                 height: 30,
                 width: 125,
                 child: Center(
-                  child: TextRegular(text: 'Pending', fontSize: 14, color: Colors.white),
+                  child: TextRegular(
+                      text: 'Pending', fontSize: 14, color: Colors.white),
                 ),
               ),
-              TextRegular(text: '2020300527', fontSize: 14, color: Colors.black),
+              TextRegular(
+                  text: '2020300527', fontSize: 14, color: Colors.black),
             ],
           ),
         ),
         DataCell(
-          TextRegular(text: 'July 02, 2023 (3:30pm - 4:30pm)', fontSize: 14, color: Colors.black),
+          TextRegular(
+              text: 'July 02, 2023 (3:30pm - 4:30pm)',
+              fontSize: 14,
+              color: Colors.black),
         ),
         DataCell(
-          TextRegular(text: 'Cabahug Street - Wilson Street', fontSize: 14, color: Colors.black),
+          TextRegular(
+              text: 'Cabahug Street - Wilson Street',
+              fontSize: 14,
+              color: Colors.black),
         ),
         DataCell(
           TextRegular(text: 'John Doe', fontSize: 14, color: Colors.black),
@@ -245,7 +321,8 @@ class _RecordsScreenState extends State<RecordsScreen> {
                   height: 30,
                   width: 125,
                   child: Center(
-                    child: TextRegular(text: 'Cancel', fontSize: 14, color: Colors.white),
+                    child: TextRegular(
+                        text: 'Cancel', fontSize: 14, color: Colors.white),
                   ),
                 ),
               ),
@@ -262,7 +339,8 @@ class _RecordsScreenState extends State<RecordsScreen> {
                   height: 30,
                   width: 125,
                   child: Center(
-                    child: TextRegular(text: 'View', fontSize: 14, color: Colors.white),
+                    child: TextRegular(
+                        text: 'View', fontSize: 14, color: Colors.white),
                   ),
                 ),
               ),
