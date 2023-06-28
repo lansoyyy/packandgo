@@ -31,6 +31,9 @@ bool check1 = true;
 bool check2 = false;
 bool check3 = false;
 
+bool addLoaderAndUnloader = false;
+bool addRearranger = false;
+
 var userDetails;
 
 class HomeScreen extends StatefulWidget {
@@ -208,15 +211,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ? 'ring-doorbell'
                                             : '',
                                 "additional-dropoff-location": dropoffAdditionalController.text,
-                                "date-time": "",
-                                "add-loader-and-unloader": "",
-                                "add-rearranger": "",
+                                "date-time": selectedDateTime.toString(),
+                                "add-loader-and-unloader": addLoaderAndUnloader,
+                                "add-rearranger": addRearranger,
                                 "vehicle-type": "",
                                 "name": "${userDetails['firstname']} ${userDetails['lastname']}",
                                 "contact-number": "${userDetails['contact_number']}",
                                 "alternative-contact-number": newAlernativcontactnumberController.text,
                                 "email": newEmailController.text,
-                                "price": "",
+                                "price": "0.00",
                                 "booking-status": "pending",
                                 "booking-id": getRandomString(10),
                               };

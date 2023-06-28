@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:packandgo/utils/colors.dart';
+import 'package:packandgo/views/web/screens/home_screen.dart';
 import 'package:packandgo/widgets/button_widget.dart';
 import 'package:packandgo/widgets/text_widget.dart';
 
@@ -47,7 +48,9 @@ class _LoaderTabState extends State<LoaderTab> {
           width: 500,
           radius: 5,
           label: 'Yes',
-          onPressed: () {},
+          onPressed: () {
+            addLoaderAndUnloader = true;
+          },
         ),
         const SizedBox(
           height: 20,
@@ -58,7 +61,9 @@ class _LoaderTabState extends State<LoaderTab> {
           width: 500,
           radius: 5,
           label: 'No',
-          onPressed: () {},
+          onPressed: () {
+            addLoaderAndUnloader = false;
+          },
         ),
         const SizedBox(
           height: 20,
@@ -81,7 +86,9 @@ class _LoaderTabState extends State<LoaderTab> {
           width: 500,
           radius: 5,
           label: 'Yes',
-          onPressed: () {},
+          onPressed: () {
+            addRearranger = true;
+          },
         ),
         const SizedBox(
           height: 20,
@@ -92,7 +99,9 @@ class _LoaderTabState extends State<LoaderTab> {
           width: 500,
           radius: 5,
           label: 'No',
-          onPressed: () {},
+          onPressed: () {
+            addRearranger = false;
+          },
         ),
         const SizedBox(
           height: 20,
