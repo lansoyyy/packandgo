@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:packandgo/widgets/textfield_widget.dart';
 
 import '../../../queries/streamQueries.dart';
 import '../../../utils/colors.dart';
@@ -22,8 +23,23 @@ class _RecordsScreenState extends State<RecordsScreen> {
   List statuses = ['All', 'Cancelled', 'Completed', 'Pending'];
 
   String status = 'All';
+  String option = 'Change of plans';
+
+  List cancelOptions = [
+    'Change of plans',
+    'Found another moving service',
+    'Financial reasons',
+    'Personal emergency',
+    'Unexpected circumstances',
+    'Moving plans postponed',
+    'Moving plans canceled',
+    'Others',
+  ];
 
   int dropValue = 0;
+  int dropValue1 = 0;
+
+  final othersController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -312,7 +328,13 @@ class _RecordsScreenState extends State<RecordsScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return cancelDialog();
+                      });
+                },
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.red,
@@ -330,7 +352,27 @@ class _RecordsScreenState extends State<RecordsScreen> {
                 height: 5,
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          content: viewDetailDialog(),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: TextRegular(
+                                text: 'Close',
+                                fontSize: 18,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        );
+                      });
+                },
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.blue,
@@ -345,6 +387,306 @@ class _RecordsScreenState extends State<RecordsScreen> {
                 ),
               ),
             ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  viewDetailDialog() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Center(
+            child: Column(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              height: 300,
+              width: 400,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.grey,
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                      ),
+                      color: Colors.grey,
+                    ),
+                    height: 50,
+                    child: Center(
+                      child: TextRegular(
+                          text: 'Booking Details',
+                          fontSize: 18,
+                          color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                    child: TextRegular(
+                      text: 'Vehicle Type: Vehicle Type',
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
+                    child: TextRegular(
+                      text: 'Date and Time: ${DateTime.now()}',
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
+                    child: TextRegular(
+                      text: 'Drop off Location',
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
+                    child: TextRegular(
+                      text: 'Pick-up: Pick up Location',
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
+                    child: TextRegular(
+                      text: 'Drop-off: Drop off Location',
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
+                    child: TextRegular(
+                      text: 'Notes to driver: Sample note details',
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              height: 220,
+              width: 400,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.grey,
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                      ),
+                      color: Colors.grey,
+                    ),
+                    height: 50,
+                    child: Center(
+                      child: TextRegular(
+                          text: 'Your Information',
+                          fontSize: 18,
+                          color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                    child: TextRegular(
+                      text: 'Name: John Doe',
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
+                    child: TextRegular(
+                      text: 'Contact Number: 09090104355',
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
+                    child: TextRegular(
+                      text: 'Alternative Contact Number: 09639530422',
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextRegular(
+                          text: 'Email: doe@gmail.com',
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ))
+      ],
+    );
+  }
+
+  cancelDialog() {
+    return AlertDialog(
+      title: TextRegular(
+        text: 'Cancel Booking',
+        fontSize: 18,
+        color: Colors.black,
+      ),
+      content: StatefulBuilder(builder: (context, setState) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextRegular(
+              text: 'Cancellation details',
+              fontSize: 14,
+              color: Colors.grey,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: DropdownButton(
+                  underline: const SizedBox(),
+                  value: dropValue1,
+                  items: [
+                    for (int i = 0; i < cancelOptions.length; i++)
+                      DropdownMenuItem(
+                        value: i,
+                        onTap: () {
+                          setState(() {
+                            option = cancelOptions[i];
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: TextRegular(
+                            text: '${cancelOptions[i]}',
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      dropValue1 = int.parse(value.toString());
+                    });
+                  }),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            option == 'Others'
+                ? TextFieldWidget(
+                    label: 'Please specify your reason',
+                    controller: othersController)
+                : const SizedBox(),
+          ],
+        );
+      }),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: TextRegular(
+            text: 'Close',
+            fontSize: 18,
+            color: Colors.black,
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: SizedBox(
+                      width: 300,
+                      child: TextRegular(
+                          text:
+                              'Are you sure you want to cancel the moving service? Please note that this cannot be undone once it is canceled. Three consecutive canceled move service within 24 hours of the scheduled day may require you to pay 50% deposit fee of the agreed price on your next move service booking.',
+                          fontSize: 14,
+                          color: Colors.grey),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: TextRegular(
+                          text: 'Close',
+                          fontSize: 18,
+                          color: Colors.black,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: TextRegular(
+                          text: 'Continue',
+                          fontSize: 18,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
+                  );
+                });
+          },
+          child: TextRegular(
+            text: 'Continue',
+            fontSize: 18,
+            color: Colors.red,
           ),
         ),
       ],
