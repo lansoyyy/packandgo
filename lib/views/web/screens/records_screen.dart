@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:packandgo/queries/queries.dart';
 import 'package:packandgo/widgets/textfield_widget.dart';
 
 import '../../../queries/streamQueries.dart';
@@ -21,6 +22,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
   var streamQuery = StreamQuery();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   var recordsData = [];
+  bool isLoading = false;
 
   List statuses = ['All', 'Cancelled', 'Completed', 'Pending'];
 
@@ -44,6 +46,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
   final othersController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
           backgroundColor: primary,
@@ -52,236 +55,284 @@ class _RecordsScreenState extends State<RecordsScreen> {
             color: Colors.white,
           ),
           onPressed: () {}),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: double.infinity,
-            height: 80,
-            color: primary,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 50, right: 50),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextBold(
-                    text: 'Pack & Go',
-                    fontSize: 38,
-                    color: Colors.white,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, Routes.homepage);
-                    },
-                    child: TextRegular(
-                      text: 'New Order',
-                      fontSize: 16,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 50, right: 50),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+      body: !isLoading
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  height: 45,
-                  width: 300,
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black,
-                      ),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: TextFormField(
-                    onChanged: (value) {
-                      setState(() {
-                        nameSearched = value;
-                      });
-                    },
-                    decoration: const InputDecoration(
-                        hintText: 'Search by delivery info',
-                        hintStyle: TextStyle(fontFamily: 'QRegular'),
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Colors.grey,
-                        )),
-                    controller: searchController,
+                  width: double.infinity,
+                  height: 80,
+                  color: primary,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 50, right: 50),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextBold(
+                          text: 'Pack & Go',
+                          fontSize: 38,
+                          color: Colors.white,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.homepage);
+                          },
+                          child: TextRegular(
+                            text: 'New Order',
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 50, right: 50),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextBold(
-                  text: 'Records',
-                  fontSize: 24,
-                  color: Colors.black,
+                const SizedBox(
+                  height: 20,
                 ),
-                Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.refresh,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: DropdownButton(
-                          underline: const SizedBox(),
-                          value: dropValue,
-                          items: [
-                            for (int i = 0; i < statuses.length; i++)
-                              DropdownMenuItem(
-                                value: i,
-                                onTap: () {
-                                  setState(() {
-                                    status = statuses[i];
-                                  });
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10, right: 10),
-                                  child: TextRegular(
-                                    text: 'Status: ${statuses[i]}',
-                                    fontSize: 14,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                          ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 50, right: 50),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 45,
+                        width: 300,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black,
+                            ),
+                            borderRadius: BorderRadius.circular(5)),
+                        child: TextFormField(
                           onChanged: (value) {
                             setState(() {
-                              dropValue = int.parse(value.toString());
+                              nameSearched = value;
                             });
-                          }),
-                    ),
-                    const SizedBox(
-                      width: 50,
-                    ),
-                  ],
+                          },
+                          decoration: const InputDecoration(
+                              hintText: 'Search by delivery info',
+                              hintStyle: TextStyle(fontFamily: 'QRegular'),
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: Colors.grey,
+                              )),
+                          controller: searchController,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 50, right: 50),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextBold(
+                        text: 'Records',
+                        fontSize: 24,
+                        color: Colors.black,
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                // this code is is for as is base on the design
+                                // this table dont need reload becaus eit is stream it always listen to the database
+                                setState(() => isLoading = true);
+                                Future.delayed(const Duration(seconds: 1), () {
+                                  setState(() => isLoading = false);
+                                });
+                              },
+                              icon: const Icon(
+                                Icons.refresh,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: DropdownButton(
+                                underline: const SizedBox(),
+                                value: dropValue,
+                                items: [
+                                  for (int i = 0; i < statuses.length; i++)
+                                    DropdownMenuItem(
+                                      value: i,
+                                      onTap: () {
+                                        setState(() {
+                                          status = statuses[i];
+                                        });
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 10, right: 10),
+                                        child: TextRegular(
+                                          text: 'Status: ${statuses[i]}',
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    dropValue = int.parse(value.toString());
+                                  });
+                                }),
+                          ),
+                          const SizedBox(
+                            width: 50,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                StreamBuilder(
+                  stream: streamQuery.getMultipleSnapsByData(roots: [
+                    // {"root": "user-details", "key": "uid", "value": _auth.currentUser!.uid},
+                    {"root": "records"},
+                  ]),
+                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
+
+                    if (snapshot.hasData) {
+                      final data = snapshot.data;
+                      var snapshotList = snapshot.data as List<QuerySnapshot>;
+                      recordsData = [];
+                      snapshotList[0].docs.forEach((doc) {
+                        var value = doc.data()! as Map;
+                        value['id'] = doc.id;
+
+                        filterData() {
+                          String searchString = value.toString();
+                          if (searchController.text.isNotEmpty) {
+                            print(searchString);
+                            if (searchString.contains(searchController.text)) {
+                              recordsData.add(value);
+                            }
+                          } else {
+                            recordsData.add(value);
+                          }
+                        }
+
+                        print("value $value");
+                        switch (status) {
+                          case 'All':
+                            filterData();
+                            break;
+                          case 'Cancelled':
+                            if (value['booking-status'] == 'canceled') {
+                              filterData();
+                            }
+                            break;
+                          case 'Completed':
+                            if (value['booking-status'] == 'completed') {
+                              filterData();
+                            }
+                            break;
+                          case 'Pending':
+                            if (value['booking-status'] == 'pending') {
+                              filterData();
+                            }
+                            break;
+                          default:
+                        }
+                      });
+
+                      return DataTable(
+                        dataRowHeight: 100,
+                        columns: [
+                          DataColumn(
+                            label: TextBold(
+                              text: 'Status',
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                          ),
+                          DataColumn(
+                            label: TextBold(
+                              text: 'Delivery Rate',
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                          ),
+                          DataColumn(
+                            label: TextBold(
+                              text: 'Route',
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                          ),
+                          DataColumn(
+                            label: TextBold(
+                              text: 'Driver/Mover',
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                          ),
+                          DataColumn(
+                            label: TextBold(
+                              text: 'Type',
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                          ),
+                          DataColumn(
+                            label: TextBold(
+                              text: 'Price',
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                          ),
+                          DataColumn(
+                            label: TextBold(
+                              text: '',
+                              fontSize: 0,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                        rows: dataRows(recordsData),
+                      );
+                    } else {
+                      return const Center(child: Text("No data available!"));
+                    }
+                  },
                 ),
               ],
+            )
+          : Container(
+              width: size.width,
+              height: size.height,
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          StreamBuilder(
-            stream: streamQuery.getMultipleSnapsByData(roots: [
-              // {"root": "user-details", "key": "uid", "value": _auth.currentUser!.uid},
-              {"root": "records"},
-            ]),
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              }
-
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              }
-
-              if (snapshot.hasData) {
-                final data = snapshot.data;
-                var snapshotList = snapshot.data as List<QuerySnapshot>;
-                recordsData = [];
-                snapshotList[0].docs.forEach((doc) {
-                  var value = doc.data()! as Map;
-                  value['id'] = doc.id;
-                  print("value $value");
-                  recordsData.add(value);
-                });
-
-                return DataTable(
-                  dataRowHeight: 100,
-                  columns: [
-                    DataColumn(
-                      label: TextBold(
-                        text: 'Status',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    DataColumn(
-                      label: TextBold(
-                        text: 'Delivery Rate',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    DataColumn(
-                      label: TextBold(
-                        text: 'Route',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    DataColumn(
-                      label: TextBold(
-                        text: 'Driver/Mover',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    DataColumn(
-                      label: TextBold(
-                        text: 'Type',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    DataColumn(
-                      label: TextBold(
-                        text: 'Price',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    DataColumn(
-                      label: TextBold(
-                        text: '',
-                        fontSize: 0,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                  rows: dataRows(recordsData),
-                );
-              } else {
-                return const Center(child: Text("No data available!"));
-              }
-            },
-          ),
-        ],
-      ),
     );
   }
 
@@ -334,7 +385,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                       showDialog(
                           context: context,
                           builder: (context) {
-                            return cancelDialog();
+                            return cancelDialog(value);
                           });
                     },
                     child: Container(
@@ -565,7 +616,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
     );
   }
 
-  cancelDialog() {
+  cancelDialog(data) {
     return AlertDialog(
       title: TextRegular(
         text: 'Cancel Booking',
@@ -664,7 +715,16 @@ class _RecordsScreenState extends State<RecordsScreen> {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          var query = Queries();
+                          await query.update(
+                            'records',
+                            data["id"],
+                            {
+                              'booking-status': 'canceled',
+                              'cancel-reasons': option == 'Others' ? othersController.text : option,
+                            },
+                          );
                           Navigator.pop(context);
                         },
                         child: TextRegular(

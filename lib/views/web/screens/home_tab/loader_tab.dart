@@ -12,35 +12,7 @@ class LoaderTab extends StatefulWidget {
 }
 
 class _LoaderTabState extends State<LoaderTab> {
-  List<Map<String, String>> vehicles = [
-    {"name": "Motorcycle", "image": "motorcycle.png"},
-    {
-      "name": "500 Kg Jeepney (Standard Type)",
-      "image": "500-kg-Jeepney-(Standard-Type).png"
-    },
-    {
-      "name": "800 Kg Jeepney (Lawin Type)",
-      "image": "800-kg-Jeepney-(Lawin-Type).png"
-    },
-    {"name": "300 Kg Taxi Sedan", "image": "300-Kg-Taxi.png"},
-    {"name": "500 Kg Taxi MPV", "image": "500-Kg-Taxi-MPV.png"},
-    {
-      "name": "6-Wheel Truck Close Type",
-      "image": "6-Wheel-Truck-Close-Type.png"
-    },
-    {
-      "name": "10-Wheel Truck Close Type",
-      "image": "10-Wheel-Truck-Close-Type.png"
-    },
-    {"name": "6-Wheel Truck Open Type", "image": "6-Wheel-Truck-Open-Type.png"},
-    {
-      "name": "10-Wheel Truck Open Type",
-      "image": "10-Wheel-Truck-Open-Type.png"
-    },
-  ];
-
   final scrollController = ScrollController();
-  int selectedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +38,7 @@ class _LoaderTabState extends State<LoaderTab> {
           label: 'Yes',
           onPressed: () {
             setState(() {
-              addLoaderAndUnloader =
-                  true; // Update the variable when "Yes" button is pressed
+              addLoaderAndUnloader = true; // Update the variable when "Yes" button is pressed
             });
           },
         ),
@@ -82,8 +53,7 @@ class _LoaderTabState extends State<LoaderTab> {
           label: 'No',
           onPressed: () {
             setState(() {
-              addLoaderAndUnloader =
-                  false; // Update the variable when "No" button is pressed
+              addLoaderAndUnloader = false; // Update the variable when "No" button is pressed
             });
           },
         ),
@@ -150,8 +120,7 @@ class _LoaderTabState extends State<LoaderTab> {
               itemCount: vehicles.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                bool isSelected = selectedIndex ==
-                    index; // Check if the current item is selected
+                bool isSelected = selectedIndex == index; // Check if the current item is selected
                 return GestureDetector(
                   onTap: () {
                     setState(() {
@@ -166,9 +135,7 @@ class _LoaderTabState extends State<LoaderTab> {
                       height: 190,
                       width: 200,
                       decoration: BoxDecoration(
-                        color: isSelected
-                            ? Colors.blue
-                            : Colors.white, // Apply different color if selected
+                        color: isSelected ? Colors.blue : Colors.white, // Apply different color if selected
                         border: Border.all(color: primary),
                         borderRadius: BorderRadius.circular(5),
                       ),
@@ -190,10 +157,7 @@ class _LoaderTabState extends State<LoaderTab> {
                           TextBold(
                             text: vehicles[index]['name']!,
                             fontSize: 14,
-                            color: isSelected
-                                ? Colors.white
-                                : Colors
-                                    .black, // Apply different text color if selected
+                            color: isSelected ? Colors.white : Colors.black, // Apply different text color if selected
                           ),
                           const SizedBox(
                             height: 10,

@@ -17,6 +17,18 @@ import '../../../utils/routes.dart';
 import '../../../widgets/button_widget.dart';
 import '../../../widgets/text_widget.dart';
 
+List<Map<String, String>> vehicles = [
+  {"name": "Motorcycle", "image": "motorcycle.png"},
+  {"name": "500 Kg Jeepney (Standard Type)", "image": "500-kg-Jeepney-(Standard-Type).png"},
+  {"name": "800 Kg Jeepney (Lawin Type)", "image": "800-kg-Jeepney-(Lawin-Type).png"},
+  {"name": "300 Kg Taxi Sedan", "image": "300-Kg-Taxi.png"},
+  {"name": "500 Kg Taxi MPV", "image": "500-Kg-Taxi-MPV.png"},
+  {"name": "6-Wheel Truck Close Type", "image": "6-Wheel-Truck-Close-Type.png"},
+  {"name": "10-Wheel Truck Close Type", "image": "10-Wheel-Truck-Close-Type.png"},
+  {"name": "6-Wheel Truck Open Type", "image": "6-Wheel-Truck-Open-Type.png"},
+  {"name": "10-Wheel Truck Open Type", "image": "10-Wheel-Truck-Open-Type.png"},
+];
+
 final pickupController = TextEditingController();
 final dropoffController = TextEditingController();
 // final pickupUnitController = TextEditingController();
@@ -33,6 +45,8 @@ bool check3 = false;
 
 bool addLoaderAndUnloader = false;
 bool addRearranger = false;
+
+int selectedIndex = -1;
 
 var userDetails;
 
@@ -214,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 "date-time": selectedDateTime.toString(),
                                 "add-loader-and-unloader": addLoaderAndUnloader,
                                 "add-rearranger": addRearranger,
-                                "vehicle-type": "",
+                                "vehicle-type": selectedIndex != -1 ? vehicles[selectedIndex]['name'].toString() : "",
                                 "name": "${userDetails['firstname']} ${userDetails['lastname']}",
                                 "contact-number": "${userDetails['contact_number']}",
                                 "alternative-contact-number": newAlernativcontactnumberController.text,
