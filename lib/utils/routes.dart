@@ -4,5 +4,6 @@ class Routes {
       loginpage = '/loginpage',
       signuppage = '/signuppage',
       learnmore = 'learnmore',
-      recordspage = '/recordspage';
+      recordspage = '/recordspage',
+      profilepag = '/profilepage';
 }
