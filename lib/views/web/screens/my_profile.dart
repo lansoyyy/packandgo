@@ -18,6 +18,9 @@ class _MyProfileState extends State<MyProfile> {
 
   bool changepasswordtab = false;
 
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -354,10 +357,14 @@ class _MyProfileState extends State<MyProfile> {
             const SizedBox(
               width: 10,
             ),
-            TextRegular(
-              text: 'doe123@gmail.com',
-              fontSize: 18,
-              color: Colors.black,
+            SizedBox(
+              width: 150,
+              child: TextFormField(
+                controller: emailController,
+                decoration: const InputDecoration(
+                  hintText: 'doe123@gmail.com',
+                ),
+              ),
             ),
           ],
         ),
@@ -374,10 +381,14 @@ class _MyProfileState extends State<MyProfile> {
             const SizedBox(
               width: 10,
             ),
-            TextRegular(
-              text: '09090104355',
-              fontSize: 18,
-              color: Colors.black,
+            SizedBox(
+              width: 150,
+              child: TextFormField(
+                controller: phoneController,
+                decoration: const InputDecoration(
+                  hintText: '09090104355',
+                ),
+              ),
             ),
           ],
         ),
