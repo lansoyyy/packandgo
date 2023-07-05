@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:packandgo/widgets/button_widget.dart';
+import 'package:packandgo/widgets/textfield_widget.dart';
+import 'package:packandgo/widgets/toast_widget.dart';
 
 import '../../../utils/colors.dart';
 import '../../../utils/routes.dart';
@@ -20,6 +22,10 @@ class _MyProfileState extends State<MyProfile> {
 
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmpasswordController = TextEditingController();
+
+  bool passwordVerified = false;
 
   @override
   Widget build(BuildContext context) {
@@ -448,68 +454,190 @@ class _MyProfileState extends State<MyProfile> {
   }
 
   Widget changepasswordTab() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        TextRegular(
-          text: 'Security Check',
-          fontSize: 32,
-          color: Colors.black,
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        TextRegular(
-            text: 'Manage and secure your account',
-            fontSize: 14,
-            color: Colors.grey),
-        const SizedBox(
-          height: 10,
-        ),
-        const SizedBox(width: 300, child: Divider()),
-        const SizedBox(
-          height: 10,
-        ),
-        Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+    return passwordVerified
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Icon(
-                Icons.security_outlined,
-                size: 75,
+              TextRegular(
+                text: 'Security Check',
+                fontSize: 32,
+                color: Colors.black,
               ),
               const SizedBox(
                 height: 10,
               ),
               TextRegular(
-                text: 'To protect your account, verify your account',
-                fontSize: 18,
-                color: Colors.grey,
+                  text: 'Manage and secure your account',
+                  fontSize: 14,
+                  color: Colors.grey),
+              const SizedBox(
+                height: 10,
               ),
-              TextRegular(
-                text: ' and change your password.',
-                fontSize: 18,
-                color: Colors.grey,
+              const SizedBox(width: 300, child: Divider()),
+              const SizedBox(
+                height: 10,
+              ),
+              Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.security_outlined,
+                      size: 75,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextRegular(
+                      text: 'Verification complete!',
+                      fontSize: 22,
+                      color: Colors.grey,
+                    ),
+                    TextRegular(
+                      text:
+                          'For your account security, do not share your password with anyone else.',
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFieldWidget(
+                        isObscure: true,
+                        isPassword: true,
+                        label: 'Password',
+                        controller: passwordController),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFieldWidget(
+                        isObscure: true,
+                        isPassword: true,
+                        label: 'Confirm Password',
+                        controller: confirmpasswordController),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Center(
+                      child: ButtonWidget(
+                        radius: 5,
+                        color: primary,
+                        fontSize: 14,
+                        width: 150,
+                        label: 'Confirm',
+                        onPressed: () {
+                          setState(() {
+                            profiletab = true;
+                            changepasswordtab = false;
+                          });
+                          showToast('Password changed succesfully!');
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
-          ),
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        Center(
-          child: ButtonWidget(
-            radius: 5,
-            color: primary,
-            fontSize: 14,
-            width: 150,
-            label: 'Change Password',
-            onPressed: () {},
-          ),
-        ),
-      ],
-    );
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              TextRegular(
+                text: 'Security Check',
+                fontSize: 32,
+                color: Colors.black,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextRegular(
+                  text: 'Manage and secure your account',
+                  fontSize: 14,
+                  color: Colors.grey),
+              const SizedBox(
+                height: 10,
+              ),
+              const SizedBox(width: 300, child: Divider()),
+              const SizedBox(
+                height: 10,
+              ),
+              Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.security_outlined,
+                      size: 75,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextRegular(
+                      text: 'To protect your account, verify your account',
+                      fontSize: 18,
+                      color: Colors.grey,
+                    ),
+                    TextRegular(
+                      text: ' and change your password.',
+                      fontSize: 18,
+                      color: Colors.grey,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Center(
+                child: ButtonWidget(
+                  radius: 5,
+                  color: primary,
+                  fontSize: 14,
+                  width: 150,
+                  label: 'Change Password',
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: TextBold(
+                              text: 'Enter your current password',
+                              fontSize: 18,
+                              color: Colors.black),
+                          content: SizedBox(
+                            height: 75,
+                            child: TextFieldWidget(
+                                isObscure: true,
+                                isPassword: true,
+                                label: 'Password',
+                                controller: passwordController),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  passwordVerified = true;
+                                });
+                                Navigator.pop(context);
+                              },
+                              child: TextBold(
+                                text: 'Continue',
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
   }
 }
