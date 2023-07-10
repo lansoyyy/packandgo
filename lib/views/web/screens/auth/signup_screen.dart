@@ -27,6 +27,9 @@ class _SignupScreenState extends State<SignupScreen> {
   final passwordController = TextEditingController();
   final firstnameController = TextEditingController();
   final lastnameController = TextEditingController();
+  final usernameController = TextEditingController();
+  final genderController = TextEditingController();
+  final birthdayController = TextEditingController();
   final contactnumberController = TextEditingController();
 
   bool check1 = true;
@@ -50,6 +53,9 @@ class _SignupScreenState extends State<SignupScreen> {
     contactnumberController.text = "3894756354";
     emailController.text = "admin@gmail.com";
     passwordController.text = "password";
+    usernameController.text = 'Doe123';
+    genderController.text = 'Male';
+    birthdayController.text = 'November 15, 2023';
     super.initState();
   }
 
@@ -203,12 +209,12 @@ class _SignupScreenState extends State<SignupScreen> {
                                       }
                                     },
                                   ),
-                                  labelText(label: "First Name"),
+                                  labelText(label: "User Name"),
                                   inputField(
-                                    controller: firstnameController,
+                                    controller: usernameController,
                                     isDense: true,
                                     validator: (value) {
-                                      if (firstnameController.text.isEmpty) {
+                                      if (usernameController.text.isEmpty) {
                                         return "  This field is required!";
                                       } else {
                                         return null;
@@ -221,6 +227,30 @@ class _SignupScreenState extends State<SignupScreen> {
                                     isDense: true,
                                     validator: (value) {
                                       if (contactnumberController.text.isEmpty) {
+                                        return "  This field is required!";
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                  ),
+                                  labelText(label: "Gender"),
+                                  inputField(
+                                    controller: genderController,
+                                    isDense: true,
+                                    validator: (value) {
+                                      if (genderController.text.isEmpty) {
+                                        return "  This field is required!";
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                  ),
+                                  labelText(label: "Date of Birth"),
+                                  inputField(
+                                    controller: birthdayController,
+                                    isDense: true,
+                                    validator: (value) {
+                                      if (birthdayController.text.isEmpty) {
                                         return "  This field is required!";
                                       } else {
                                         return null;
@@ -362,8 +392,11 @@ class _SignupScreenState extends State<SignupScreen> {
                                           "uid": response.uid,
                                           "firstname": firstnameController.text,
                                           "lastname": lastnameController.text,
+                                          "username": usernameController.text,
                                           "email": emailController.text,
                                           "contact_number": contactnumberController.text,
+                                          "gender": genderController.text,
+                                          "birthday": birthdayController.text,
                                           "user_type": check1
                                               ? "customer"
                                               : check2

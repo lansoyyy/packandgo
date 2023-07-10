@@ -31,7 +31,7 @@ void main() async {
   final SharedPreferences userData = await SharedPreferences.getInstance();
   var details = userData.getString('userDetails');
   var userDetails = details != null ? json.decode(details) : null;
-  print("suer details $userDetails");
+  print("user details $userDetails");
   runApp(MyApp(userDetails));
 }
 

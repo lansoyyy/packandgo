@@ -231,7 +231,6 @@ class _RecordsScreenState extends State<RecordsScreen> {
                         filterData() {
                           String searchString = value.toString();
                           if (searchController.text.isNotEmpty) {
-                            print(searchString);
                             if (searchString.contains(searchController.text)) {
                               recordsData.add(value);
                             }
@@ -240,7 +239,6 @@ class _RecordsScreenState extends State<RecordsScreen> {
                           }
                         }
 
-                        print("value $value");
                         switch (status) {
                           case 'All':
                             filterData();
