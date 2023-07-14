@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, sized_box_for_whitespace, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:packandgo/services/emailChecker.dart';
 import 'package:packandgo/utils/colors.dart';
@@ -415,7 +416,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                       }
                                       break;
                                     case 1:
+                                      twoStepAuth();
                                       _currentStep += 1;
+
                                       break;
                                     case 2:
                                       showToast('Account created successfuly!');
@@ -462,5 +465,24 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               )
             : const Center(child: CircularProgressIndicator()));
+  }
+
+  twoStepAuth() async {
+    var result = await FirebaseAuth.instance.verifyPhoneNumber(
+      // multiFactorSession: session,
+      phoneNumber: '+639657188624',
+      verificationCompleted: (response) {
+        print("completed $response");
+      },
+      verificationFailed: (response) {
+        print("failed $response");
+      },
+      codeSent: (String verificationId, int? resendToken) async {
+        print('verification id $verificationId');
+        print('resendToken $resendToken');
+      },
+      codeAutoRetrievalTimeout: (_) {},
+    );
+    // print("result $result");
   }
 }
