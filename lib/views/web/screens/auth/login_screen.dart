@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, sized_box_for_whitespace, prefer_const_constructors, avoid_print
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:packandgo/services/emailChecker.dart';
@@ -85,36 +87,36 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 50),
                   TextBold(text: 'Login', fontSize: 38, color: Colors.black),
                   SizedBox(height: 20),
-                  Container(
-                    width: 500,
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CustomWidgets.socialButtonRect(
-                          'Login with Facebook',
-                          facebookColor,
-                          FontAwesomeIcons.facebookF,
-                          onTap: () async {
-                            await _handleSignIn("FB");
-                            // Fluttertoast.showToast(msg: 'I am facebook');
-                          },
-                        ),
-                        SizedBox(width: 10),
-                        CustomWidgets.socialButtonRect(
-                          'Login with Google',
-                          googleColor,
-                          FontAwesomeIcons.googlePlusG,
-                          onTap: () async {
-                            await _handleSignIn("G");
-                            // Fluttertoast.showToast(msg: 'I am google');
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Align(alignment: Alignment.center, child: Text("or")),
+                  // Container(
+                  //   width: 500,
+                  //   alignment: Alignment.center,
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [
+                  //       CustomWidgets.socialButtonRect(
+                  //         'Login with Facebook',
+                  //         facebookColor,
+                  //         FontAwesomeIcons.facebookF,
+                  //         onTap: () async {
+                  //           await _handleSignIn("FB");
+                  //           // Fluttertoast.showToast(msg: 'I am facebook');
+                  //         },
+                  //       ),
+                  //       SizedBox(width: 10),
+                  //       CustomWidgets.socialButtonRect(
+                  //         'Login with Google',
+                  //         googleColor,
+                  //         FontAwesomeIcons.googlePlusG,
+                  //         onTap: () async {
+                  //           await _handleSignIn("G");
+                  //           // Fluttertoast.showToast(msg: 'I am google');
+                  //         },
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // SizedBox(height: 10),
+                  // Align(alignment: Alignment.center, child: Text("or")),
                   Container(
                     width: 500,
                     alignment: Alignment.centerLeft,
@@ -210,16 +212,23 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<int> _handleSignIn(String type) async {
     switch (type) {
       case "FB":
-        FacebookLoginResult facebookLoginResult = await _handleFBSignIn();
-        final accessToken = facebookLoginResult.accessToken!.token;
-        if (facebookLoginResult.status == FacebookLoginStatus.success) {
-          final facebookAuthCred = FacebookAuthProvider.credential(accessToken);
-          final user = await firebaseAuth.signInWithCredential(facebookAuthCred);
-          print("User : ${user.additionalUserInfo}");
-          return 1;
-        } else {
-          return 0;
-        }
+        // FacebookLoginResult facebookLoginResult = await _handleFBSignIn();
+        // final accessToken = facebookLoginResult.accessToken!.token;
+        // if (facebookLoginResult.status == FacebookLoginStatus.success) {
+        //   final facebookAuthCred = FacebookAuthProvider.credential(accessToken);
+        //   final user = await firebaseAuth.signInWithCredential(facebookAuthCred);
+        //   print("User : ${user.additionalUserInfo}");
+        //   return 1;
+        // } else {
+        //   return 0;
+        // }
+        // var result = await FacebookAuth.instance.webAndDesktopInitialize(
+        //   appId: "1329834907365798",
+        //   cookie: true,
+        //   xfbml: true,
+        //   version: "v15.0",
+        // );
+        break;
       case "G":
         try {
           GoogleSignInAccount googleSignInAccount = await _handleGoogleSignIn();
