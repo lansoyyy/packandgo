@@ -339,7 +339,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                       textStyle: TextStyle(fontSize: 20.0, color: Colors.red[900]),
                                       keyboardType: TextInputType.number,
                                       underlineColor: Colors.amber,
-                                      length: 4,
+                                      length: 6,
                                       cursorColor: Colors.blue,
                                       clearAll: Padding(
                                         padding: const EdgeInsets.all(8.0),
@@ -384,46 +384,49 @@ class _SignupScreenState extends State<SignupScreen> {
                                   // var userDetailsAPI = Queries();
                                   switch (_currentStep) {
                                     case 0:
-                                      var response = await auth.signUpWithEmailAndPassword(
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                      );
-                                      if (response != null) {
-                                        var userDetailsData = {
-                                          "uid": response.uid,
-                                          "firstname": firstnameController.text,
-                                          "lastname": lastnameController.text,
-                                          "username": usernameController.text,
-                                          "email": emailController.text,
-                                          "contact_number": contactnumberController.text,
-                                          "gender": genderController.text,
-                                          "birthday": birthdayController.text,
-                                          "user_type": check1
-                                              ? "customer"
-                                              : check2
-                                                  ? "operator"
-                                                  : check3
-                                                      ? "owner"
-                                                      : "customer",
-                                          "status": true
-                                        };
-
-                                        await userDetailsQuery.push("user-details", userDetailsData);
-
-                                        _currentStep += 1;
-                                      } else {
-                                        showToast('Email already used!');
-                                      }
+                                      print("case 0");
+                                      _currentStep += 1;
+                                      // await twoStepAuth();
                                       break;
                                     case 1:
-                                      twoStepAuth();
+                                      print("case 1");
+                                      await twoStepAuth();
                                       _currentStep += 1;
-
                                       break;
                                     case 2:
+                                      print("case 2");
+                                      if (await twoStepAuth()) {
+                                        var response = await auth.signUpWithEmailAndPassword(
+                                          email: emailController.text,
+                                          password: passwordController.text,
+                                        );
+                                        if (response != null) {
+                                          var userDetailsData = {
+                                            "uid": response.uid,
+                                            "firstname": firstnameController.text,
+                                            "lastname": lastnameController.text,
+                                            "username": usernameController.text,
+                                            "email": emailController.text,
+                                            "contact_number": contactnumberController.text,
+                                            "gender": genderController.text,
+                                            "birthday": birthdayController.text,
+                                            "user_type": check1
+                                                ? "customer"
+                                                : check2
+                                                    ? "operator"
+                                                    : check3
+                                                        ? "owner"
+                                                        : "customer",
+                                            "status": true
+                                          };
+
+                                          await userDetailsQuery.push("user-details", userDetailsData);
+                                        } else {
+                                          showToast('Email already used!');
+                                        }
+                                      }
                                       showToast('Account created successfuly!');
                                       Navigator.pushNamed(context, Routes.loginpage);
-                                      _currentStep += 1;
                                       break;
                                     default:
                                   }
@@ -467,10 +470,11 @@ class _SignupScreenState extends State<SignupScreen> {
             : const Center(child: CircularProgressIndicator()));
   }
 
-  twoStepAuth() async {
-    var result = await FirebaseAuth.instance.verifyPhoneNumber(
-      // multiFactorSession: session,
-      phoneNumber: '+639657188624',
+  Future<bool> twoStepAuth() async {
+    var _auth = FirebaseAuth.instance;
+
+    var result = await _auth.verifyPhoneNumber(
+      phoneNumber: '+63${(contactnumberController.text).substring(1)}',
       verificationCompleted: (response) {
         print("completed $response");
       },
@@ -478,11 +482,20 @@ class _SignupScreenState extends State<SignupScreen> {
         print("failed $response");
       },
       codeSent: (String verificationId, int? resendToken) async {
+        String smsCode = _code;
+        // if (smsCode != "") {
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
+        await _auth.signInWithCredential(credential);
+        _code = "";
+        // }
         print('verification id $verificationId');
         print('resendToken $resendToken');
       },
-      codeAutoRetrievalTimeout: (_) {},
+      timeout: const Duration(minutes: 5),
+      codeAutoRetrievalTimeout: (response) {
+        print("retrival timeout $response");
+      },
     );
-    // print("result $result");
+    return false;
   }
 }
