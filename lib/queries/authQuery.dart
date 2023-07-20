@@ -14,13 +14,9 @@ class AuthQuery {
   }
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  Future signInWithEmailAndPassword(
-      {required String email,
-      required String password,
-      required context}) async {
+  Future signInWithEmailAndPassword({required String email, required String password, required context}) async {
     try {
-      var credentials = await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
+      var credentials = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
       errorMessage = "";
       return {"error": false, "user-data": _userFromFirebase(credentials.user)};
     } on FirebaseAuthException catch (e) {
@@ -30,11 +26,9 @@ class AuthQuery {
     } catch (e) {}
   }
 
-  Future<UserData?> signUpWithEmailAndPassword(
-      {required String email, required String password}) async {
+  Future<UserData?> signUpWithEmailAndPassword({required String email, required String password}) async {
     try {
-      var credentials = await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      var credentials = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
       errorMessage = "";
       return _userFromFirebase(credentials.user);
     } on FirebaseAuthException catch (e) {
@@ -55,6 +49,23 @@ class AuthQuery {
       return _user;
     } catch (e) {
       return null;
+    }
+  }
+
+  Future<void> changePassword(String email, String currentPassword, String newPassword) async {
+    try {
+      // Sign in the user with their email and current password
+      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: currentPassword);
+
+      // If sign-in is successful, change the password
+      var user = _firebaseAuth.currentUser;
+      await user!.updatePassword(newPassword);
+
+      // Password changed successfully
+      print('Password changed successfully');
+    } catch (e) {
+      // Handle error during password change
+      print('Error changing password: $e');
     }
   }
 

@@ -23,6 +23,7 @@ class Queries {
     userDetails.docs.forEach((element) {
       // print("printing${element.data()}");
       user = element.data();
+      user['id'] = element.id;
     });
     if (user != null) {
       await userData.setString('userDetails', json.encode(user));
