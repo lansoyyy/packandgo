@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:packandgo/services/emailChecker.dart';
 import 'package:packandgo/utils/colors.dart';
+import 'package:packandgo/utils/routes.dart';
 import 'package:packandgo/widgets/button_widget.dart';
 import 'package:packandgo/widgets/custom_widgets.dart';
 import 'package:packandgo/widgets/input_field.dart';
@@ -14,19 +15,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
-import '../../../../queries/queries.dart';
-import '../../../../queries/authQuery.dart';
-import '../../../../utils/routes.dart';
+import '../../../../../queries/authQuery.dart';
+import '../../../../../queries/queries.dart';
 
-class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+class DriverLoginScreen extends StatefulWidget {
+  const DriverLoginScreen({super.key});
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<DriverLoginScreen> createState() => _DriverLoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _DriverLoginScreenState extends State<DriverLoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final _form = GlobalKey<FormState>();
@@ -178,7 +177,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           context: context,
                         );
                         if (!response['error']) {
-                          await userDetailsQuery.getUserData(response['user-data'].uid);
+                          await userDetailsQuery
+                              .getUserData(response['user-data'].uid);
                           showToast('Logged in successfuly!');
                           Navigator.pushNamed(context, Routes.homepage);
                         } else {
@@ -214,7 +214,8 @@ class _LoginScreenState extends State<LoginScreen> {
         final accessToken = facebookLoginResult.accessToken!.token;
         if (facebookLoginResult.status == FacebookLoginStatus.success) {
           final facebookAuthCred = FacebookAuthProvider.credential(accessToken);
-          final user = await firebaseAuth.signInWithCredential(facebookAuthCred);
+          final user =
+              await firebaseAuth.signInWithCredential(facebookAuthCred);
           print("User : ${user.additionalUserInfo}");
           return 1;
         } else {
@@ -224,7 +225,8 @@ class _LoginScreenState extends State<LoginScreen> {
         try {
           GoogleSignInAccount googleSignInAccount = await _handleGoogleSignIn();
           final googleAuth = await googleSignInAccount.authentication;
-          final googleAuthCred = GoogleAuthProvider.credential(idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+          final googleAuthCred = GoogleAuthProvider.credential(
+              idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
           final user = await firebaseAuth.signInWithCredential(googleAuthCred);
           // print("User : $user");
           if (user.credential!.accessToken != null) {
@@ -259,7 +261,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future _handleFBSignIn() async {
     FacebookLogin facebookLogin = FacebookLogin();
-    FacebookLoginResult facebookLoginResult = await facebookLogin.logIn(permissions: [FacebookPermission.email, FacebookPermission.publicProfile]);
+    FacebookLoginResult facebookLoginResult = await facebookLogin.logIn(
+        permissions: [
+          FacebookPermission.email,
+          FacebookPermission.publicProfile
+        ]);
     print("facebookLoginResult $facebookLoginResult");
     // switch (facebookLoginResult.status) {
     //   case FacebookLoginStatus.cancelledByUser:
@@ -278,7 +284,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Future _handleGoogleSignIn() async {
     GoogleSignIn googleSignIn = GoogleSignIn(
       scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly'],
-      clientId: "370229023048-9p71ocm86lavkn5bi9u5779e1bi47tvg.apps.googleusercontent.com",
+      clientId:
+          "370229023048-9p71ocm86lavkn5bi9u5779e1bi47tvg.apps.googleusercontent.com",
     );
     GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
     return googleSignInAccount;

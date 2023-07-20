@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:packandgo/utils/colors.dart';
-import 'package:packandgo/views/web/screens/home_screen.dart';
+import 'package:packandgo/views/users/web/screens/home_screen.dart';
+
 import 'package:packandgo/widgets/button_widget.dart';
 import 'package:packandgo/widgets/text_widget.dart';
 
@@ -38,7 +39,8 @@ class _LoaderTabState extends State<LoaderTab> {
           label: 'Yes',
           onPressed: () {
             setState(() {
-              addLoaderAndUnloader = true; // Update the variable when "Yes" button is pressed
+              addLoaderAndUnloader =
+                  true; // Update the variable when "Yes" button is pressed
             });
           },
         ),
@@ -53,7 +55,8 @@ class _LoaderTabState extends State<LoaderTab> {
           label: 'No',
           onPressed: () {
             setState(() {
-              addLoaderAndUnloader = false; // Update the variable when "No" button is pressed
+              addLoaderAndUnloader =
+                  false; // Update the variable when "No" button is pressed
             });
           },
         ),
@@ -120,7 +123,8 @@ class _LoaderTabState extends State<LoaderTab> {
               itemCount: vehicles.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                bool isSelected = selectedIndex == index; // Check if the current item is selected
+                bool isSelected = selectedIndex ==
+                    index; // Check if the current item is selected
                 return GestureDetector(
                   onTap: () {
                     setState(() {
@@ -135,7 +139,9 @@ class _LoaderTabState extends State<LoaderTab> {
                       height: 190,
                       width: 200,
                       decoration: BoxDecoration(
-                        color: isSelected ? Colors.blue : Colors.white, // Apply different color if selected
+                        color: isSelected
+                            ? Colors.blue
+                            : Colors.white, // Apply different color if selected
                         border: Border.all(color: primary),
                         borderRadius: BorderRadius.circular(5),
                       ),
@@ -157,7 +163,10 @@ class _LoaderTabState extends State<LoaderTab> {
                           TextBold(
                             text: vehicles[index]['name']!,
                             fontSize: 14,
-                            color: isSelected ? Colors.white : Colors.black, // Apply different text color if selected
+                            color: isSelected
+                                ? Colors.white
+                                : Colors
+                                    .black, // Apply different text color if selected
                           ),
                           const SizedBox(
                             height: 10,

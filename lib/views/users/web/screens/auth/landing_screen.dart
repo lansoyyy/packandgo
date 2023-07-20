@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:packandgo/utils/colors.dart';
 import 'package:packandgo/widgets/button_widget.dart';
 import 'package:packandgo/widgets/text_widget.dart';
-import '../../../../utils/routes.dart';
+import '../../../../../utils/routes.dart';
 
 class LandingScreen extends StatelessWidget {
   const LandingScreen({super.key});
@@ -55,6 +55,18 @@ class LandingScreen extends StatelessWidget {
                           color: primary,
                           onPressed: () {
                             Navigator.pushNamed(context, Routes.signuppage);
+                          },
+                        ),
+                        const SizedBox(width: 20),
+                        ButtonWidget(
+                          fontSize: 14,
+                          height: 45,
+                          width: 150,
+                          label: 'Continue as Driver',
+                          color: primary,
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, Routes.driverloginpage);
                           },
                         ),
                       ],

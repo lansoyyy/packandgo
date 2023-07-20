@@ -3,9 +3,9 @@ import 'package:packandgo/widgets/button_widget.dart';
 import 'package:packandgo/widgets/textfield_widget.dart';
 import 'package:packandgo/widgets/toast_widget.dart';
 
-import '../../../utils/colors.dart';
-import '../../../utils/routes.dart';
-import '../../../widgets/text_widget.dart';
+import '../../../../utils/colors.dart';
+import '../../../../utils/routes.dart';
+import '../../../../widgets/text_widget.dart';
 import 'auth/login_screen.dart';
 
 class MyProfile extends StatefulWidget {

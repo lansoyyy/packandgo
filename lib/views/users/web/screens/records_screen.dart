@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:packandgo/queries/queries.dart';
 import 'package:packandgo/widgets/textfield_widget.dart';
 
-import '../../../queries/streamQueries.dart';
-import '../../../utils/colors.dart';
-import '../../../utils/routes.dart';
-import '../../../widgets/text_widget.dart';
+import '../../../../queries/streamQueries.dart';
+import '../../../../utils/colors.dart';
+import '../../../../utils/routes.dart';
+import '../../../../widgets/text_widget.dart';
 
 class RecordsScreen extends StatefulWidget {
   const RecordsScreen({super.key});
@@ -180,7 +180,8 @@ class _RecordsScreenState extends State<RecordsScreen> {
                                         });
                                       },
                                       child: Padding(
-                                        padding: const EdgeInsets.only(left: 10, right: 10),
+                                        padding: const EdgeInsets.only(
+                                            left: 10, right: 10),
                                         child: TextRegular(
                                           text: 'Status: ${statuses[i]}',
                                           fontSize: 14,
@@ -211,7 +212,8 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     // {"root": "user-details", "key": "uid", "value": _auth.currentUser!.uid},
                     {"root": "records"},
                   ]),
-                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     }
@@ -224,7 +226,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                       final data = snapshot.data;
                       var snapshotList = snapshot.data as List<QuerySnapshot>;
                       recordsData = [];
-                      snapshotList[0].docs.forEach((doc) {
+                      for (var doc in snapshotList[0].docs) {
                         var value = doc.data()! as Map;
                         value['id'] = doc.id;
 
@@ -262,7 +264,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                             break;
                           default:
                         }
-                      });
+                      }
 
                       return DataTable(
                         dataRowHeight: 100,
@@ -326,7 +328,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                 ),
               ],
             )
-          : Container(
+          : SizedBox(
               width: size.width,
               height: size.height,
               child: const Center(
@@ -354,27 +356,44 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     height: 30,
                     width: 125,
                     child: Center(
-                      child: TextRegular(text: value['booking-status'], fontSize: 14, color: Colors.white),
+                      child: TextRegular(
+                          text: value['booking-status'],
+                          fontSize: 14,
+                          color: Colors.white),
                     ),
                   ),
-                  TextRegular(text: value['booking-id'], fontSize: 14, color: Colors.black),
+                  TextRegular(
+                      text: value['booking-id'],
+                      fontSize: 14,
+                      color: Colors.black),
                 ],
               ),
             ),
             DataCell(
-              TextRegular(text: 'July 02, 2023 (3:30pm - 4:30pm)', fontSize: 14, color: Colors.black),
+              TextRegular(
+                  text: 'July 02, 2023 (3:30pm - 4:30pm)',
+                  fontSize: 14,
+                  color: Colors.black),
             ),
             DataCell(
-              TextRegular(text: value['drop-off-location'], fontSize: 14, color: Colors.black),
+              TextRegular(
+                  text: value['drop-off-location'],
+                  fontSize: 14,
+                  color: Colors.black),
             ),
             DataCell(
-              TextRegular(text: value['name'], fontSize: 14, color: Colors.black),
+              TextRegular(
+                  text: value['name'], fontSize: 14, color: Colors.black),
             ),
             DataCell(
-              TextRegular(text: value['vehicle-type'], fontSize: 14, color: Colors.black),
+              TextRegular(
+                  text: value['vehicle-type'],
+                  fontSize: 14,
+                  color: Colors.black),
             ),
             DataCell(
-              TextRegular(text: value['price'], fontSize: 14, color: Colors.black),
+              TextRegular(
+                  text: value['price'], fontSize: 14, color: Colors.black),
             ),
             DataCell(
               Column(
@@ -396,7 +415,8 @@ class _RecordsScreenState extends State<RecordsScreen> {
                       height: 30,
                       width: 125,
                       child: Center(
-                        child: TextRegular(text: 'Cancel', fontSize: 14, color: Colors.white),
+                        child: TextRegular(
+                            text: 'Cancel', fontSize: 14, color: Colors.white),
                       ),
                     ),
                   ),
@@ -433,7 +453,8 @@ class _RecordsScreenState extends State<RecordsScreen> {
                       height: 30,
                       width: 125,
                       child: Center(
-                        child: TextRegular(text: 'View', fontSize: 14, color: Colors.white),
+                        child: TextRegular(
+                            text: 'View', fontSize: 14, color: Colors.white),
                       ),
                     ),
                   ),
@@ -481,7 +502,10 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     ),
                     height: 50,
                     child: Center(
-                      child: TextRegular(text: 'Booking Details', fontSize: 18, color: Colors.white),
+                      child: TextRegular(
+                          text: 'Booking Details',
+                          fontSize: 18,
+                          color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -564,7 +588,10 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     ),
                     height: 50,
                     child: Center(
-                      child: TextRegular(text: 'Your Information', fontSize: 18, color: Colors.white),
+                      child: TextRegular(
+                          text: 'Your Information',
+                          fontSize: 18,
+                          color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -673,7 +700,11 @@ class _RecordsScreenState extends State<RecordsScreen> {
             const SizedBox(
               height: 10,
             ),
-            option == 'Others' ? TextFieldWidget(label: 'Please specify your reason', controller: othersController) : const SizedBox(),
+            option == 'Others'
+                ? TextFieldWidget(
+                    label: 'Please specify your reason',
+                    controller: othersController)
+                : const SizedBox(),
           ],
         );
       }),
@@ -722,7 +753,9 @@ class _RecordsScreenState extends State<RecordsScreen> {
                             data["id"],
                             {
                               'booking-status': 'canceled',
-                              'cancel-reasons': option == 'Others' ? othersController.text : option,
+                              'cancel-reasons': option == 'Others'
+                                  ? othersController.text
+                                  : option,
                             },
                           );
                           Navigator.pop(context);

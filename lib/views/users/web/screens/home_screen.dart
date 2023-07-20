@@ -3,19 +3,21 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:packandgo/views/web/screens/auth/login_screen.dart';
-import 'package:packandgo/views/web/screens/home_tab/details_tab.dart';
-import 'package:packandgo/views/web/screens/home_tab/loader_tab.dart';
-import 'package:packandgo/views/web/screens/home_tab/location_tab.dart';
-import 'package:packandgo/views/web/screens/home_tab/map_tab.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../queries/queries.dart';
-import '../../../services/generateRandomNumbers.dart';
-import '../../../utils/colors.dart';
-import '../../../utils/routes.dart';
-import '../../../widgets/button_widget.dart';
-import '../../../widgets/text_widget.dart';
+import '../../../../queries/queries.dart';
+import '../../../../services/generateRandomNumbers.dart';
+import '../../../../utils/colors.dart';
+import '../../../../utils/routes.dart';
+import '../../../../widgets/button_widget.dart';
+import '../../../../widgets/text_widget.dart';
+
+import 'auth/login_screen.dart';
+import 'home_tab/details_tab.dart';
+import 'home_tab/loader_tab.dart';
+import 'home_tab/location_tab.dart';
+import 'home_tab/map_tab.dart';
 
 List<Map<String, String>> vehicles = [
   {"name": "Motorcycle", "image": "motorcycle.png"},

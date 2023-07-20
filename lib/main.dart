@@ -6,13 +6,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:packandgo/utils/routes.dart';
-import 'package:packandgo/views/web/screens/auth/landing_screen.dart';
-import 'package:packandgo/views/web/screens/auth/learn_more_screen.dart';
-import 'package:packandgo/views/web/screens/auth/login_screen.dart';
-import 'package:packandgo/views/web/screens/auth/signup_screen.dart';
-import 'package:packandgo/views/web/screens/home_screen.dart';
-import 'package:packandgo/views/web/screens/my_profile.dart';
-import 'package:packandgo/views/web/screens/records_screen.dart';
+import 'package:packandgo/views/drivers/auth/login_screen.dart';
+import 'package:packandgo/views/drivers/auth/signup_screen.dart';
+import 'package:packandgo/views/users/web/screens/auth/landing_screen.dart';
+import 'package:packandgo/views/users/web/screens/auth/learn_more_screen.dart';
+import 'package:packandgo/views/users/web/screens/auth/login_screen.dart';
+import 'package:packandgo/views/users/web/screens/auth/signup_screen.dart';
+import 'package:packandgo/views/users/web/screens/home_screen.dart';
+import 'package:packandgo/views/users/web/screens/my_profile.dart';
+import 'package:packandgo/views/users/web/screens/records_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -56,6 +58,8 @@ class MyApp extends StatelessWidget {
         Routes.learnmore: (context) => LearnMore(),
         Routes.recordspage: (context) => RecordsScreen(),
         Routes.profilepag: (context) => MyProfile(),
+        Routes.driverloginpage: (context) => DriverLoginScreen(),
+        Routes.driversignuppage: (context) => DriverSignupScreen(),
       },
     );
   }

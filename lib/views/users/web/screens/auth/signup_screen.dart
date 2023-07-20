@@ -7,13 +7,12 @@ import 'package:packandgo/widgets/text_widget.dart';
 import 'package:packandgo/widgets/toast_widget.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
 
-import '../../../../queries/queries.dart';
-import '../../../../queries/authQuery.dart';
-import '../../../../utils/routes.dart';
-import '../../../../widgets/button_widget.dart';
-import '../../../../widgets/custom_widgets.dart';
-import '../../../../widgets/input_field.dart';
-import '../../../../widgets/textfield_widget.dart';
+import '../../../../../queries/authQuery.dart';
+import '../../../../../queries/queries.dart';
+import '../../../../../utils/routes.dart';
+import '../../../../../widgets/button_widget.dart';
+import '../../../../../widgets/custom_widgets.dart';
+import '../../../../../widgets/input_field.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -79,7 +78,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(context, Routes.loginpage);
+                                  Navigator.pushNamed(
+                                      context, Routes.loginpage);
                                 },
                                 child: TextRegular(
                                   text: 'Login',
@@ -127,7 +127,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                         width: 300,
                                         child: Text(
                                           'New Customer',
-                                          style: TextStyle(fontFamily: 'QRegular'),
+                                          style:
+                                              TextStyle(fontFamily: 'QRegular'),
                                         ),
                                       ),
                                     ],
@@ -149,7 +150,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                         width: 300,
                                         child: Text(
                                           'PUJ/Jeepney Operator',
-                                          style: TextStyle(fontFamily: 'QRegular'),
+                                          style:
+                                              TextStyle(fontFamily: 'QRegular'),
                                         ),
                                       ),
                                     ],
@@ -171,7 +173,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                         width: 300,
                                         child: Text(
                                           'Moving Service Business Owner',
-                                          style: TextStyle(fontFamily: 'QRegular'),
+                                          style:
+                                              TextStyle(fontFamily: 'QRegular'),
                                         ),
                                       ),
                                     ],
@@ -220,7 +223,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                     controller: contactnumberController,
                                     isDense: true,
                                     validator: (value) {
-                                      if (contactnumberController.text.isEmpty) {
+                                      if (contactnumberController
+                                          .text.isEmpty) {
                                         return "  This field is required!";
                                       } else {
                                         return null;
@@ -234,7 +238,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                     validator: (value) {
                                       if (emailController.text.isEmpty) {
                                         return "Email is required";
-                                      } else if (!isValidEmail(emailController.text)) {
+                                      } else if (!isValidEmail(
+                                          emailController.text)) {
                                         return "Please enter a valid email";
                                       } else {
                                         return null;
@@ -246,7 +251,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                     controller: passwordController,
                                     isDense: true,
                                     isObscureText: isObscure,
-                                    suffixIcon: Icon(Icons.visibility, size: 18),
+                                    suffixIcon:
+                                        Icon(Icons.visibility, size: 18),
                                     onSuffixTap: () {
                                       setState(() => isObscure = !isObscure);
                                     },
@@ -266,10 +272,12 @@ class _SignupScreenState extends State<SignupScreen> {
                                 children: [
                                   Text(
                                     'Two Step Authentication',
-                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(height: 20),
-                                  Text("Kindly enter your phone number and we will send you a security code."),
+                                  Text(
+                                      "Kindly enter your phone number and we will send you a security code."),
                                   Align(
                                     alignment: Alignment.centerLeft,
                                     child: labelText(label: "Contact Number"),
@@ -278,7 +286,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                     controller: contactnumberController,
                                     isDense: true,
                                     validator: (value) {
-                                      if (contactnumberController.text.isEmpty) {
+                                      if (contactnumberController
+                                          .text.isEmpty) {
                                         return "  This field is required!";
                                       } else {
                                         return null;
@@ -302,10 +311,13 @@ class _SignupScreenState extends State<SignupScreen> {
                                       'ENTER SECURITY CODE',
                                     ),
                                     SizedBox(height: 20),
-                                    Text("Enter the code that was sent to (+63) ${contactnumberController.text}"),
+                                    Text(
+                                        "Enter the code that was sent to (+63) ${contactnumberController.text}"),
                                     SizedBox(height: 20),
                                     VerificationCode(
-                                      textStyle: TextStyle(fontSize: 20.0, color: Colors.red[900]),
+                                      textStyle: TextStyle(
+                                          fontSize: 20.0,
+                                          color: Colors.red[900]),
                                       keyboardType: TextInputType.number,
                                       underlineColor: Colors.amber,
                                       length: 4,
@@ -314,7 +326,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
                                           'clear all',
-                                          style: TextStyle(fontSize: 14.0, color: Colors.blue[700]),
+                                          style: TextStyle(
+                                              fontSize: 14.0,
+                                              color: Colors.blue[700]),
                                         ),
                                       ),
                                       onCompleted: (String value) {
@@ -326,7 +340,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                         setState(() {
                                           _onEditing = value;
                                         });
-                                        if (!_onEditing) FocusScope.of(context).unfocus();
+                                        if (!_onEditing) {
+                                          FocusScope.of(context).unfocus();
+                                        }
                                       },
                                     ),
                                     TextButton(
@@ -353,7 +369,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                   // var userDetailsAPI = Queries();
                                   switch (_currentStep) {
                                     case 0:
-                                      var response = await auth.signUpWithEmailAndPassword(
+                                      var response =
+                                          await auth.signUpWithEmailAndPassword(
                                         email: emailController.text,
                                         password: passwordController.text,
                                       );
@@ -363,7 +380,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                           "firstname": firstnameController.text,
                                           "lastname": lastnameController.text,
                                           "email": emailController.text,
-                                          "contact_number": contactnumberController.text,
+                                          "contact_number":
+                                              contactnumberController.text,
                                           "user_type": check1
                                               ? "customer"
                                               : check2
@@ -374,7 +392,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                           "status": true
                                         };
 
-                                        await userDetailsQuery.push("user-details", userDetailsData);
+                                        await userDetailsQuery.push(
+                                            "user-details", userDetailsData);
 
                                         _currentStep += 1;
                                       } else {
@@ -386,7 +405,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                       break;
                                     case 2:
                                       showToast('Account created successfuly!');
-                                      Navigator.pushNamed(context, Routes.loginpage);
+                                      Navigator.pushNamed(
+                                          context, Routes.loginpage);
                                       _currentStep += 1;
                                       break;
                                     default:
@@ -408,7 +428,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                   ),
                                   TextButton(
                                     onPressed: () {
-                                      Navigator.pushNamed(context, Routes.loginpage);
+                                      Navigator.pushNamed(
+                                          context, Routes.loginpage);
                                     },
                                     child: TextBold(
                                       text: 'Login',

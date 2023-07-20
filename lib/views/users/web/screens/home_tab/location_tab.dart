@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../widgets/text_widget.dart';
+import '../../../../../widgets/text_widget.dart';
 import '../home_screen.dart';
 
 class LocationTab extends StatefulWidget {
