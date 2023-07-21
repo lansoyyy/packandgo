@@ -14,7 +14,6 @@ import 'package:packandgo/widgets/toast_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../../queries/authQuery.dart';
 import '../../../../../queries/queries.dart';
@@ -69,7 +68,8 @@ class _DriverLoginScreenState extends State<DriverLoginScreen> {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, Routes.signuppage);
+                              Navigator.pushNamed(
+                                  context, Routes.driversignuppage);
                             },
                             child: TextRegular(
                               text: 'Signup',
@@ -83,37 +83,7 @@ class _DriverLoginScreenState extends State<DriverLoginScreen> {
                   ),
                   SizedBox(height: 50),
                   TextBold(text: 'Login', fontSize: 38, color: Colors.black),
-                  SizedBox(height: 20),
-                  Container(
-                    width: 500,
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CustomWidgets.socialButtonRect(
-                          'Login with Facebook',
-                          facebookColor,
-                          FontAwesomeIcons.facebookF,
-                          onTap: () async {
-                            await _handleSignIn("FB");
-                            // Fluttertoast.showToast(msg: 'I am facebook');
-                          },
-                        ),
-                        SizedBox(width: 10),
-                        CustomWidgets.socialButtonRect(
-                          'Login with Google',
-                          googleColor,
-                          FontAwesomeIcons.googlePlusG,
-                          onTap: () async {
-                            await _handleSignIn("G");
-                            // Fluttertoast.showToast(msg: 'I am google');
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Align(alignment: Alignment.center, child: Text("or")),
+                  SizedBox(height: 30),
                   Container(
                     width: 500,
                     alignment: Alignment.centerLeft,
@@ -192,14 +162,6 @@ class _DriverLoginScreenState extends State<DriverLoginScreen> {
                     },
                   ),
                   const SizedBox(height: 20),
-                  TextButton(
-                    onPressed: () {},
-                    child: TextRegular(
-                      text: 'Forgot Password',
-                      fontSize: 14,
-                      color: Colors.black,
-                    ),
-                  ),
                 ],
               ),
             )

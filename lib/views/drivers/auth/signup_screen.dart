@@ -27,10 +27,16 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
   final firstnameController = TextEditingController();
   final lastnameController = TextEditingController();
   final contactnumberController = TextEditingController();
+  final licenseNumberController = TextEditingController();
+  final expirationDateController = TextEditingController();
+  final makerController = TextEditingController();
+  final yearModelController = TextEditingController();
+  final plateNumberController = TextEditingController();
 
-  bool check1 = true;
-  bool check2 = false;
-  bool check3 = false;
+  bool check2 = true;
+
+  bool hasHelper = true;
+
   bool isLoading = false;
   bool isObscure = true;
   bool _onEditing = false;
@@ -41,6 +47,36 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
   int _currentStep = 0;
   StepperType stepperType = StepperType.horizontal;
   var _code = "";
+
+  List<Map<String, String>> vehicles = [
+    {"name": "Motorcycle", "image": "motorcycle.png"},
+    {
+      "name": "500 Kg Jeepney (Standard Type)",
+      "image": "500-kg-Jeepney-(Standard-Type).png"
+    },
+    {
+      "name": "800 Kg Jeepney (Lawin Type)",
+      "image": "800-kg-Jeepney-(Lawin-Type).png"
+    },
+    {"name": "300 Kg Taxi Sedan", "image": "300-Kg-Taxi.png"},
+    {"name": "500 Kg Taxi MPV", "image": "500-Kg-Taxi-MPV.png"},
+    {
+      "name": "6-Wheel Truck Close Type",
+      "image": "6-Wheel-Truck-Close-Type.png"
+    },
+    {
+      "name": "10-Wheel Truck Close Type",
+      "image": "10-Wheel-Truck-Close-Type.png"
+    },
+    {"name": "6-Wheel Truck Open Type", "image": "6-Wheel-Truck-Open-Type.png"},
+    {
+      "name": "10-Wheel Truck Open Type",
+      "image": "10-Wheel-Truck-Open-Type.png"
+    },
+  ];
+
+  String selectedVehicle = '';
+  int dropValue = 0;
 
   @override
   void initState() {
@@ -95,351 +131,477 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                       Container(
                         height: 1000,
                         width: 500,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              child: TextBold(
-                                text: 'Signup',
-                                fontSize: 38,
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            if (_currentStep == 0)
-                              Wrap(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Checkbox(
-                                        value: check1,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            check1 = !check1;
-                                            check2 = false;
-                                            check3 = false;
-                                          });
-                                        },
-                                      ),
-                                      const SizedBox(
-                                        width: 300,
-                                        child: Text(
-                                          'New Customer',
-                                          style:
-                                              TextStyle(fontFamily: 'QRegular'),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Checkbox(
-                                        value: check2,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            check2 = !check2;
-                                            check1 = false;
-                                            check3 = false;
-                                          });
-                                        },
-                                      ),
-                                      const SizedBox(
-                                        width: 300,
-                                        child: Text(
-                                          'PUJ/Jeepney Operator',
-                                          style:
-                                              TextStyle(fontFamily: 'QRegular'),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Checkbox(
-                                        value: check3,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            check3 = !check3;
-                                            check1 = false;
-                                            check2 = false;
-                                          });
-                                        },
-                                      ),
-                                      const SizedBox(
-                                        width: 300,
-                                        child: Text(
-                                          'Moving Service Business Owner',
-                                          style:
-                                              TextStyle(fontFamily: 'QRegular'),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  labelText(label: "First Name"),
-                                  inputField(
-                                    controller: firstnameController,
-                                    isDense: true,
-                                    validator: (value) {
-                                      if (firstnameController.text.isEmpty) {
-                                        return "  This field is required!";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  labelText(label: "Last Name"),
-                                  inputField(
-                                    controller: lastnameController,
-                                    isDense: true,
-                                    validator: (value) {
-                                      if (lastnameController.text.isEmpty) {
-                                        return "  This field is required!";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  labelText(label: "First Name"),
-                                  inputField(
-                                    controller: firstnameController,
-                                    isDense: true,
-                                    validator: (value) {
-                                      if (firstnameController.text.isEmpty) {
-                                        return "  This field is required!";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  labelText(label: "Contact Number"),
-                                  inputField(
-                                    controller: contactnumberController,
-                                    isDense: true,
-                                    validator: (value) {
-                                      if (contactnumberController
-                                          .text.isEmpty) {
-                                        return "  This field is required!";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  labelText(label: "Email"),
-                                  inputField(
-                                    controller: emailController,
-                                    isDense: true,
-                                    validator: (value) {
-                                      if (emailController.text.isEmpty) {
-                                        return "Email is required";
-                                      } else if (!isValidEmail(
-                                          emailController.text)) {
-                                        return "Please enter a valid email";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  labelText(label: "Password"),
-                                  inputField(
-                                    controller: passwordController,
-                                    isDense: true,
-                                    isObscureText: isObscure,
-                                    suffixIcon:
-                                        Icon(Icons.visibility, size: 18),
-                                    onSuffixTap: () {
-                                      setState(() => isObscure = !isObscure);
-                                    },
-                                    validator: (value) {
-                                      if (passwordController.text.isEmpty) {
-                                        return "  This field is required!";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ),
-                            if (_currentStep == 1)
-                              Wrap(
-                                alignment: WrapAlignment.center,
-                                children: [
-                                  Text(
-                                    'Two Step Authentication',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(height: 20),
-                                  Text(
-                                      "Kindly enter your phone number and we will send you a security code."),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: labelText(label: "Contact Number"),
-                                  ),
-                                  inputField(
-                                    controller: contactnumberController,
-                                    isDense: true,
-                                    validator: (value) {
-                                      if (contactnumberController
-                                          .text.isEmpty) {
-                                        return "  This field is required!";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ),
-                            if (_currentStep == 2)
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
                               Container(
                                 alignment: Alignment.center,
-                                width: 500,
-                                child: Wrap(
-                                  alignment: WrapAlignment.center,
-                                  crossAxisAlignment: WrapCrossAlignment.center,
-                                  direction: Axis.vertical,
+                                child: TextBold(
+                                  text: 'Signup',
+                                  fontSize: 38,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              if (_currentStep == 0)
+                                Wrap(
                                   children: [
-                                    Icon(Icons.task_alt, size: 50),
-                                    SizedBox(height: 20),
-                                    Text(
-                                      'ENTER SECURITY CODE',
-                                    ),
-                                    SizedBox(height: 20),
-                                    Text(
-                                        "Enter the code that was sent to (+63) ${contactnumberController.text}"),
-                                    SizedBox(height: 20),
-                                    VerificationCode(
-                                      textStyle: TextStyle(
-                                          fontSize: 20.0,
-                                          color: Colors.red[900]),
-                                      keyboardType: TextInputType.number,
-                                      underlineColor: Colors.amber,
-                                      length: 4,
-                                      cursorColor: Colors.blue,
-                                      clearAll: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'clear all',
-                                          style: TextStyle(
-                                              fontSize: 14.0,
-                                              color: Colors.blue[700]),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Checkbox(
+                                          value: check2,
+                                          onChanged: (value) {},
                                         ),
-                                      ),
-                                      onCompleted: (String value) {
-                                        setState(() {
-                                          _code = value;
-                                        });
-                                      },
-                                      onEditing: (bool value) {
-                                        setState(() {
-                                          _onEditing = value;
-                                        });
-                                        if (!_onEditing) {
-                                          FocusScope.of(context).unfocus();
+                                        const SizedBox(
+                                          width: 300,
+                                          child: Text(
+                                            'PUJ/Jeepney Operator',
+                                            style: TextStyle(
+                                                fontFamily: 'QRegular'),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    labelText(label: "First Name"),
+                                    inputField(
+                                      controller: firstnameController,
+                                      isDense: true,
+                                      validator: (value) {
+                                        if (firstnameController.text.isEmpty) {
+                                          return "  This field is required!";
+                                        } else {
+                                          return null;
                                         }
                                       },
                                     ),
-                                    TextButton(
-                                      onPressed: () {},
-                                      child: Text(
-                                        "Send another code",
-                                        style: TextStyle(color: Colors.blue),
+                                    labelText(label: "Last Name"),
+                                    inputField(
+                                      controller: lastnameController,
+                                      isDense: true,
+                                      validator: (value) {
+                                        if (lastnameController.text.isEmpty) {
+                                          return "  This field is required!";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    labelText(label: "First Name"),
+                                    inputField(
+                                      controller: firstnameController,
+                                      isDense: true,
+                                      validator: (value) {
+                                        if (firstnameController.text.isEmpty) {
+                                          return "  This field is required!";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    labelText(label: "Contact Number"),
+                                    inputField(
+                                      controller: contactnumberController,
+                                      isDense: true,
+                                      validator: (value) {
+                                        if (contactnumberController
+                                            .text.isEmpty) {
+                                          return "  This field is required!";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    labelText(label: "Email"),
+                                    inputField(
+                                      controller: emailController,
+                                      isDense: true,
+                                      validator: (value) {
+                                        if (emailController.text.isEmpty) {
+                                          return "Email is required";
+                                        } else if (!isValidEmail(
+                                            emailController.text)) {
+                                          return "Please enter a valid email";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    labelText(label: "Password"),
+                                    inputField(
+                                      controller: passwordController,
+                                      isDense: true,
+                                      isObscureText: isObscure,
+                                      suffixIcon:
+                                          Icon(Icons.visibility, size: 18),
+                                      onSuffixTap: () {
+                                        setState(() => isObscure = !isObscure);
+                                      },
+                                      validator: (value) {
+                                        if (passwordController.text.isEmpty) {
+                                          return "  This field is required!";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    labelText(label: "Driver License Number"),
+                                    inputField(
+                                      controller: licenseNumberController,
+                                      isDense: true,
+                                      validator: (value) {
+                                        if (licenseNumberController
+                                            .text.isEmpty) {
+                                          return "  This field is required!";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    labelText(label: "Expiration Date"),
+                                    inputField(
+                                      controller: expirationDateController,
+                                      isDense: true,
+                                      validator: (value) {
+                                        if (expirationDateController
+                                            .text.isEmpty) {
+                                          return "  This field is required!";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 20),
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        child: TextBold(
+                                          text: 'Vehicle Information',
+                                          fontSize: 32,
+                                          color: Colors.black,
+                                        ),
                                       ),
-                                    )
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    labelText(label: "Maker"),
+                                    inputField(
+                                      controller: makerController,
+                                      isDense: true,
+                                      validator: (value) {
+                                        if (makerController.text.isEmpty) {
+                                          return "  This field is required!";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    labelText(label: "Year Model"),
+                                    inputField(
+                                      controller: yearModelController,
+                                      isDense: true,
+                                      validator: (value) {
+                                        if (yearModelController.text.isEmpty) {
+                                          return "  This field is required!";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 10, bottom: 10),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          TextRegular(
+                                            text: 'Vehicle Type',
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            width: 500,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.rectangle,
+                                              border: Border.all(
+                                                  color: Colors.grey),
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                            ),
+                                            child: DropdownButton(
+                                                underline: const SizedBox(),
+                                                value: dropValue,
+                                                items: [
+                                                  for (int i = 0;
+                                                      i < vehicles.length;
+                                                      i++)
+                                                    DropdownMenuItem(
+                                                      value: i,
+                                                      onTap: () {
+                                                        setState(() {
+                                                          selectedVehicle =
+                                                              vehicles[i]
+                                                                  ['name']!;
+                                                        });
+                                                      },
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 10,
+                                                                right: 10),
+                                                        child: TextRegular(
+                                                          text:
+                                                              '${vehicles[i]['name']}',
+                                                          fontSize: 14,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                ],
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    dropValue = int.parse(
+                                                        value.toString());
+                                                  });
+                                                }),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          selectedVehicle ==
+                                                      '500 Kg Jeepney (Standard Type)' ||
+                                                  selectedVehicle ==
+                                                      '800 Kg Jeepney (Lawin Type)'
+                                              ? Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Checkbox(
+                                                      value: hasHelper,
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          hasHelper =
+                                                              !hasHelper;
+                                                        });
+                                                      },
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 300,
+                                                      child: Text(
+                                                        'has helper',
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'QRegular'),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              : SizedBox()
+                                        ],
+                                      ),
+                                    ),
+                                    labelText(label: "Plate Number"),
+                                    inputField(
+                                      controller: plateNumberController,
+                                      isDense: true,
+                                      validator: (value) {
+                                        if (plateNumberController
+                                            .text.isEmpty) {
+                                          return "  This field is required!";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
                                   ],
                                 ),
-                              ),
-                            const SizedBox(height: 20),
-                            ButtonWidget(
-                              radius: 5,
-                              color: green,
-                              height: 45,
-                              width: 500,
-                              label: _currentStep == 2 ? "Verify" : 'Continue',
-                              onPressed: () async {
-                                if (_form.currentState!.validate()) {
-                                  _form.currentState!.save();
-                                  setState(() => isLoading = true);
-                                  // var userDetailsAPI = Queries();
-                                  switch (_currentStep) {
-                                    case 0:
-                                      var response =
-                                          await auth.signUpWithEmailAndPassword(
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                      );
-                                      if (response != null) {
-                                        var userDetailsData = {
-                                          "uid": response.uid,
-                                          "firstname": firstnameController.text,
-                                          "lastname": lastnameController.text,
-                                          "email": emailController.text,
-                                          "contact_number":
-                                              contactnumberController.text,
-                                          "user_type": check1
-                                              ? "customer"
-                                              : check2
-                                                  ? "operator"
-                                                  : check3
-                                                      ? "owner"
-                                                      : "customer",
-                                          "status": true
-                                        };
-
-                                        await userDetailsQuery.push(
-                                            "user-details", userDetailsData);
-
-                                        _currentStep += 1;
-                                      } else {
-                                        showToast('Email already used!');
-                                      }
-                                      break;
-                                    case 1:
-                                      _currentStep += 1;
-                                      break;
-                                    case 2:
-                                      showToast('Account created successfuly!');
-                                      Navigator.pushNamed(
-                                          context, Routes.loginpage);
-                                      _currentStep += 1;
-                                      break;
-                                    default:
-                                  }
-
-                                  setState(() => isLoading = false);
-                                }
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                            if (_currentStep == 0)
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  TextRegular(
-                                    text: 'Already have an account?',
-                                    fontSize: 12,
-                                    color: Colors.black,
+                              if (_currentStep == 1)
+                                Wrap(
+                                  alignment: WrapAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Two Step Authentication',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(height: 20),
+                                    Text(
+                                        "Kindly enter your phone number and we will send you a security code."),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: labelText(label: "Contact Number"),
+                                    ),
+                                    inputField(
+                                      controller: contactnumberController,
+                                      isDense: true,
+                                      validator: (value) {
+                                        if (contactnumberController
+                                            .text.isEmpty) {
+                                          return "  This field is required!";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              if (_currentStep == 2)
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: 500,
+                                  child: Wrap(
+                                    alignment: WrapAlignment.center,
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
+                                    direction: Axis.vertical,
+                                    children: [
+                                      Icon(Icons.task_alt, size: 50),
+                                      SizedBox(height: 20),
+                                      Text(
+                                        'ENTER SECURITY CODE',
+                                      ),
+                                      SizedBox(height: 20),
+                                      Text(
+                                          "Enter the code that was sent to (+63) ${contactnumberController.text}"),
+                                      SizedBox(height: 20),
+                                      VerificationCode(
+                                        textStyle: TextStyle(
+                                            fontSize: 20.0,
+                                            color: Colors.red[900]),
+                                        keyboardType: TextInputType.number,
+                                        underlineColor: Colors.amber,
+                                        length: 4,
+                                        cursorColor: Colors.blue,
+                                        clearAll: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'clear all',
+                                            style: TextStyle(
+                                                fontSize: 14.0,
+                                                color: Colors.blue[700]),
+                                          ),
+                                        ),
+                                        onCompleted: (String value) {
+                                          setState(() {
+                                            _code = value;
+                                          });
+                                        },
+                                        onEditing: (bool value) {
+                                          setState(() {
+                                            _onEditing = value;
+                                          });
+                                          if (!_onEditing) {
+                                            FocusScope.of(context).unfocus();
+                                          }
+                                        },
+                                      ),
+                                      TextButton(
+                                        onPressed: () {},
+                                        child: Text(
+                                          "Send another code",
+                                          style: TextStyle(color: Colors.blue),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, Routes.loginpage);
-                                    },
-                                    child: TextBold(
-                                      text: 'Login',
-                                      fontSize: 14,
+                                ),
+                              const SizedBox(height: 20),
+                              ButtonWidget(
+                                radius: 5,
+                                color: green,
+                                height: 45,
+                                width: 500,
+                                label:
+                                    _currentStep == 2 ? "Verify" : 'Continue',
+                                onPressed: () async {
+                                  if (_form.currentState!.validate()) {
+                                    _form.currentState!.save();
+                                    setState(() => isLoading = true);
+                                    // var userDetailsAPI = Queries();
+                                    switch (_currentStep) {
+                                      case 0:
+                                        var response = await auth
+                                            .signUpWithEmailAndPassword(
+                                          email: emailController.text,
+                                          password: passwordController.text,
+                                        );
+                                        if (response != null) {
+                                          var userDetailsData = {
+                                            "uid": response.uid,
+                                            "firstname":
+                                                firstnameController.text,
+                                            "lastname": lastnameController.text,
+                                            "email": emailController.text,
+                                            "contact_number":
+                                                contactnumberController.text,
+                                            "user_type": "operator",
+                                            "status": true
+                                          };
+
+                                          await userDetailsQuery.push(
+                                              "user-details", userDetailsData);
+
+                                          _currentStep += 1;
+                                        } else {
+                                          showToast('Email already used!');
+                                        }
+                                        break;
+                                      case 1:
+                                        _currentStep += 1;
+                                        break;
+                                      case 2:
+                                        showToast(
+                                            'Account created successfuly!');
+                                        Navigator.pushNamed(
+                                            context, Routes.loginpage);
+                                        _currentStep += 1;
+                                        break;
+                                      default:
+                                    }
+
+                                    setState(() => isLoading = false);
+                                  }
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                              if (_currentStep == 0)
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    TextRegular(
+                                      text: 'Already have an account?',
+                                      fontSize: 12,
                                       color: Colors.black,
                                     ),
-                                  ),
-                                ],
-                              ),
-                          ],
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, Routes.loginpage);
+                                      },
+                                      child: TextBold(
+                                        text: 'Login',
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                            ],
+                          ),
                         ),
                       ),
                       const SizedBox(
