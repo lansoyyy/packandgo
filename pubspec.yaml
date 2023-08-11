@@ -39,7 +39,7 @@ dependencies:
   cloud_firestore:
   fluttertoast:
   shared_preferences: ^2.1.2
-  fa_stepper: ^0.0.2
+
   flutter_verification_code: ^1.1.6
   google_sign_in: ^6.1.4
   font_awesome_flutter: ^10.4.0
