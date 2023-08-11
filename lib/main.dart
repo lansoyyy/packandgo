@@ -9,6 +9,7 @@ import 'package:packandgo/utils/routes.dart';
 import 'package:packandgo/views/drivers/auth/login_screen.dart';
 import 'package:packandgo/views/drivers/auth/signup_screen.dart';
 import 'package:packandgo/views/drivers/driver_home_screen.dart';
+import 'package:packandgo/views/drivers/driver_profile_screen.dart';
 import 'package:packandgo/views/users/web/screens/auth/landing_screen.dart';
 import 'package:packandgo/views/users/web/screens/auth/learn_more_screen.dart';
 import 'package:packandgo/views/users/web/screens/auth/login_screen.dart';
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
         Routes.driverloginpage: (context) => DriverLoginScreen(),
         Routes.driversignuppage: (context) => DriverSignupScreen(),
         Routes.driverhomescreen: (context) => DriverHomeScreen(),
+        Routes.driverprofilescreen: (context) => DriverProfileScreen(),
       },
     );
   }

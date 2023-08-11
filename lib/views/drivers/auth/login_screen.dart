@@ -150,7 +150,7 @@ class _DriverLoginScreenState extends State<DriverLoginScreen> {
                           await userDetailsQuery
                               .getUserData(response['user-data'].uid);
                           showToast('Logged in successfuly!');
-                          Navigator.pushNamed(context, Routes.homepage);
+                          Navigator.pushNamed(context, Routes.driverhomescreen);
                         } else {
                           showToast(
                             response['error-message'],
@@ -193,7 +193,7 @@ class _DriverLoginScreenState extends State<DriverLoginScreen> {
           // print("User : $user");
           if (user.credential!.accessToken != null) {
             showToast('Logged in successfuly!');
-            Navigator.pushNamed(context, Routes.homepage);
+            Navigator.pushNamed(context, Routes.driverhomescreen);
           }
           return 1;
         } catch (error) {
