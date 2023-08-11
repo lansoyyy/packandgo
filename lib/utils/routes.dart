@@ -7,5 +7,6 @@ class Routes {
       recordspage = '/recordspage',
       profilepag = '/profilepage',
       driverloginpage = '/driverloginpage',
-      driversignuppage = '/driversignuppage';
+      driversignuppage = '/driversignuppage',
+      driverhomescreen = '/driverhomescreen';
 }
