@@ -49,12 +49,13 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-          backgroundColor: primary,
-          child: const Icon(
-            Icons.message_outlined,
-            color: Colors.white,
-          ),
-          onPressed: () {}),
+        backgroundColor: primary,
+        child: const Icon(
+          Icons.message_outlined,
+          color: Colors.white,
+        ),
+        onPressed: () {},
+      ),
       body: !isLoading
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -76,8 +77,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(
-                                context, Routes.driverprofilescreen);
+                            Navigator.pushNamed(context, Routes.driverprofilescreen);
                           },
                           child: TextRegular(
                             text: 'PROFILE',
@@ -101,10 +101,11 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                         height: 45,
                         width: 300,
                         decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.black,
-                            ),
-                            borderRadius: BorderRadius.circular(5)),
+                          border: Border.all(
+                            color: Colors.black,
+                          ),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
                         child: TextFormField(
                           onChanged: (value) {
                             setState(() {
@@ -112,12 +113,13 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                             });
                           },
                           decoration: const InputDecoration(
-                              hintText: 'Search by delivery info',
-                              hintStyle: TextStyle(fontFamily: 'QRegular'),
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: Colors.grey,
-                              )),
+                            hintText: 'Search by delivery info',
+                            hintStyle: TextStyle(fontFamily: 'QRegular'),
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: Colors.grey,
+                            ),
+                          ),
                           controller: searchController,
                         ),
                       ),
@@ -181,8 +183,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                                         });
                                       },
                                       child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10, right: 10),
+                                        padding: const EdgeInsets.only(left: 10, right: 10),
                                         child: TextRegular(
                                           text: 'Status: ${statuses[i]}',
                                           fontSize: 14,
@@ -211,10 +212,9 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                 StreamBuilder(
                   stream: streamQuery.getMultipleSnapsByData(roots: [
                     // {"root": "user-details", "key": "uid", "value": _auth.currentUser!.uid},
-                    {"root": "records"},
+                    {"root": "records", "key": "uid", "value": _auth.currentUser!.uid},
                   ]),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     }
@@ -355,44 +355,27 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                     height: 30,
                     width: 125,
                     child: Center(
-                      child: TextRegular(
-                          text: value['booking-status'],
-                          fontSize: 14,
-                          color: Colors.white),
+                      child: TextRegular(text: value['booking-status'], fontSize: 14, color: Colors.white),
                     ),
                   ),
-                  TextRegular(
-                      text: value['booking-id'],
-                      fontSize: 14,
-                      color: Colors.black),
+                  TextRegular(text: value['booking-id'], fontSize: 14, color: Colors.black),
                 ],
               ),
             ),
             DataCell(
-              TextRegular(
-                  text: 'July 02, 2023 (3:30pm - 4:30pm)',
-                  fontSize: 14,
-                  color: Colors.black),
+              TextRegular(text: 'July 02, 2023 (3:30pm - 4:30pm)', fontSize: 14, color: Colors.black),
             ),
             DataCell(
-              TextRegular(
-                  text: value['drop-off-location'],
-                  fontSize: 14,
-                  color: Colors.black),
+              TextRegular(text: value['drop-off-location'], fontSize: 14, color: Colors.black),
             ),
             DataCell(
-              TextRegular(
-                  text: value['name'], fontSize: 14, color: Colors.black),
+              TextRegular(text: value['name'], fontSize: 14, color: Colors.black),
             ),
             DataCell(
-              TextRegular(
-                  text: value['vehicle-type'],
-                  fontSize: 14,
-                  color: Colors.black),
+              TextRegular(text: value['vehicle-type'], fontSize: 14, color: Colors.black),
             ),
             DataCell(
-              TextRegular(
-                  text: value['price'], fontSize: 14, color: Colors.black),
+              TextRegular(text: value['price'], fontSize: 14, color: Colors.black),
             ),
             DataCell(
               Column(
@@ -414,8 +397,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                       height: 30,
                       width: 125,
                       child: Center(
-                        child: TextRegular(
-                            text: 'Cancel', fontSize: 14, color: Colors.white),
+                        child: TextRegular(text: 'Cancel', fontSize: 14, color: Colors.white),
                       ),
                     ),
                   ),
@@ -452,8 +434,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                       height: 30,
                       width: 125,
                       child: Center(
-                        child: TextRegular(
-                            text: 'View', fontSize: 14, color: Colors.white),
+                        child: TextRegular(text: 'View', fontSize: 14, color: Colors.white),
                       ),
                     ),
                   ),
@@ -501,10 +482,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                     ),
                     height: 50,
                     child: Center(
-                      child: TextRegular(
-                          text: 'Booking Details',
-                          fontSize: 18,
-                          color: Colors.white),
+                      child: TextRegular(text: 'Booking Details', fontSize: 18, color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -587,10 +565,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                     ),
                     height: 50,
                     child: Center(
-                      child: TextRegular(
-                          text: 'Your Information',
-                          fontSize: 18,
-                          color: Colors.white),
+                      child: TextRegular(text: 'Your Information', fontSize: 18, color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -699,11 +674,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
             const SizedBox(
               height: 10,
             ),
-            option == 'Others'
-                ? TextFieldWidget(
-                    label: 'Please specify your reason',
-                    controller: othersController)
-                : const SizedBox(),
+            option == 'Others' ? TextFieldWidget(label: 'Please specify your reason', controller: othersController) : const SizedBox(),
           ],
         );
       }),
@@ -752,9 +723,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                             data["id"],
                             {
                               'booking-status': 'canceled',
-                              'cancel-reasons': option == 'Others'
-                                  ? othersController.text
-                                  : option,
+                              'cancel-reasons': option == 'Others' ? othersController.text : option,
                             },
                           );
                           Navigator.pop(context);
