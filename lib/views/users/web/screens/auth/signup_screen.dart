@@ -138,8 +138,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                       width: 300,
                                       child: Text(
                                         'New Customer',
-                                        style:
-                                            TextStyle(fontFamily: 'QRegular'),
+                                        style: TextStyle(fontFamily: 'QRegular'),
                                       ),
                                     ),
                                   ],
@@ -161,8 +160,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                       width: 300,
                                       child: Text(
                                         'PUJ/Jeepney Operator',
-                                        style:
-                                            TextStyle(fontFamily: 'QRegular'),
+                                        style: TextStyle(fontFamily: 'QRegular'),
                                       ),
                                     ),
                                   ],
@@ -184,8 +182,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                       width: 300,
                                       child: Text(
                                         'Moving Service Business Owner',
-                                        style:
-                                            TextStyle(fontFamily: 'QRegular'),
+                                        style: TextStyle(fontFamily: 'QRegular'),
                                       ),
                                     ),
                                   ],
@@ -272,8 +269,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   validator: (value) {
                                     if (emailController.text.isEmpty) {
                                       return "Email is required";
-                                    } else if (!isValidEmail(
-                                        emailController.text)) {
+                                    } else if (!isValidEmail(emailController.text)) {
                                       return "Please enter a valid email";
                                     } else {
                                       return null;
@@ -308,8 +304,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(height: 20),
-                                Text(
-                                    "Kindly enter your phone number and we will send you a security code."),
+                                Text("Kindly enter your phone number and we will send you a security code."),
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: labelText(label: "Contact Number"),
@@ -342,12 +337,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                     'ENTER SECURITY CODE',
                                   ),
                                   SizedBox(height: 20),
-                                  Text(
-                                      "Enter the code that was sent to (+63) ${contactnumberController.text}"),
+                                  Text("Enter the code that was sent to (+63) ${contactnumberController.text}"),
                                   SizedBox(height: 20),
                                   VerificationCode(
-                                    textStyle: TextStyle(
-                                        fontSize: 20.0, color: Colors.red[900]),
+                                    textStyle: TextStyle(fontSize: 20.0, color: Colors.red[900]),
                                     keyboardType: TextInputType.number,
                                     underlineColor: Colors.amber,
                                     length: 6,
@@ -356,9 +349,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
                                         'clear all',
-                                        style: TextStyle(
-                                            fontSize: 14.0,
-                                            color: Colors.blue[700]),
+                                        style: TextStyle(fontSize: 14.0, color: Colors.blue[700]),
                                       ),
                                     ),
                                     onCompleted: (String value) {
@@ -371,15 +362,13 @@ class _SignupScreenState extends State<SignupScreen> {
                                       setState(() {
                                         _onEditing = value;
                                       });
-                                      if (!_onEditing)
-                                        FocusScope.of(context).unfocus();
+                                      if (!_onEditing) FocusScope.of(context).unfocus();
                                     },
                                   ),
                                   TextButton(
                                     onPressed: () {
                                       twoStepAuth('send');
-                                      showToast(
-                                          "Another code was sent to ${contactnumberController.text}");
+                                      showToast("Another code was sent to ${contactnumberController.text}");
                                     },
                                     child: Text(
                                       "Send another code",
@@ -405,7 +394,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   case 0:
                                     print("case 0");
                                     _currentStep += 1;
-                                    // await twoStepAuth();
+                                    // await twoStepAuth("send");
                                     break;
                                   case 1:
                                     print("case 1");
@@ -416,8 +405,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   case 2:
                                     print("case 2");
                                     if (await twoStepAuth('verify')) {
-                                      var response =
-                                          await auth.signUpWithEmailAndPassword(
+                                      var response = await auth.signUpWithEmailAndPassword(
                                         email: emailController.text,
                                         password: passwordController.text,
                                       );
@@ -428,8 +416,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                           "lastname": lastnameController.text,
                                           "username": usernameController.text,
                                           "email": emailController.text,
-                                          "contact_number":
-                                              contactnumberController.text,
+                                          "contact_number": contactnumberController.text,
                                           "gender": genderController.text,
                                           "birthday": birthdayController.text,
                                           "user_type": check1
@@ -442,15 +429,13 @@ class _SignupScreenState extends State<SignupScreen> {
                                           "status": true
                                         };
 
-                                        await userDetailsQuery.push(
-                                            "user-details", userDetailsData);
+                                        await userDetailsQuery.push("user-details", userDetailsData);
                                       } else {
                                         showToast('Email already used!');
                                       }
                                     }
                                     showToast('Account created successfuly!');
-                                    Navigator.pushNamed(
-                                        context, Routes.loginpage);
+                                    Navigator.pushNamed(context, Routes.loginpage);
                                     break;
                                   default:
                                 }
@@ -471,8 +456,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, Routes.loginpage);
+                                    Navigator.pushNamed(context, Routes.loginpage);
                                   },
                                   child: TextBold(
                                     text: 'Login',
@@ -537,8 +521,7 @@ class _SignupScreenState extends State<SignupScreen> {
         if (codeVerificationId != null && _code != "") {
           String smsCode = _code;
           print("see code: $_code");
-          credential = PhoneAuthProvider.credential(
-              verificationId: codeVerificationId, smsCode: smsCode);
+          credential = PhoneAuthProvider.credential(verificationId: codeVerificationId, smsCode: smsCode);
           try {
             var result = await auth.signInWithCredential(credential);
             _code = "";

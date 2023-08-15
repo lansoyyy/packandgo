@@ -76,8 +76,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _selectDateTime(BuildContext context) async {
-    final DateTime? picked =
-        await showDatePicker(context: context, initialDate: selectedDateTime, firstDate: DateTime(1900), lastDate: DateTime(2100));
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDateTime,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
     if (picked != null) {
       setState(() {
         selectedDateTime = DateTime(

@@ -3,11 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:packandgo/queries/queries.dart';
 import 'package:packandgo/widgets/textfield_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../queries/streamQueries.dart';
 import '../../../../utils/colors.dart';
 import '../../../../utils/routes.dart';
 import '../../../../widgets/text_widget.dart';
+import '../../queries/authQuery.dart';
 
 class DriverHomeScreen extends StatefulWidget {
   const DriverHomeScreen({super.key});
@@ -75,15 +77,62 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                           fontSize: 38,
                           color: Colors.white,
                         ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, Routes.driverprofilescreen);
-                          },
-                          child: TextRegular(
-                            text: 'PROFILE',
-                            fontSize: 16,
-                            color: Colors.white,
-                          ),
+                        Wrap(
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, Routes.driverprofilescreen);
+                              },
+                              child: TextRegular(
+                                text: 'PROFILE',
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                          title: const Text(
+                                            'Logout Confirmation',
+                                            style: TextStyle(fontFamily: 'QBold', fontWeight: FontWeight.bold),
+                                          ),
+                                          content: const Text(
+                                            'Are you sure you want to Logout?',
+                                            style: TextStyle(fontFamily: 'QRegular'),
+                                          ),
+                                          actions: <Widget>[
+                                            MaterialButton(
+                                              onPressed: () => Navigator.of(context).pop(true),
+                                              child: const Text(
+                                                'Close',
+                                                style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
+                                              ),
+                                            ),
+                                            MaterialButton(
+                                              onPressed: () async {
+                                                final SharedPreferences userData = await SharedPreferences.getInstance();
+                                                var usthQuery = AuthQuery();
+                                                await usthQuery.signOut();
+                                                await userData.clear();
+                                                Navigator.pushNamed(context, Routes.driverloginpage);
+                                              },
+                                              child: const Text(
+                                                'Continue',
+                                                style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
+                                              ),
+                                            ),
+                                          ],
+                                        ));
+                              },
+                              child: TextRegular(
+                                text: 'LOGOUT',
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

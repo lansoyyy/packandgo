@@ -1,6 +1,8 @@
 // ignore_for_file: use_build_context_synchronously, sized_box_for_whitespace, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:packandgo/services/emailChecker.dart';
 import 'package:packandgo/utils/colors.dart';
 import 'package:packandgo/widgets/text_widget.dart';
@@ -47,32 +49,19 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
   int _currentStep = 0;
   StepperType stepperType = StepperType.horizontal;
   var _code = "";
+  var credential;
+  var codeVerificationId;
 
   List<Map<String, String>> vehicles = [
     {"name": "Motorcycle", "image": "motorcycle.png"},
-    {
-      "name": "500 Kg Jeepney (Standard Type)",
-      "image": "500-kg-Jeepney-(Standard-Type).png"
-    },
-    {
-      "name": "800 Kg Jeepney (Lawin Type)",
-      "image": "800-kg-Jeepney-(Lawin-Type).png"
-    },
+    {"name": "500 Kg Jeepney (Standard Type)", "image": "500-kg-Jeepney-(Standard-Type).png"},
+    {"name": "800 Kg Jeepney (Lawin Type)", "image": "800-kg-Jeepney-(Lawin-Type).png"},
     {"name": "300 Kg Taxi Sedan", "image": "300-Kg-Taxi.png"},
     {"name": "500 Kg Taxi MPV", "image": "500-Kg-Taxi-MPV.png"},
-    {
-      "name": "6-Wheel Truck Close Type",
-      "image": "6-Wheel-Truck-Close-Type.png"
-    },
-    {
-      "name": "10-Wheel Truck Close Type",
-      "image": "10-Wheel-Truck-Close-Type.png"
-    },
+    {"name": "6-Wheel Truck Close Type", "image": "6-Wheel-Truck-Close-Type.png"},
+    {"name": "10-Wheel Truck Close Type", "image": "10-Wheel-Truck-Close-Type.png"},
     {"name": "6-Wheel Truck Open Type", "image": "6-Wheel-Truck-Open-Type.png"},
-    {
-      "name": "10-Wheel Truck Open Type",
-      "image": "10-Wheel-Truck-Open-Type.png"
-    },
+    {"name": "10-Wheel Truck Open Type", "image": "10-Wheel-Truck-Open-Type.png"},
   ];
 
   String selectedVehicle = '';
@@ -85,6 +74,12 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
     contactnumberController.text = "3894756354";
     emailController.text = "admin@gmail.com";
     passwordController.text = "password";
+    licenseNumberController.text = "D1234567890";
+    expirationDateController.text = "07/04/2024";
+    makerController.text = "Jane Doe";
+    yearModelController.text = "2018";
+    plateNumberController.text = "XYZ-789";
+
     super.initState();
   }
 
@@ -114,8 +109,7 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, Routes.loginpage);
+                                  Navigator.pushNamed(context, Routes.driverloginpage);
                                 },
                                 child: TextRegular(
                                   text: 'Login',
@@ -148,8 +142,7 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                 Wrap(
                                   children: [
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Checkbox(
                                           value: check2,
@@ -159,8 +152,7 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                           width: 300,
                                           child: Text(
                                             'PUJ/Jeepney Operator',
-                                            style: TextStyle(
-                                                fontFamily: 'QRegular'),
+                                            style: TextStyle(fontFamily: 'QRegular'),
                                           ),
                                         ),
                                       ],
@@ -209,8 +201,7 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                       controller: contactnumberController,
                                       isDense: true,
                                       validator: (value) {
-                                        if (contactnumberController
-                                            .text.isEmpty) {
+                                        if (contactnumberController.text.isEmpty) {
                                           return "  This field is required!";
                                         } else {
                                           return null;
@@ -224,8 +215,7 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                       validator: (value) {
                                         if (emailController.text.isEmpty) {
                                           return "Email is required";
-                                        } else if (!isValidEmail(
-                                            emailController.text)) {
+                                        } else if (!isValidEmail(emailController.text)) {
                                           return "Please enter a valid email";
                                         } else {
                                           return null;
@@ -237,8 +227,7 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                       controller: passwordController,
                                       isDense: true,
                                       isObscureText: isObscure,
-                                      suffixIcon:
-                                          Icon(Icons.visibility, size: 18),
+                                      suffixIcon: Icon(Icons.visibility, size: 18),
                                       onSuffixTap: () {
                                         setState(() => isObscure = !isObscure);
                                       },
@@ -255,8 +244,7 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                       controller: licenseNumberController,
                                       isDense: true,
                                       validator: (value) {
-                                        if (licenseNumberController
-                                            .text.isEmpty) {
+                                        if (licenseNumberController.text.isEmpty) {
                                           return "  This field is required!";
                                         } else {
                                           return null;
@@ -268,8 +256,7 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                       controller: expirationDateController,
                                       isDense: true,
                                       validator: (value) {
-                                        if (expirationDateController
-                                            .text.isEmpty) {
+                                        if (expirationDateController.text.isEmpty) {
                                           return "  This field is required!";
                                         } else {
                                           return null;
@@ -318,11 +305,9 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                       },
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 10, bottom: 10),
+                                      padding: const EdgeInsets.only(top: 10, bottom: 10),
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           TextRegular(
                                             text: 'Vehicle Type',
@@ -336,36 +321,25 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                             width: 500,
                                             decoration: BoxDecoration(
                                               shape: BoxShape.rectangle,
-                                              border: Border.all(
-                                                  color: Colors.grey),
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
+                                              border: Border.all(color: Colors.grey),
+                                              borderRadius: BorderRadius.circular(5),
                                             ),
                                             child: DropdownButton(
                                                 underline: const SizedBox(),
                                                 value: dropValue,
                                                 items: [
-                                                  for (int i = 0;
-                                                      i < vehicles.length;
-                                                      i++)
+                                                  for (int i = 0; i < vehicles.length; i++)
                                                     DropdownMenuItem(
                                                       value: i,
                                                       onTap: () {
                                                         setState(() {
-                                                          selectedVehicle =
-                                                              vehicles[i]
-                                                                  ['name']!;
+                                                          selectedVehicle = vehicles[i]['name']!;
                                                         });
                                                       },
                                                       child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 10,
-                                                                right: 10),
+                                                        padding: const EdgeInsets.only(left: 10, right: 10),
                                                         child: TextRegular(
-                                                          text:
-                                                              '${vehicles[i]['name']}',
+                                                          text: '${vehicles[i]['name']}',
                                                           fontSize: 14,
                                                           color: Colors.black,
                                                         ),
@@ -374,28 +348,22 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                                 ],
                                                 onChanged: (value) {
                                                   setState(() {
-                                                    dropValue = int.parse(
-                                                        value.toString());
+                                                    dropValue = int.parse(value.toString());
                                                   });
                                                 }),
                                           ),
                                           SizedBox(
                                             height: 10,
                                           ),
-                                          selectedVehicle ==
-                                                      '500 Kg Jeepney (Standard Type)' ||
-                                                  selectedVehicle ==
-                                                      '800 Kg Jeepney (Lawin Type)'
+                                          selectedVehicle == '500 Kg Jeepney (Standard Type)' || selectedVehicle == '800 Kg Jeepney (Lawin Type)'
                                               ? Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
                                                     Checkbox(
                                                       value: hasHelper,
                                                       onChanged: (value) {
                                                         setState(() {
-                                                          hasHelper =
-                                                              !hasHelper;
+                                                          hasHelper = !hasHelper;
                                                         });
                                                       },
                                                     ),
@@ -403,9 +371,7 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                                       width: 300,
                                                       child: Text(
                                                         'has helper',
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                'QRegular'),
+                                                        style: TextStyle(fontFamily: 'QRegular'),
                                                       ),
                                                     ),
                                                   ],
@@ -419,8 +385,7 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                       controller: plateNumberController,
                                       isDense: true,
                                       validator: (value) {
-                                        if (plateNumberController
-                                            .text.isEmpty) {
+                                        if (plateNumberController.text.isEmpty) {
                                           return "  This field is required!";
                                         } else {
                                           return null;
@@ -435,12 +400,10 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                   children: [
                                     Text(
                                       'Two Step Authentication',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                      style: TextStyle(fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(height: 20),
-                                    Text(
-                                        "Kindly enter your phone number and we will send you a security code."),
+                                    Text("Kindly enter your phone number and we will send you a security code."),
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: labelText(label: "Contact Number"),
@@ -449,8 +412,7 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                       controller: contactnumberController,
                                       isDense: true,
                                       validator: (value) {
-                                        if (contactnumberController
-                                            .text.isEmpty) {
+                                        if (contactnumberController.text.isEmpty) {
                                           return "  This field is required!";
                                         } else {
                                           return null;
@@ -465,8 +427,7 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                   width: 500,
                                   child: Wrap(
                                     alignment: WrapAlignment.center,
-                                    crossAxisAlignment:
-                                        WrapCrossAlignment.center,
+                                    crossAxisAlignment: WrapCrossAlignment.center,
                                     direction: Axis.vertical,
                                     children: [
                                       Icon(Icons.task_alt, size: 50),
@@ -475,24 +436,19 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                         'ENTER SECURITY CODE',
                                       ),
                                       SizedBox(height: 20),
-                                      Text(
-                                          "Enter the code that was sent to (+63) ${contactnumberController.text}"),
+                                      Text("Enter the code that was sent to (+63) ${contactnumberController.text}"),
                                       SizedBox(height: 20),
                                       VerificationCode(
-                                        textStyle: TextStyle(
-                                            fontSize: 20.0,
-                                            color: Colors.red[900]),
+                                        textStyle: TextStyle(fontSize: 20.0, color: Colors.red[900]),
                                         keyboardType: TextInputType.number,
                                         underlineColor: Colors.amber,
-                                        length: 4,
+                                        length: 6,
                                         cursorColor: Colors.blue,
                                         clearAll: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
                                             'clear all',
-                                            style: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Colors.blue[700]),
+                                            style: TextStyle(fontSize: 14.0, color: Colors.blue[700]),
                                           ),
                                         ),
                                         onCompleted: (String value) {
@@ -525,8 +481,7 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                 color: green,
                                 height: 45,
                                 width: 500,
-                                label:
-                                    _currentStep == 2 ? "Verify" : 'Continue',
+                                label: _currentStep == 2 ? "Verify" : 'Continue',
                                 onPressed: () async {
                                   if (_form.currentState!.validate()) {
                                     _form.currentState!.save();
@@ -534,41 +489,43 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                     // var userDetailsAPI = Queries();
                                     switch (_currentStep) {
                                       case 0:
-                                        var response = await auth
-                                            .signUpWithEmailAndPassword(
+                                        _currentStep += 1;
+                                        break;
+                                      case 1:
+                                        if (await twoStepAuth('send')) {
+                                          _currentStep += 1;
+                                        }
+
+                                        break;
+                                      case 2:
+                                        var response = await auth.signUpWithEmailAndPassword(
                                           email: emailController.text,
                                           password: passwordController.text,
                                         );
                                         if (response != null) {
                                           var userDetailsData = {
                                             "uid": response.uid,
-                                            "firstname":
-                                                firstnameController.text,
+                                            "firstname": firstnameController.text,
                                             "lastname": lastnameController.text,
                                             "email": emailController.text,
-                                            "contact_number":
-                                                contactnumberController.text,
+                                            "contact_number": contactnumberController.text,
                                             "user_type": "operator",
-                                            "status": true
+                                            "status": true,
+                                            "license_number": licenseNumberController.text,
+                                            "expiration_date": expirationDateController.text,
+                                            "maker": makerController.text,
+                                            "year_model": yearModelController.text,
+                                            "plate_number": plateNumberController.text,
                                           };
+                                          await userDetailsQuery.push("user-details", userDetailsData);
 
-                                          await userDetailsQuery.push(
-                                              "user-details", userDetailsData);
-
+                                          showToast('Account created successfuly!');
+                                          Navigator.pushNamed(context, Routes.loginpage);
                                           _currentStep += 1;
                                         } else {
                                           showToast('Email already used!');
                                         }
-                                        break;
-                                      case 1:
-                                        _currentStep += 1;
-                                        break;
-                                      case 2:
-                                        showToast(
-                                            'Account created successfuly!');
-                                        Navigator.pushNamed(
-                                            context, Routes.loginpage);
-                                        _currentStep += 1;
+
                                         break;
                                       default:
                                     }
@@ -589,8 +546,7 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                     ),
                                     TextButton(
                                       onPressed: () {
-                                        Navigator.pushNamed(
-                                            context, Routes.loginpage);
+                                        Navigator.pushNamed(context, Routes.loginpage);
                                       },
                                       child: TextBold(
                                         text: 'Login',
@@ -612,5 +568,73 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                 ),
               )
             : const Center(child: CircularProgressIndicator()));
+  }
+
+  Future<bool> twoStepAuth(action) async {
+    var auth = FirebaseAuth.instance;
+    switch (action) {
+      case 'send':
+        try {
+          await auth.verifyPhoneNumber(
+            phoneNumber: '+63${(contactnumberController.text).substring(1)}',
+            verificationCompleted: (response) {
+              print("completed $response");
+            },
+            verificationFailed: (response) {
+              print("failed $response");
+              throw FirebaseAuthException(
+                code: "verification_failed",
+                message: "Phone number verification failed",
+              );
+            },
+            codeSent: (String verificationId, int? resendToken) async {
+              codeVerificationId = verificationId;
+              print('verification id $verificationId');
+              print('resendToken $resendToken');
+              setState(() {});
+            },
+            timeout: const Duration(minutes: 5),
+            codeAutoRetrievalTimeout: (response) {
+              print("retrival timeout $response");
+              showToast("Code expired");
+            },
+          );
+          return true;
+        } on FirebaseAuthException catch (e, _) {
+          showToast(e.message, toastLength: Toast.LENGTH_LONG);
+          return false;
+        }
+
+      case 'verify':
+        if (codeVerificationId != null && _code != "") {
+          String smsCode = _code;
+          print("see code: $_code");
+          credential = PhoneAuthProvider.credential(verificationId: codeVerificationId, smsCode: smsCode);
+          try {
+            var result = await auth.signInWithCredential(credential);
+            _code = "";
+            codeVerificationId = null;
+            print('see result $result');
+            setState(() {});
+            return true;
+          } on FirebaseAuthException catch (e, _) {
+            print("see error ${e.code}");
+            if (e.code == 'invalid-phone-number') {
+              showToast('The provided phone number is not valid.');
+            } else if (e.code == 'invalid-verification-code') {
+              showToast("Verification code is invalid");
+            } else {
+              print("omething wend wrong ${e.message}");
+              showToast("something wend wrong ${e.message}");
+            }
+            return false;
+          }
+        } else {
+          showToast('Insuficient code crredentials');
+          return false;
+        }
+      default:
+        return false;
+    }
   }
 }
