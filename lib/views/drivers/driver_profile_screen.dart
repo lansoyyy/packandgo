@@ -73,8 +73,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                           children: [
                             TextButton(
                               onPressed: () {
-                                Navigator.pushNamed(
-                                    context, Routes.driverhomescreen);
+                                Navigator.pushNamed(context, Routes.driverhomescreen);
                               },
                               child: TextRegular(
                                 text: 'HOME',
@@ -106,46 +105,28 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                                           builder: (context) => AlertDialog(
                                                 title: const Text(
                                                   'Logout Confirmation',
-                                                  style: TextStyle(
-                                                      fontFamily: 'QBold',
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                  style: TextStyle(fontFamily: 'QBold', fontWeight: FontWeight.bold),
                                                 ),
                                                 content: const Text(
                                                   'Are you sure you want to Logout?',
-                                                  style: TextStyle(
-                                                      fontFamily: 'QRegular'),
+                                                  style: TextStyle(fontFamily: 'QRegular'),
                                                 ),
                                                 actions: <Widget>[
                                                   MaterialButton(
-                                                    onPressed: () =>
-                                                        Navigator.of(context)
-                                                            .pop(true),
+                                                    onPressed: () => Navigator.of(context).pop(true),
                                                     child: const Text(
                                                       'Close',
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'QRegular',
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                      style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
                                                     ),
                                                   ),
                                                   MaterialButton(
                                                     onPressed: () async {
                                                       Navigator.of(context)
-                                                          .pushReplacement(
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          const DriverLoginScreen()));
+                                                          .pushReplacement(MaterialPageRoute(builder: (context) => const DriverLoginScreen()));
                                                     },
                                                     child: const Text(
                                                       'Continue',
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'QRegular',
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                      style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
                                                     ),
                                                   ),
                                                 ],
@@ -155,46 +136,28 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                                           builder: (context) => AlertDialog(
                                                 title: const Text(
                                                   'Logout Confirmation',
-                                                  style: TextStyle(
-                                                      fontFamily: 'QBold',
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                  style: TextStyle(fontFamily: 'QBold', fontWeight: FontWeight.bold),
                                                 ),
                                                 content: const Text(
                                                   'Are you sure you want to Logout?',
-                                                  style: TextStyle(
-                                                      fontFamily: 'QRegular'),
+                                                  style: TextStyle(fontFamily: 'QRegular'),
                                                 ),
                                                 actions: <Widget>[
                                                   MaterialButton(
-                                                    onPressed: () =>
-                                                        Navigator.of(context)
-                                                            .pop(true),
+                                                    onPressed: () => Navigator.of(context).pop(true),
                                                     child: const Text(
                                                       'Close',
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'QRegular',
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                      style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
                                                     ),
                                                   ),
                                                   MaterialButton(
                                                     onPressed: () async {
                                                       Navigator.of(context)
-                                                          .pushReplacement(
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          const DriverLoginScreen()));
+                                                          .pushReplacement(MaterialPageRoute(builder: (context) => const DriverLoginScreen()));
                                                     },
                                                     child: const Text(
                                                       'Continue',
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'QRegular',
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                      style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
                                                     ),
                                                   ),
                                                 ],
@@ -243,19 +206,12 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   TextBold(
-                                    text:
-                                        '${userDetails['firstname']} ${userDetails['lastname']}',
+                                    text: '${userDetails['firstname']} ${userDetails['lastname']}',
                                     fontSize: 24,
                                     color: Colors.black,
                                   ),
-                                  TextRegular(
-                                      text: 'Edit Profile',
-                                      fontSize: 16,
-                                      color: Colors.grey),
-                                  TextRegular(
-                                      text: 'Change picture',
-                                      fontSize: 16,
-                                      color: Colors.grey),
+                                  TextRegular(text: 'Edit Profile', fontSize: 16, color: Colors.grey),
+                                  TextRegular(text: 'Change picture', fontSize: 16, color: Colors.grey),
                                 ],
                               ),
                             ],
@@ -282,10 +238,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                                 changepasswordtab = false;
                               });
                             },
-                            child: TextRegular(
-                                text: 'Profile',
-                                fontSize: 12,
-                                color: profiletab ? Colors.amber : Colors.grey),
+                            child: TextRegular(text: 'Profile', fontSize: 12, color: profiletab ? Colors.amber : Colors.grey),
                           ),
                           const SizedBox(
                             height: 10,
@@ -297,12 +250,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                                 changepasswordtab = true;
                               });
                             },
-                            child: TextRegular(
-                                text: 'Change Password',
-                                fontSize: 12,
-                                color: changepasswordtab
-                                    ? Colors.amber
-                                    : Colors.grey),
+                            child: TextRegular(text: 'Change Password', fontSize: 12, color: changepasswordtab ? Colors.amber : Colors.grey),
                           ),
                         ],
                       ),
@@ -313,9 +261,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                       const SizedBox(
                         width: 10,
                       ),
-                      profiletab
-                          ? profileTab(userDetails)
-                          : changepasswordTab(userDetails),
+                      profiletab ? profileTab(userDetails) : changepasswordTab(userDetails),
                     ],
                   ),
                 ),
@@ -347,10 +293,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
         const SizedBox(
           height: 10,
         ),
-        TextRegular(
-            text: 'Manage and secure your account',
-            fontSize: 14,
-            color: Colors.grey),
+        TextRegular(text: 'Manage and secure your account', fontSize: 14, color: Colors.grey),
         const SizedBox(
           height: 10,
         ),
@@ -389,8 +332,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
               width: 10,
             ),
             TextRegular(
-              text:
-                  "${details['firstname'] ?? ''} ${details['lastname'] ?? ''}",
+              text: "${details['firstname'] ?? ''} ${details['lastname'] ?? ''}",
               fontSize: 18,
               color: Colors.black,
             ),
@@ -447,43 +389,43 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
         const SizedBox(
           height: 10,
         ),
-        Row(
-          children: [
-            TextRegular(
-              text: 'Gender:',
-              fontSize: 12,
-              color: Colors.grey,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            TextRegular(
-              text: "${details['gender'] ?? ''}",
-              fontSize: 18,
-              color: Colors.black,
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Row(
-          children: [
-            TextRegular(
-              text: 'Date of Birth:',
-              fontSize: 12,
-              color: Colors.grey,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            TextRegular(
-              text: "${details['birthday'] ?? ''}",
-              fontSize: 18,
-              color: Colors.black,
-            ),
-          ],
-        ),
+        // Row(
+        //   children: [
+        //     TextRegular(
+        //       text: 'Gender:',
+        //       fontSize: 12,
+        //       color: Colors.grey,
+        //     ),
+        //     const SizedBox(
+        //       width: 10,
+        //     ),
+        //     TextRegular(
+        //       text: "${details['gender'] ?? ''}",
+        //       fontSize: 18,
+        //       color: Colors.black,
+        //     ),
+        //   ],
+        // ),
+        // const SizedBox(
+        //   height: 10,
+        // ),
+        // Row(
+        //   children: [
+        //     TextRegular(
+        //       text: 'Date of Birth:',
+        //       fontSize: 12,
+        //       color: Colors.grey,
+        //     ),
+        //     const SizedBox(
+        //       width: 10,
+        //     ),
+        //     TextRegular(
+        //       text: "${details['birthday'] ?? ''}",
+        //       fontSize: 18,
+        //       color: Colors.black,
+        //     ),
+        //   ],
+        // ),
         const SizedBox(
           height: 30,
         ),
@@ -523,10 +465,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
               const SizedBox(
                 height: 10,
               ),
-              TextRegular(
-                  text: 'Manage and secure your account',
-                  fontSize: 14,
-                  color: Colors.grey),
+              TextRegular(text: 'Manage and secure your account', fontSize: 14, color: Colors.grey),
               const SizedBox(
                 height: 10,
               ),
@@ -552,27 +491,18 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                       color: Colors.grey,
                     ),
                     TextRegular(
-                      text:
-                          'For your account security, do not share your password with anyone else.',
+                      text: 'For your account security, do not share your password with anyone else.',
                       fontSize: 16,
                       color: Colors.grey,
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    TextFieldWidget(
-                        isObscure: true,
-                        isPassword: true,
-                        label: 'Password',
-                        controller: passwordController),
+                    TextFieldWidget(isObscure: true, isPassword: true, label: 'Password', controller: passwordController),
                     const SizedBox(
                       height: 10,
                     ),
-                    TextFieldWidget(
-                        isObscure: true,
-                        isPassword: true,
-                        label: 'Confirm Password',
-                        controller: confirmpasswordController),
+                    TextFieldWidget(isObscure: true, isPassword: true, label: 'Confirm Password', controller: confirmpasswordController),
                     const SizedBox(
                       height: 30,
                     ),
@@ -585,10 +515,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                         label: 'Confirm',
                         onPressed: () async {
                           var authQuery = AuthQuery();
-                          await authQuery.changePassword(
-                              details['email'],
-                              passwordController.text,
-                              confirmpasswordController.text);
+                          await authQuery.changePassword(details['email'], passwordController.text, confirmpasswordController.text);
                           setState(() {
                             profiletab = true;
                             changepasswordtab = false;
@@ -614,10 +541,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
               const SizedBox(
                 height: 10,
               ),
-              TextRegular(
-                  text: 'Manage and secure your account',
-                  fontSize: 14,
-                  color: Colors.grey),
+              TextRegular(text: 'Manage and secure your account', fontSize: 14, color: Colors.grey),
               const SizedBox(
                 height: 10,
               ),
@@ -665,17 +589,10 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: TextBold(
-                              text: 'Enter your current password',
-                              fontSize: 18,
-                              color: Colors.black),
+                          title: TextBold(text: 'Enter your current password', fontSize: 18, color: Colors.black),
                           content: SizedBox(
                             height: 75,
-                            child: TextFieldWidget(
-                                isObscure: true,
-                                isPassword: true,
-                                label: 'Password',
-                                controller: passwordController),
+                            child: TextFieldWidget(isObscure: true, isPassword: true, label: 'Password', controller: passwordController),
                           ),
                           actions: [
                             TextButton(
