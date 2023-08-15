@@ -200,8 +200,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       ),
                                                       MaterialButton(
                                                         onPressed: () async {
-                                                          Navigator.of(context)
-                                                              .pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen()));
+                                                          Navigator.of(context).pushReplacement(
+                                                            MaterialPageRoute(
+                                                              builder: (context) => LoginScreen(),
+                                                            ),
+                                                          );
                                                         },
                                                         child: const Text(
                                                           'Continue',

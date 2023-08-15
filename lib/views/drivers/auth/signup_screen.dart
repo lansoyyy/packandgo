@@ -466,7 +466,10 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                         },
                                       ),
                                       TextButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          twoStepAuth('send');
+                                          showToast("Another code was sent to ${contactnumberController.text}");
+                                        },
                                         child: Text(
                                           "Send another code",
                                           style: TextStyle(color: Colors.blue),
