@@ -31,6 +31,18 @@ class _ChatWidgetState extends State<ChatWidget> {
           padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    Icons.close,
+                    color: Colors.red,
+                  ),
+                ),
+              ),
               Expanded(
                 child: ListView.builder(
                   reverse: true,
