@@ -83,10 +83,15 @@ class _SignupScreenState extends State<SignupScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            TextBold(
-                              text: 'Pack & Go',
-                              fontSize: 38,
-                              color: Colors.white,
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, Routes.landingpage);
+                              },
+                              child: TextBold(
+                                text: 'Pack & Go',
+                                fontSize: 38,
+                                color: Colors.white,
+                              ),
                             ),
                             TextButton(
                               onPressed: () {

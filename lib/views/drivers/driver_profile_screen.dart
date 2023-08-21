@@ -64,10 +64,13 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        TextBold(
-                          text: 'Pack & Go',
-                          fontSize: 38,
-                          color: Colors.white,
+                        GestureDetector(
+                          onTap: () {},
+                          child: TextBold(
+                            text: 'Pack & Go',
+                            fontSize: 38,
+                            color: Colors.white,
+                          ),
                         ),
                         Row(
                           children: [

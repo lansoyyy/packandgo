@@ -61,10 +61,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          TextBold(
-                            text: 'Pack & Go',
-                            fontSize: 38,
-                            color: Colors.white,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, Routes.landingpage);
+                            },
+                            child: TextBold(
+                              text: 'Pack & Go',
+                              fontSize: 38,
+                              color: Colors.white,
+                            ),
                           ),
                           TextButton(
                             onPressed: () {
@@ -176,8 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           context: context,
                         );
                         if (!response['error']) {
-                          await userDetailsQuery
-                              .getUserData(response['user-data'].uid);
+                          await userDetailsQuery.getUserData(response['user-data'].uid);
                           showToast('Logged in successfuly!');
                           Navigator.pushNamed(context, Routes.homepage);
                         } else {
@@ -230,8 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
         try {
           GoogleSignInAccount googleSignInAccount = await _handleGoogleSignIn();
           final googleAuth = await googleSignInAccount.authentication;
-          final googleAuthCred = GoogleAuthProvider.credential(
-              idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+          final googleAuthCred = GoogleAuthProvider.credential(idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
           final user = await firebaseAuth.signInWithCredential(googleAuthCred);
           // print("User : $user");
           if (user.credential!.accessToken != null) {
@@ -266,11 +269,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future _handleFBSignIn() async {
     FacebookLogin facebookLogin = FacebookLogin();
-    FacebookLoginResult facebookLoginResult = await facebookLogin.logIn(
-        permissions: [
-          FacebookPermission.email,
-          FacebookPermission.publicProfile
-        ]);
+    FacebookLoginResult facebookLoginResult = await facebookLogin.logIn(permissions: [FacebookPermission.email, FacebookPermission.publicProfile]);
     print("facebookLoginResult $facebookLoginResult");
     // switch (facebookLoginResult.status) {
     //   case FacebookLoginStatus.cancelledByUser:
@@ -289,8 +288,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future _handleGoogleSignIn() async {
     GoogleSignIn googleSignIn = GoogleSignIn(
       scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly'],
-      clientId:
-          "370229023048-9p71ocm86lavkn5bi9u5779e1bi47tvg.apps.googleusercontent.com",
+      clientId: "370229023048-9p71ocm86lavkn5bi9u5779e1bi47tvg.apps.googleusercontent.com",
     );
     GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
     return googleSignInAccount;

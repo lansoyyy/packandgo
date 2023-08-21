@@ -80,17 +80,19 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        TextBold(
-                          text: 'Pack & Go',
-                          fontSize: 38,
-                          color: Colors.white,
+                        GestureDetector(
+                          onTap: () {},
+                          child: TextBold(
+                            text: 'Pack & Go',
+                            fontSize: 38,
+                            color: Colors.white,
+                          ),
                         ),
                         Wrap(
                           children: [
                             TextButton(
                               onPressed: () {
-                                Navigator.pushNamed(
-                                    context, Routes.driverprofilescreen);
+                                Navigator.pushNamed(context, Routes.driverprofilescreen);
                               },
                               child: TextRegular(
                                 text: 'PROFILE',
@@ -105,46 +107,31 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                                     builder: (context) => AlertDialog(
                                           title: const Text(
                                             'Logout Confirmation',
-                                            style: TextStyle(
-                                                fontFamily: 'QBold',
-                                                fontWeight: FontWeight.bold),
+                                            style: TextStyle(fontFamily: 'QBold', fontWeight: FontWeight.bold),
                                           ),
                                           content: const Text(
                                             'Are you sure you want to Logout?',
-                                            style: TextStyle(
-                                                fontFamily: 'QRegular'),
+                                            style: TextStyle(fontFamily: 'QRegular'),
                                           ),
                                           actions: <Widget>[
                                             MaterialButton(
-                                              onPressed: () =>
-                                                  Navigator.of(context)
-                                                      .pop(true),
+                                              onPressed: () => Navigator.of(context).pop(true),
                                               child: const Text(
                                                 'Close',
-                                                style: TextStyle(
-                                                    fontFamily: 'QRegular',
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
                                               ),
                                             ),
                                             MaterialButton(
                                               onPressed: () async {
-                                                final SharedPreferences
-                                                    userData =
-                                                    await SharedPreferences
-                                                        .getInstance();
+                                                final SharedPreferences userData = await SharedPreferences.getInstance();
                                                 var usthQuery = AuthQuery();
                                                 await usthQuery.signOut();
                                                 await userData.clear();
-                                                Navigator.pushNamed(context,
-                                                    Routes.driverloginpage);
+                                                Navigator.pushNamed(context, Routes.driverloginpage);
                                               },
                                               child: const Text(
                                                 'Continue',
-                                                style: TextStyle(
-                                                    fontFamily: 'QRegular',
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
                                               ),
                                             ),
                                           ],
@@ -256,8 +243,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                                         });
                                       },
                                       child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10, right: 10),
+                                        padding: const EdgeInsets.only(left: 10, right: 10),
                                         child: TextRegular(
                                           text: 'Status: ${statuses[i]}',
                                           fontSize: 14,
@@ -286,14 +272,9 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                 StreamBuilder(
                   stream: streamQuery.getMultipleSnapsByData(roots: [
                     // {"root": "user-details", "key": "uid", "value": _auth.currentUser!.uid},
-                    {
-                      "root": "records",
-                      "key": "uid",
-                      "value": _auth.currentUser!.uid
-                    },
+                    {"root": "records", "key": "uid", "value": _auth.currentUser!.uid},
                   ]),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     }
@@ -434,44 +415,27 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                     height: 30,
                     width: 125,
                     child: Center(
-                      child: TextRegular(
-                          text: value['booking-status'],
-                          fontSize: 14,
-                          color: Colors.white),
+                      child: TextRegular(text: value['booking-status'], fontSize: 14, color: Colors.white),
                     ),
                   ),
-                  TextRegular(
-                      text: value['booking-id'],
-                      fontSize: 14,
-                      color: Colors.black),
+                  TextRegular(text: value['booking-id'], fontSize: 14, color: Colors.black),
                 ],
               ),
             ),
             DataCell(
-              TextRegular(
-                  text: 'July 02, 2023 (3:30pm - 4:30pm)',
-                  fontSize: 14,
-                  color: Colors.black),
+              TextRegular(text: 'July 02, 2023 (3:30pm - 4:30pm)', fontSize: 14, color: Colors.black),
             ),
             DataCell(
-              TextRegular(
-                  text: value['drop-off-location'],
-                  fontSize: 14,
-                  color: Colors.black),
+              TextRegular(text: value['drop-off-location'], fontSize: 14, color: Colors.black),
             ),
             DataCell(
-              TextRegular(
-                  text: value['name'], fontSize: 14, color: Colors.black),
+              TextRegular(text: value['name'], fontSize: 14, color: Colors.black),
             ),
             DataCell(
-              TextRegular(
-                  text: value['vehicle-type'],
-                  fontSize: 14,
-                  color: Colors.black),
+              TextRegular(text: value['vehicle-type'], fontSize: 14, color: Colors.black),
             ),
             DataCell(
-              TextRegular(
-                  text: value['price'], fontSize: 14, color: Colors.black),
+              TextRegular(text: value['price'], fontSize: 14, color: Colors.black),
             ),
             DataCell(
               Column(
@@ -493,8 +457,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                       height: 30,
                       width: 125,
                       child: Center(
-                        child: TextRegular(
-                            text: 'Cancel', fontSize: 14, color: Colors.white),
+                        child: TextRegular(text: 'Cancel', fontSize: 14, color: Colors.white),
                       ),
                     ),
                   ),
@@ -531,8 +494,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                       height: 30,
                       width: 125,
                       child: Center(
-                        child: TextRegular(
-                            text: 'View', fontSize: 14, color: Colors.white),
+                        child: TextRegular(text: 'View', fontSize: 14, color: Colors.white),
                       ),
                     ),
                   ),
@@ -580,10 +542,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                     ),
                     height: 50,
                     child: Center(
-                      child: TextRegular(
-                          text: 'Booking Details',
-                          fontSize: 18,
-                          color: Colors.white),
+                      child: TextRegular(text: 'Booking Details', fontSize: 18, color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -666,10 +625,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                     ),
                     height: 50,
                     child: Center(
-                      child: TextRegular(
-                          text: 'Your Information',
-                          fontSize: 18,
-                          color: Colors.white),
+                      child: TextRegular(text: 'Your Information', fontSize: 18, color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -778,11 +734,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
             const SizedBox(
               height: 10,
             ),
-            option == 'Others'
-                ? TextFieldWidget(
-                    label: 'Please specify your reason',
-                    controller: othersController)
-                : const SizedBox(),
+            option == 'Others' ? TextFieldWidget(label: 'Please specify your reason', controller: othersController) : const SizedBox(),
           ],
         );
       }),
@@ -831,9 +783,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                             data["id"],
                             {
                               'booking-status': 'canceled',
-                              'cancel-reasons': option == 'Others'
-                                  ? othersController.text
-                                  : option,
+                              'cancel-reasons': option == 'Others' ? othersController.text : option,
                             },
                           );
                           Navigator.pop(context);
@@ -864,8 +814,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
         builder: (context) => AlertDialog(
               title: const Text(
                 'Booking Confirmation',
-                style:
-                    TextStyle(fontFamily: 'QBold', fontWeight: FontWeight.bold),
+                style: TextStyle(fontFamily: 'QBold', fontWeight: FontWeight.bold),
               ),
               content: const Text(
                 'Are you sure you want to confirm this booking?',
@@ -876,16 +825,14 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   onPressed: () => Navigator.of(context).pop(true),
                   child: const Text(
                     'Close',
-                    style: TextStyle(
-                        fontFamily: 'QRegular', fontWeight: FontWeight.bold),
+                    style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
                   ),
                 ),
                 MaterialButton(
                   onPressed: () => Navigator.of(context).pop(true),
                   child: const Text(
                     'Continue',
-                    style: TextStyle(
-                        fontFamily: 'QRegular', fontWeight: FontWeight.bold),
+                    style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
                   ),
                 ),
               ],

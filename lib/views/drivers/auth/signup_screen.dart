@@ -102,10 +102,15 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              TextBold(
-                                text: 'Pack & Go',
-                                fontSize: 38,
-                                color: Colors.white,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(context, Routes.landingpage);
+                                },
+                                child: TextBold(
+                                  text: 'Pack & Go',
+                                  fontSize: 38,
+                                  color: Colors.white,
+                                ),
                               ),
                               TextButton(
                                 onPressed: () {
@@ -523,7 +528,7 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                           await userDetailsQuery.push("user-details", userDetailsData);
 
                                           showToast('Account created successfuly!');
-                                          Navigator.pushNamed(context, Routes.loginpage);
+                                          Navigator.pushNamed(context, Routes.driverloginpage);
                                           _currentStep += 1;
                                         } else {
                                           showToast('Email already used!');
