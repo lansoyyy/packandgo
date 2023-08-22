@@ -524,6 +524,35 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                             "maker": makerController.text,
                                             "year_model": yearModelController.text,
                                             "plate_number": plateNumberController.text,
+                                            "vehicle_type": selectedVehicle,
+                                            // selectedVehicle == "Motorcycle"
+                                            //     ? "motorcycle"
+                                            //     : selectedVehicle == "500 Kg Jeepney (Standard Type)"
+                                            //         ? "500kg-jeepney"
+                                            //         : selectedVehicle == "800 Kg Jeepney (Lawin Type)"
+                                            //             ? "800kg-jeepney"
+                                            //             : selectedVehicle == "300 Kg Taxi Sedan"
+                                            //                 ? "300kg-taxi"
+                                            //                 : selectedVehicle == "500 Kg Taxi MPV"
+                                            //                     ? "500kg-taxi"
+                                            //                     : selectedVehicle == "6-Wheel Truck Close Type"
+                                            //                         ? "6-wheel-truck-close-type"
+                                            //                         : selectedVehicle == "10-Wheel Truck Close Type"
+                                            //                             ? "10-wheel-truck-close-type"
+                                            //                             : selectedVehicle == "6-Wheel Truck Open Type"
+                                            //                                 ? "6-wheel-truck-open-type"
+                                            //                                 : selectedVehicle == "10-Wheel Truck Open Type"
+                                            //                                     ? "10-wheel-truck-open-type"
+                                            //                                     : "",
+                                            // {"name": "Motorcycle", "image": "motorcycle.png"},
+                                            // {"name": "500 Kg Jeepney (Standard Type)", "image": "500-kg-Jeepney-(Standard-Type).png"},
+                                            // {"name": "800 Kg Jeepney (Lawin Type)", "image": "800-kg-Jeepney-(Lawin-Type).png"},
+                                            // {"name": "300 Kg Taxi Sedan", "image": "300-Kg-Taxi.png"},
+                                            // {"name": "500 Kg Taxi MPV", "image": "500-Kg-Taxi-MPV.png"},
+                                            // {"name": "6-Wheel Truck Close Type", "image": "6-Wheel-Truck-Close-Type.png"},
+                                            // {"name": "10-Wheel Truck Close Type", "image": "10-Wheel-Truck-Close-Type.png"},
+                                            // {"name": "6-Wheel Truck Open Type", "image": "6-Wheel-Truck-Open-Type.png"},
+                                            // {"name": "10-Wheel Truck Open Type", "image": "10-Wheel-Truck-Open-Type.png"},
                                           };
                                           await userDetailsQuery.push("user-details", userDetailsData);
 

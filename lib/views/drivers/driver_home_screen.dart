@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -45,8 +47,15 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
   int dropValue = 0;
   int dropValue1 = 0;
+  var userDetails;
 
   final othersController = TextEditingController();
+  @override
+  void initState() {
+    getUserDEtails();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -66,7 +75,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
           );
         },
       ),
-      body: !isLoading
+      body: !isLoading && userDetails != null
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -272,7 +281,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                 StreamBuilder(
                   stream: streamQuery.getMultipleSnapsByData(roots: [
                     // {"root": "user-details", "key": "uid", "value": _auth.currentUser!.uid},
-                    {"root": "records", "key": "uid", "value": _auth.currentUser!.uid},
+                    {"root": "records", "key": "vehicle-type", "value": (userDetails["vehicle_type"]).toString()},
                   ]),
                   builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     if (snapshot.hasError) {
@@ -400,6 +409,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
   List<DataRow> dataRows(data) {
     List<DataRow> dataRows = [];
     data.forEach((value) {
+      var status = value['booking-status'].toString().toLowerCase();
       dataRows.add(
         DataRow(
           cells: [
@@ -409,7 +419,13 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.orange,
+                      color: status == "pending"
+                          ? Colors.orange
+                          : status == "cancelled"
+                              ? Colors.red
+                              : status == "completed"
+                                  ? Colors.green
+                                  : Colors.grey,
                       borderRadius: BorderRadius.circular(5),
                     ),
                     height: 30,
@@ -472,6 +488,17 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                             return AlertDialog(
                               content: viewDetailDialog(),
                               actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    confirmationDialog(value);
+                                  },
+                                  child: TextRegular(
+                                    text: 'Complete',
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
                                 TextButton(
                                   onPressed: () {
                                     Navigator.pop(context);
@@ -808,7 +835,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     );
   }
 
-  confirmationDialog() {
+  confirmationDialog(data) {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -829,7 +856,18 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   ),
                 ),
                 MaterialButton(
-                  onPressed: () => Navigator.of(context).pop(true),
+                  onPressed: () async {
+                    var query = Queries();
+                    await query.update(
+                      'records',
+                      data["id"],
+                      {
+                        'booking-status': 'Completed',
+                        // 'cancel-reasons': option == 'Others' ? othersController.text : option,
+                      },
+                    );
+                    Navigator.of(context).pop(true);
+                  },
                   child: const Text(
                     'Continue',
                     style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
@@ -837,5 +875,12 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                 ),
               ],
             ));
+  }
+
+  Future getUserDEtails() async {
+    final SharedPreferences userData = await SharedPreferences.getInstance();
+    var details = userData.getString('userDetails');
+    userDetails = details != null ? json.decode(details) : null;
+    setState(() {});
   }
 }
