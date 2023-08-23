@@ -25,7 +25,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
   var recordsData = [];
   bool isLoading = false;
 
-  List statuses = ['All', 'Cancelled', 'Completed', 'Pending'];
+  List statuses = ['All', 'Canceled', 'Completed', 'Pending'];
 
   String status = 'All';
   String option = 'Change of plans';
@@ -250,7 +250,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                           case 'All':
                             filterData();
                             break;
-                          case 'Cancelled':
+                          case 'Canceled':
                             if (value['booking-status'] == 'canceled') {
                               filterData();
                             }
@@ -356,7 +356,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     decoration: BoxDecoration(
                       color: status == "pending"
                           ? Colors.orange
-                          : status == "cancelled"
+                          : status == "canceled"
                               ? Colors.red
                               : status == "completed"
                                   ? Colors.green

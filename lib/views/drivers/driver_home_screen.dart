@@ -29,7 +29,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
   var recordsData = [];
   bool isLoading = false;
 
-  List statuses = ['All', 'Cancelled', 'Completed', 'Pending'];
+  List statuses = ['All', 'Canceled', 'Completed', 'Pending'];
 
   String status = 'All';
   String option = 'Change of plans';
@@ -315,7 +315,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                           case 'All':
                             filterData();
                             break;
-                          case 'Cancelled':
+                          case 'Canceled':
                             if (value['booking-status'] == 'canceled') {
                               filterData();
                             }
