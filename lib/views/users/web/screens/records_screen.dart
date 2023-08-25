@@ -59,7 +59,9 @@ class _RecordsScreenState extends State<RecordsScreen> {
             showDialog(
               context: context,
               builder: (context) {
-                return const ChatWidget();
+                return ChatWidget(
+                  customerData: recordsData,
+                );
               },
             );
           }),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ChatWidget extends StatefulWidget {
-  const ChatWidget({super.key});
+  final customerData;
+  const ChatWidget({super.key, required this.customerData});
 
   @override
   _ChatWidgetState createState() => _ChatWidgetState();
@@ -23,6 +24,8 @@ class _ChatWidgetState extends State<ChatWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var customerData = widget.customerData;
+    print("customer data $customerData");
     return Dialog(
       child: SizedBox(
         height: 400,
@@ -77,8 +80,7 @@ class _ChatWidgetState extends State<ChatWidget> {
               child: TextField(
                 controller: _textController,
                 onSubmitted: _handleSubmitted,
-                decoration:
-                    const InputDecoration.collapsed(hintText: 'Send a message'),
+                decoration: const InputDecoration.collapsed(hintText: 'Send a message'),
               ),
             ),
             Container(
