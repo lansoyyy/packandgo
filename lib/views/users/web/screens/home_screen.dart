@@ -356,6 +356,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         "booking-status": "pending",
                                         "booking-id": getRandomString(10),
                                         "uid": _auth.currentUser!.uid,
+                                        "message-list": [
+                                          {
+                                            "message": "Message here...",
+                                            "date": (DateTime.now()).toString(),
+                                          }
+                                        ],
                                       };
                                       await saveBookingDetails(bookingDetails: details);
                                       bookingRequestDIalog();
@@ -389,42 +395,43 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bookingRequestDIalog() {
     showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          return AlertDialog(
-            title: TextRegular(
-              text: 'Booking Request Received',
-              fontSize: 18,
-              color: Colors.black,
-            ),
-            content: SizedBox(
-              width: 300,
-              height: 150,
-              child: Center(
-                child: TextRegular(
-                  text:
-                      'Thankyou for your booking request\n\nOur of our drivers will communicate with you in the chatbox to discuss the best price for your move service. Your booking status is currently set to pending until both parties agree on the cost.\n\nWe appreciate your business!',
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: TextRegular(
+            text: 'Booking Request Received',
+            fontSize: 18,
+            color: Colors.black,
+          ),
+          content: SizedBox(
+            width: 300,
+            height: 150,
+            child: Center(
+              child: TextRegular(
+                text:
+                    'Thankyou for your booking request\n\nOur of our drivers will communicate with you in the chatbox to discuss the best price for your move service. Your booking status is currently set to pending until both parties agree on the cost.\n\nWe appreciate your business!',
+                fontSize: 14,
+                color: Colors.grey,
               ),
             ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, Routes.homepage);
-                  clearControllers();
-                },
-                child: TextRegular(
-                  text: 'Close',
-                  fontSize: 14,
-                  color: Colors.black,
-                ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, Routes.homepage);
+                clearControllers();
+              },
+              child: TextRegular(
+                text: 'Close',
+                fontSize: 14,
+                color: Colors.black,
               ),
-            ],
-          );
-        });
+            ),
+          ],
+        );
+      },
+    );
   }
 
   clearControllers() {

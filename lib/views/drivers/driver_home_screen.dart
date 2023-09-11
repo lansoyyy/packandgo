@@ -70,7 +70,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
           showDialog(
             context: context,
             builder: (context) {
-              print("user data from page $recordsData");
+              // print("user data from page $recordsData");
               return Dialog(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
@@ -78,11 +78,12 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                     width: 400,
                     height: 400,
                     child: ListView.separated(
-                      itemCount: 5,
+                      itemCount: recordsData.length,
                       separatorBuilder: (context, index) {
                         return const Divider();
                       },
                       itemBuilder: (context, index) {
+                        final record = recordsData[index];
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: ListTile(
@@ -90,8 +91,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                               showDialog(
                                 context: context,
                                 builder: (context) {
-                                  return const ChatWidget(
-                                    customerData: {},
+                                  return ChatWidget(
+                                    customerData: record,
                                   );
                                 },
                               );
@@ -99,13 +100,11 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                             leading: const CircleAvatar(
                               minRadius: 35,
                               maxRadius: 35,
-                              backgroundImage: AssetImage(
-                                'assets/images/profile.png',
-                              ),
+                              backgroundImage: AssetImage('assets/images/profile.png'),
                             ),
-                            title: TextBold(text: 'Message here...', fontSize: 14, color: Colors.black),
-                            subtitle: TextRegular(text: 'John Doe', fontSize: 12, color: Colors.grey),
-                            trailing: TextRegular(text: 'Date and Time', fontSize: 12, color: Colors.black),
+                            title: TextBold(text: record["message-list"][0]["message"], fontSize: 14, color: Colors.black),
+                            subtitle: TextRegular(text: record['name'], fontSize: 12, color: Colors.grey),
+                            trailing: TextRegular(text: record["message-list"][0]['date'], fontSize: 12, color: Colors.black),
                           ),
                         );
                       },
@@ -154,39 +153,40 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                             TextButton(
                               onPressed: () {
                                 showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                          title: const Text(
-                                            'Logout Confirmation',
-                                            style: TextStyle(fontFamily: 'QBold', fontWeight: FontWeight.bold),
-                                          ),
-                                          content: const Text(
-                                            'Are you sure you want to Logout?',
-                                            style: TextStyle(fontFamily: 'QRegular'),
-                                          ),
-                                          actions: <Widget>[
-                                            MaterialButton(
-                                              onPressed: () => Navigator.of(context).pop(true),
-                                              child: const Text(
-                                                'Close',
-                                                style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
-                                              ),
-                                            ),
-                                            MaterialButton(
-                                              onPressed: () async {
-                                                final SharedPreferences userData = await SharedPreferences.getInstance();
-                                                var usthQuery = AuthQuery();
-                                                await usthQuery.signOut();
-                                                await userData.clear();
-                                                Navigator.pushNamed(context, Routes.driverloginpage);
-                                              },
-                                              child: const Text(
-                                                'Continue',
-                                                style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
-                                              ),
-                                            ),
-                                          ],
-                                        ));
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text(
+                                      'Logout Confirmation',
+                                      style: TextStyle(fontFamily: 'QBold', fontWeight: FontWeight.bold),
+                                    ),
+                                    content: const Text(
+                                      'Are you sure you want to Logout?',
+                                      style: TextStyle(fontFamily: 'QRegular'),
+                                    ),
+                                    actions: <Widget>[
+                                      MaterialButton(
+                                        onPressed: () => Navigator.of(context).pop(true),
+                                        child: const Text(
+                                          'Close',
+                                          style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      MaterialButton(
+                                        onPressed: () async {
+                                          final SharedPreferences userData = await SharedPreferences.getInstance();
+                                          var usthQuery = AuthQuery();
+                                          await usthQuery.signOut();
+                                          await userData.clear();
+                                          Navigator.pushNamed(context, Routes.driverloginpage);
+                                        },
+                                        child: const Text(
+                                          'Continue',
+                                          style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
                               },
                               child: TextRegular(
                                 text: 'LOGOUT',
@@ -237,9 +237,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.only(left: 50, right: 50),
                   child: Row(
@@ -329,11 +327,9 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                     if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     }
-
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const CircularProgressIndicator();
                     }
-
                     if (snapshot.hasData) {
                       final data = snapshot.data;
                       var snapshotList = snapshot.data as List<QuerySnapshot>;
@@ -341,7 +337,6 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                       for (var doc in snapshotList[0].docs) {
                         var value = doc.data()! as Map;
                         value['id'] = doc.id;
-
                         filterData() {
                           String searchString = value.toString();
                           if (searchController.text.isNotEmpty) {
@@ -375,7 +370,6 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                           default:
                         }
                       }
-
                       return DataTable(
                         dataRowHeight: 100,
                         columns: [
@@ -450,81 +444,83 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
   List<DataRow> dataRows(data) {
     List<DataRow> dataRows = [];
-    data.forEach((value) {
-      var status = value['booking-status'].toString().toLowerCase();
-      dataRows.add(
-        DataRow(
-          cells: [
-            DataCell(
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: status == "pending"
-                          ? Colors.orange
-                          : status == "canceled"
-                              ? Colors.red
-                              : status == "completed"
-                                  ? Colors.green
-                                  : Colors.grey,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    height: 30,
-                    width: 125,
-                    child: Center(
-                      child: TextRegular(text: value['booking-status'], fontSize: 14, color: Colors.white),
-                    ),
-                  ),
-                  TextRegular(text: value['booking-id'], fontSize: 14, color: Colors.black),
-                ],
-              ),
-            ),
-            DataCell(
-              TextRegular(text: 'July 02, 2023 (3:30pm - 4:30pm)', fontSize: 14, color: Colors.black),
-            ),
-            DataCell(
-              TextRegular(text: value['drop-off-location'], fontSize: 14, color: Colors.black),
-            ),
-            DataCell(
-              TextRegular(text: value['name'], fontSize: 14, color: Colors.black),
-            ),
-            DataCell(
-              TextRegular(text: value['vehicle-type'], fontSize: 14, color: Colors.black),
-            ),
-            DataCell(
-              TextRegular(text: value['price'], fontSize: 14, color: Colors.black),
-            ),
-            DataCell(
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return cancelDialog(value);
-                          });
-                    },
-                    child: Container(
+    data.forEach(
+      (value) {
+        var status = value['booking-status'].toString().toLowerCase();
+        dataRows.add(
+          DataRow(
+            cells: [
+              DataCell(
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
                       decoration: BoxDecoration(
-                        color: Colors.red,
+                        color: status == "pending"
+                            ? Colors.orange
+                            : status == "canceled"
+                                ? Colors.red
+                                : status == "completed"
+                                    ? Colors.green
+                                    : Colors.grey,
                         borderRadius: BorderRadius.circular(5),
                       ),
                       height: 30,
                       width: 125,
                       child: Center(
-                        child: TextRegular(text: 'Cancel', fontSize: 14, color: Colors.white),
+                        child: TextRegular(text: value['booking-status'], fontSize: 14, color: Colors.white),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      showDialog(
+                    TextRegular(text: value['booking-id'], fontSize: 14, color: Colors.black),
+                  ],
+                ),
+              ),
+              DataCell(
+                TextRegular(text: 'July 02, 2023 (3:30pm - 4:30pm)', fontSize: 14, color: Colors.black),
+              ),
+              DataCell(
+                TextRegular(text: value['drop-off-location'], fontSize: 14, color: Colors.black),
+              ),
+              DataCell(
+                TextRegular(text: value['name'], fontSize: 14, color: Colors.black),
+              ),
+              DataCell(
+                TextRegular(text: value['vehicle-type'], fontSize: 14, color: Colors.black),
+              ),
+              DataCell(
+                TextRegular(text: value['price'], fontSize: 14, color: Colors.black),
+              ),
+              DataCell(
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return cancelDialog(value);
+                          },
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        height: 30,
+                        width: 125,
+                        child: Center(
+                          child: TextRegular(text: 'Cancel', fontSize: 14, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
@@ -553,28 +549,29 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                                 ),
                               ],
                             );
-                          });
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      height: 30,
-                      width: 125,
-                      child: Center(
-                        child: TextRegular(text: 'View', fontSize: 14, color: Colors.white),
+                          },
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        height: 30,
+                        width: 125,
+                        child: Center(
+                          child: TextRegular(text: 'View', fontSize: 14, color: Colors.white),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      );
-    });
-
+            ],
+          ),
+        );
+      },
+    );
     return dataRows;
   }
 
@@ -879,44 +876,45 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
   confirmationDialog(data) {
     showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: const Text(
-                'Booking Confirmation',
-                style: TextStyle(fontFamily: 'QBold', fontWeight: FontWeight.bold),
-              ),
-              content: const Text(
-                'Are you sure you want to confirm this booking?',
-                style: TextStyle(fontFamily: 'QRegular'),
-              ),
-              actions: <Widget>[
-                MaterialButton(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text(
-                    'Close',
-                    style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
-                  ),
-                ),
-                MaterialButton(
-                  onPressed: () async {
-                    var query = Queries();
-                    await query.update(
-                      'records',
-                      data["id"],
-                      {
-                        'booking-status': 'Completed',
-                        // 'cancel-reasons': option == 'Others' ? othersController.text : option,
-                      },
-                    );
-                    Navigator.of(context).pop(true);
-                  },
-                  child: const Text(
-                    'Continue',
-                    style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ));
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(
+          'Booking Confirmation',
+          style: TextStyle(fontFamily: 'QBold', fontWeight: FontWeight.bold),
+        ),
+        content: const Text(
+          'Are you sure you want to confirm this booking?',
+          style: TextStyle(fontFamily: 'QRegular'),
+        ),
+        actions: <Widget>[
+          MaterialButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text(
+              'Close',
+              style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
+            ),
+          ),
+          MaterialButton(
+            onPressed: () async {
+              var query = Queries();
+              await query.update(
+                'records',
+                data["id"],
+                {
+                  'booking-status': 'Completed',
+                  // 'cancel-reasons': option == 'Others' ? othersController.text : option,
+                },
+              );
+              Navigator.of(context).pop(true);
+            },
+            child: const Text(
+              'Continue',
+              style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Future getUserDEtails() async {

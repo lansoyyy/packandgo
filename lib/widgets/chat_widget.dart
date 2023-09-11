@@ -14,11 +14,9 @@ class _ChatWidgetState extends State<ChatWidget> {
 
   void _handleSubmitted(String text) {
     if (text.trim().isEmpty) return;
-
     setState(() {
       _messages.insert(0, ChatMessage(text: text));
     });
-
     _textController.clear();
   }
 
@@ -99,9 +97,7 @@ class _ChatWidgetState extends State<ChatWidget> {
 
 class ChatMessage extends StatelessWidget {
   final String text;
-
   const ChatMessage({super.key, required this.text});
-
   @override
   Widget build(BuildContext context) {
     return Container(
