@@ -356,12 +356,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         "booking-status": "pending",
                                         "booking-id": getRandomString(10),
                                         "uid": _auth.currentUser!.uid,
-                                        "message-list": [
-                                          {
+                                        "message-list": [{
+                                          "you": {
                                             "message": "Message here...",
                                             "date": (DateTime.now()).toString(),
                                           }
-                                        ],
+                                        }],
                                       };
                                       await saveBookingDetails(bookingDetails: details);
                                       bookingRequestDIalog();

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../services/getInitialName.dart';
+
 class ChatWidget extends StatefulWidget {
   final customerData;
   const ChatWidget({super.key, required this.customerData});
@@ -12,12 +14,27 @@ class _ChatWidgetState extends State<ChatWidget> {
   final TextEditingController _textController = TextEditingController();
   final List<ChatMessage> _messages = [];
 
-  void _handleSubmitted(String text) {
+  _handleSubmitted({text, sender}) {
     if (text.trim().isEmpty) return;
     setState(() {
-      _messages.insert(0, ChatMessage(text: text));
+      _messages.insert(
+          0,
+          ChatMessage(
+            text: text,
+            name: widget.customerData["name"],
+            messageOwner: widget.customerData["message-list"]["sender"] ?? "driver",
+          ));
     });
     _textController.clear();
+  }
+
+  @override
+  void initState() {
+    for (var message in widget.customerData["message-list"]) {
+      print("see emessage $message");
+      // _handleSubmitted(text: message["message"] ?? "", sender: message["sender"]);
+    }
+    super.initState();
   }
 
   @override
@@ -77,7 +94,7 @@ class _ChatWidgetState extends State<ChatWidget> {
             Flexible(
               child: TextField(
                 controller: _textController,
-                onSubmitted: _handleSubmitted,
+                onSubmitted: _handleSubmitted(text: "", sender: null),
                 decoration: const InputDecoration.collapsed(hintText: 'Send a message'),
               ),
             ),
@@ -85,7 +102,7 @@ class _ChatWidgetState extends State<ChatWidget> {
               margin: const EdgeInsets.symmetric(horizontal: 4.0),
               child: IconButton(
                 icon: const Icon(Icons.send),
-                onPressed: () => _handleSubmitted(_textController.text),
+                onPressed: () => _handleSubmitted(text: _textController.text, sender: "driver"),
               ),
             ),
           ],
@@ -97,34 +114,65 @@ class _ChatWidgetState extends State<ChatWidget> {
 
 class ChatMessage extends StatelessWidget {
   final String text;
-  const ChatMessage({super.key, required this.text});
+  final name;
+  final messageOwner;
+  const ChatMessage({super.key, required this.text, required this.name, required this.messageOwner});
+
   @override
   Widget build(BuildContext context) {
+    String userInitialName = getInitailName(name) ?? '';
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            margin: const EdgeInsets.only(right: 16.0),
-            child: const CircleAvatar(
-              child: Text('User'),
-            ),
-          ),
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      alignment: Alignment.centerRight,
+      child: messageOwner == "driver"
+          ? Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text('User', style: Theme.of(context).textTheme.titleMedium),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(name, style: Theme.of(context).textTheme.titleMedium),
+                    Container(
+                      margin: const EdgeInsets.only(top: 5.0),
+                      child: Text(text),
+                    ),
+                  ],
+                ),
+                Flexible(
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 16.0),
+                    child: CircleAvatar(
+                      child: Text(userInitialName),
+                    ),
+                  ),
+                ),
+              ],
+            )
+          : Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
                 Container(
-                  margin: const EdgeInsets.only(top: 5.0),
-                  child: Text(text),
+                  margin: const EdgeInsets.only(right: 16.0),
+                  child: CircleAvatar(
+                    child: Text(userInitialName),
+                  ),
+                ),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(name, style: Theme.of(context).textTheme.titleMedium),
+                      Container(
+                        margin: const EdgeInsets.only(top: 5.0),
+                        child: Text(text),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }
