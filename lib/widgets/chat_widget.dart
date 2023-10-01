@@ -1,5 +1,11 @@
+// ignore_for_file: unnecessary_cast
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../queries/queries.dart';
+import '../queries/streamQueries.dart';
 import '../services/getInitialName.dart';
 
 class ChatWidget extends StatefulWidget {
@@ -12,75 +18,111 @@ class ChatWidget extends StatefulWidget {
 
 class _ChatWidgetState extends State<ChatWidget> {
   final TextEditingController _textController = TextEditingController();
-  final List<ChatMessage> _messages = [];
+  List<ChatMessage> _messages = [];
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  var streamQuery = StreamQuery();
+  var messageData;
+  var query = Queries();
+  _handleSubmitted({text, sender}) async {
+    if (!(text.trim().isEmpty)) {
+      var currentConvo = messageData["convo"];
+      currentConvo.add({
+        "message": text,
+        "date": (DateTime.now()).toString(),
+        "sender": "driver",
+      });
+      var messageUpdate = {'convo': currentConvo};
+      await query.update("messages", messageData["id"] ?? "", messageUpdate);
 
-  _handleSubmitted({text, sender}) {
-    if (text.trim().isEmpty) return;
-    setState(() {
-      _messages.insert(
-          0,
-          ChatMessage(
-            text: text,
-            name: widget.customerData["name"],
-            messageOwner: widget.customerData["message-list"]["sender"] ?? "driver",
-          ));
-    });
-    _textController.clear();
+      _textController.clear();
+    }
   }
 
   @override
   void initState() {
-    for (var message in widget.customerData["message-list"]) {
-      print("see emessage $message");
-      // _handleSubmitted(text: message["message"] ?? "", sender: message["sender"]);
-    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     var customerData = widget.customerData;
-    print("customer data $customerData");
     return Dialog(
-      child: SizedBox(
-        height: 400,
-        width: 400,
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(
-                    Icons.close,
-                    color: Colors.red,
+      child: StreamBuilder(
+          stream: streamQuery.getMultipleSnapsByData(roots: [
+            {"root": "messages"},
+          ]),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            }
+
+            if (snapshot.hasData) {
+              final data = snapshot.data;
+              var snapshotList = snapshot.data as List<QuerySnapshot>;
+              for (var doc in snapshotList[0].docs) {
+                var value = doc.data()! as Map;
+                value['id'] = doc.id;
+                messageData = value;
+                _messages = [];
+
+                value["convo"].forEach((message) {
+                  _messages.insert(
+                    0,
+                    ChatMessage(
+                      text: message["message"] ?? "",
+                      name: value["name"] ?? "",
+                      messageOwner: message["sender"] ?? "",
+                    ),
+                  );
+                });
+                // print("see  $messageList");
+              }
+              return SizedBox(
+                height: 400,
+                width: 400,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(
+                            Icons.close,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          reverse: true,
+                          itemCount: _messages.length,
+                          itemBuilder: (context, index) {
+                            return _messages[index];
+                          },
+                        ),
+                      ),
+                      const Divider(height: 1.0),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
+                        ),
+                        child: _buildTextComposer(),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  reverse: true,
-                  itemCount: _messages.length,
-                  itemBuilder: (context, index) {
-                    return _messages[index];
-                  },
-                ),
-              ),
-              const Divider(height: 1.0),
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                ),
-                child: _buildTextComposer(),
-              ),
-            ],
-          ),
-        ),
-      ),
+              );
+            } else {
+              return const Center(child: Text("Loading..."));
+            }
+          }),
     );
   }
 
@@ -94,7 +136,9 @@ class _ChatWidgetState extends State<ChatWidget> {
             Flexible(
               child: TextField(
                 controller: _textController,
-                onSubmitted: _handleSubmitted(text: "", sender: null),
+                onSubmitted: (value) async {
+                  _handleSubmitted(text: "", sender: null);
+                },
                 decoration: const InputDecoration.collapsed(hintText: 'Send a message'),
               ),
             ),
@@ -102,7 +146,9 @@ class _ChatWidgetState extends State<ChatWidget> {
               margin: const EdgeInsets.symmetric(horizontal: 4.0),
               child: IconButton(
                 icon: const Icon(Icons.send),
-                onPressed: () => _handleSubmitted(text: _textController.text, sender: "driver"),
+                onPressed: () async {
+                  await _handleSubmitted(text: _textController.text, sender: "driver");
+                },
               ),
             ),
           ],

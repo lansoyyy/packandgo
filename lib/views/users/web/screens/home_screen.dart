@@ -356,14 +356,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                         "booking-status": "pending",
                                         "booking-id": getRandomString(10),
                                         "uid": _auth.currentUser!.uid,
-                                        "message-list": [{
-                                          "you": {
+                                      };
+                                      var messages = {
+                                        "uid": _auth.currentUser!.uid,
+                                        "name": "${userDetails['firstname']} ${userDetails['lastname']}",
+                                        "convo": [
+                                          {
                                             "message": "Message here...",
                                             "date": (DateTime.now()).toString(),
-                                          }
-                                        }],
+                                            "sender": "customer",
+                                          },
+                                        ]
                                       };
-                                      await saveBookingDetails(bookingDetails: details);
+                                      await saveBookingDetails(bookingDetails: details, initialConvo: messages);
                                       bookingRequestDIalog();
                                       break;
                                     default:
@@ -388,9 +393,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  saveBookingDetails({required bookingDetails}) async {
+  saveBookingDetails({required bookingDetails, required initialConvo}) async {
     var query = Queries();
     await query.push("records", bookingDetails);
+    await query.push("messages", initialConvo);
   }
 
   bookingRequestDIalog() {

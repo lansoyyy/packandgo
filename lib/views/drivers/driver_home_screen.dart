@@ -27,6 +27,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
   var streamQuery = StreamQuery();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   var recordsData = [];
+  var convoList = [];
   bool isLoading = false;
 
   List statuses = ['All', 'Canceled', 'Completed', 'Pending'];
@@ -72,45 +73,80 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
             builder: (context) {
               // print("user data from page $recordsData");
               return Dialog(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-                  child: SizedBox(
-                    width: 400,
-                    height: 400,
-                    child: ListView.separated(
-                      itemCount: recordsData.length,
-                      separatorBuilder: (context, index) {
-                        return const Divider();
-                      },
-                      itemBuilder: (context, index) {
-                        final record = recordsData[index];
+                child: StreamBuilder(
+                    stream: streamQuery.getMultipleSnapsByData(roots: [
+                      {"root": "messages", "key": "uid"},
+                    ]),
+                    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      if (snapshot.hasData) {
+                        final data = snapshot.data;
+                        var snapshotList = snapshot.data as List<QuerySnapshot>;
+                        print("somethinf outside for");
+                        for (var doc in snapshotList[0].docs) {
+                          var value = doc.data()! as Map;
+                          value['id'] = doc.id;
+                          var messageList = value["convo"];
+                          print("see convo $messageList");
+                          convoList.add(value);
+
+                          // _messages.insert(
+                          //     0,
+                          //     ChatMessage(
+                          //       text: message["message"],
+                          //       name: widget.customerData["name"],
+                          //       messageOwner: message["sender"] ?? "driver",
+                          //     ));
+                        }
                         return Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: ListTile(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return ChatWidget(
-                                    customerData: record,
-                                  );
-                                },
-                              );
-                            },
-                            leading: const CircleAvatar(
-                              minRadius: 35,
-                              maxRadius: 35,
-                              backgroundImage: AssetImage('assets/images/profile.png'),
+                          padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+                          child: SizedBox(
+                            width: 400,
+                            height: 400,
+                            child: ListView.separated(
+                              itemCount: recordsData.length,
+                              separatorBuilder: (context, index) {
+                                return const Divider();
+                              },
+                              itemBuilder: (context, index) {
+                                final record = convoList[index];
+                                return Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: ListTile(
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return ChatWidget(
+                                            customerData: record,
+                                          );
+                                        },
+                                      );
+                                    },
+                                    leading: const CircleAvatar(
+                                      minRadius: 35,
+                                      maxRadius: 35,
+                                      backgroundImage: AssetImage('assets/images/profile.png'),
+                                    ),
+                                    title: TextBold(text: record["convo"][0]["message"], fontSize: 14, color: Colors.black),
+                                    subtitle: TextRegular(text: record["name"], fontSize: 12, color: Colors.grey),
+                                    trailing: TextRegular(text: record["convo"][0]["date"], fontSize: 12, color: Colors.black),
+                                  ),
+                                );
+                              },
                             ),
-                            title: TextBold(text: record["message-list"][0]["message"], fontSize: 14, color: Colors.black),
-                            subtitle: TextRegular(text: record['name'], fontSize: 12, color: Colors.grey),
-                            trailing: TextRegular(text: record["message-list"][0]['date'], fontSize: 12, color: Colors.black),
                           ),
                         );
-                      },
-                    ),
-                  ),
-                ),
+                      } else {
+                        return const Center(child: Text("No data available!"));
+                      }
+                    }),
               );
             },
           );
