@@ -23,6 +23,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
   var streamQuery = StreamQuery();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   var recordsData = [];
+  var convoList = [];
   bool isLoading = false;
 
   List statuses = ['All', 'Canceled', 'Completed', 'Pending'];
@@ -59,57 +60,80 @@ class _RecordsScreenState extends State<RecordsScreen> {
           showDialog(
             context: context,
             builder: (context) {
-              print("user data from page $recordsData");
+              // print("user data from page $recordsData");
               return Dialog(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-                  child: SizedBox(
-                    width: 400,
-                    height: 400,
-                    child: ListView.separated(
-                      itemCount: 5,
-                      separatorBuilder: (context, index) {
-                        return const Divider();
-                      },
-                      itemBuilder: (context, index) {
+                child: StreamBuilder(
+                    stream: streamQuery.getMultipleSnapsByData(roots: [
+                      {"root": "messages", "key": "uid"},
+                    ]),
+                    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      if (snapshot.hasData) {
+                        final data = snapshot.data;
+                        var snapshotList = snapshot.data as List<QuerySnapshot>;
+                        for (var doc in snapshotList[0].docs) {
+                          var value = doc.data()! as Map;
+                          value['id'] = doc.id;
+                          var messageList = value["convo"];
+                          convoList.add(value);
+
+                          // _messages.insert(
+                          //     0,
+                          //     ChatMessage(
+                          //       text: message["message"],
+                          //       name: widget.customerData["name"],
+                          //       messageOwner: message["sender"] ?? "driver",
+                          //     ));
+                        }
                         return Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: ListTile(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return const ChatWidget(
-                                    customerData: {},
-                                  );
-                                },
-                              );
-                            },
-                            leading: const CircleAvatar(
-                              minRadius: 35,
-                              maxRadius: 35,
-                              backgroundImage: AssetImage(
-                                'assets/images/profile.png',
-                              ),
+                          padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+                          child: SizedBox(
+                            width: 400,
+                            height: 400,
+                            child: ListView.separated(
+                              itemCount: recordsData.length,
+                              separatorBuilder: (context, index) {
+                                return const Divider();
+                              },
+                              itemBuilder: (context, index) {
+                                final record = convoList[index];
+                                return Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: ListTile(
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return ChatWidget(
+                                            customerData: record,
+                                          );
+                                        },
+                                      );
+                                    },
+                                    leading: const CircleAvatar(
+                                      minRadius: 35,
+                                      maxRadius: 35,
+                                      backgroundImage: AssetImage('assets/images/profile.png'),
+                                    ),
+                                    title: TextBold(text: record["convo"][0]["message"], fontSize: 14, color: Colors.black),
+                                    subtitle: TextRegular(text: record["name"], fontSize: 12, color: Colors.grey),
+                                    trailing: TextRegular(text: record["convo"][0]["date"], fontSize: 12, color: Colors.black),
+                                  ),
+                                );
+                              },
                             ),
-                            title: TextBold(
-                                text: 'Message here...',
-                                fontSize: 14,
-                                color: Colors.black),
-                            subtitle: TextRegular(
-                                text: 'John Doe',
-                                fontSize: 12,
-                                color: Colors.grey),
-                            trailing: TextRegular(
-                                text: 'Date and Time',
-                                fontSize: 12,
-                                color: Colors.black),
                           ),
                         );
-                      },
-                    ),
-                  ),
-                ),
+                      } else {
+                        return const Center(child: Text("No data available!"));
+                      }
+                    }),
               );
             },
           );
@@ -240,8 +264,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                                         });
                                       },
                                       child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10, right: 10),
+                                        padding: const EdgeInsets.only(left: 10, right: 10),
                                         child: TextRegular(
                                           text: 'Status: ${statuses[i]}',
                                           fontSize: 14,
@@ -270,14 +293,9 @@ class _RecordsScreenState extends State<RecordsScreen> {
                 StreamBuilder(
                   stream: streamQuery.getMultipleSnapsByData(roots: [
                     // {"root": "user-details", "key": "uid", "value": _auth.currentUser!.uid},
-                    {
-                      "root": "records",
-                      "key": "uid",
-                      "value": _auth.currentUser!.uid
-                    },
+                    {"root": "records", "key": "uid", "value": _auth.currentUser!.uid},
                   ]),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     }
@@ -424,44 +442,27 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     height: 30,
                     width: 125,
                     child: Center(
-                      child: TextRegular(
-                          text: value['booking-status'],
-                          fontSize: 14,
-                          color: Colors.white),
+                      child: TextRegular(text: value['booking-status'], fontSize: 14, color: Colors.white),
                     ),
                   ),
-                  TextRegular(
-                      text: value['booking-id'],
-                      fontSize: 14,
-                      color: Colors.black),
+                  TextRegular(text: value['booking-id'], fontSize: 14, color: Colors.black),
                 ],
               ),
             ),
             DataCell(
-              TextRegular(
-                  text: 'July 02, 2023 (3:30pm - 4:30pm)',
-                  fontSize: 14,
-                  color: Colors.black),
+              TextRegular(text: 'July 02, 2023 (3:30pm - 4:30pm)', fontSize: 14, color: Colors.black),
             ),
             DataCell(
-              TextRegular(
-                  text: value['drop-off-location'],
-                  fontSize: 14,
-                  color: Colors.black),
+              TextRegular(text: value['drop-off-location'], fontSize: 14, color: Colors.black),
             ),
             DataCell(
-              TextRegular(
-                  text: value['name'], fontSize: 14, color: Colors.black),
+              TextRegular(text: value['name'], fontSize: 14, color: Colors.black),
             ),
             DataCell(
-              TextRegular(
-                  text: value['vehicle-type'],
-                  fontSize: 14,
-                  color: Colors.black),
+              TextRegular(text: value['vehicle-type'], fontSize: 14, color: Colors.black),
             ),
             DataCell(
-              TextRegular(
-                  text: value['price'], fontSize: 14, color: Colors.black),
+              TextRegular(text: value['price'], fontSize: 14, color: Colors.black),
             ),
             DataCell(
               Column(
@@ -483,8 +484,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                       height: 30,
                       width: 125,
                       child: Center(
-                        child: TextRegular(
-                            text: 'Cancel', fontSize: 14, color: Colors.white),
+                        child: TextRegular(text: 'Cancel', fontSize: 14, color: Colors.white),
                       ),
                     ),
                   ),
@@ -521,8 +521,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                       height: 30,
                       width: 125,
                       child: Center(
-                        child: TextRegular(
-                            text: 'View', fontSize: 14, color: Colors.white),
+                        child: TextRegular(text: 'View', fontSize: 14, color: Colors.white),
                       ),
                     ),
                   ),
@@ -570,10 +569,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     ),
                     height: 50,
                     child: Center(
-                      child: TextRegular(
-                          text: 'Booking Details',
-                          fontSize: 18,
-                          color: Colors.white),
+                      child: TextRegular(text: 'Booking Details', fontSize: 18, color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -656,10 +652,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     ),
                     height: 50,
                     child: Center(
-                      child: TextRegular(
-                          text: 'Your Information',
-                          fontSize: 18,
-                          color: Colors.white),
+                      child: TextRegular(text: 'Your Information', fontSize: 18, color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -768,11 +761,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
             const SizedBox(
               height: 10,
             ),
-            option == 'Others'
-                ? TextFieldWidget(
-                    label: 'Please specify your reason',
-                    controller: othersController)
-                : const SizedBox(),
+            option == 'Others' ? TextFieldWidget(label: 'Please specify your reason', controller: othersController) : const SizedBox(),
           ],
         );
       }),
@@ -821,9 +810,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                             data["id"],
                             {
                               'booking-status': 'canceled',
-                              'cancel-reasons': option == 'Others'
-                                  ? othersController.text
-                                  : option,
+                              'cancel-reasons': option == 'Others' ? othersController.text : option,
                             },
                           );
                           Navigator.pop(context);
