@@ -77,7 +77,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                             TextButton(
                               onPressed: () {
                                 Navigator.pushNamed(
-                                    context, Routes.driverhomescreen);
+                                    context, Routes.businesshomescreen);
                               },
                               child: TextRegular(
                                 text: 'HOME',

@@ -131,7 +131,7 @@ class _BusinessSignupScreenState extends State<BusinessSignupScreen> {
                               TextButton(
                                 onPressed: () {
                                   Navigator.pushNamed(
-                                      context, Routes.driverloginpage);
+                                      context, Routes.businessloginpage);
                                 },
                                 child: TextRegular(
                                   text: 'Login',
@@ -623,8 +623,8 @@ class _BusinessSignupScreenState extends State<BusinessSignupScreen> {
 
                                           showToast(
                                               'Account created successfuly!');
-                                          Navigator.pushNamed(
-                                              context, Routes.driverloginpage);
+                                          Navigator.pushNamed(context,
+                                              Routes.businessloginpage);
                                           _currentStep += 1;
                                         } else {
                                           showToast('Email already used!');

@@ -74,7 +74,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
                           TextButton(
                             onPressed: () {
                               Navigator.pushNamed(
-                                  context, Routes.driversignuppage);
+                                  context, Routes.businesssignuppage);
                             },
                             child: TextRegular(
                               text: 'Signup',
@@ -155,7 +155,8 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
                           await userDetailsQuery
                               .getUserData(response['user-data'].uid);
                           showToast('Logged in successfuly!');
-                          Navigator.pushNamed(context, Routes.driverhomescreen);
+                          Navigator.pushNamed(
+                              context, Routes.businesshomescreen);
                         } else {
                           showToast(
                             response['error-message'],
@@ -198,7 +199,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
           // print("User : $user");
           if (user.credential!.accessToken != null) {
             showToast('Logged in successfuly!');
-            Navigator.pushNamed(context, Routes.driverhomescreen);
+            Navigator.pushNamed(context, Routes.businesshomescreen);
           }
           return 1;
         } catch (error) {

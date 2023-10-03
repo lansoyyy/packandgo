@@ -190,7 +190,7 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                             TextButton(
                               onPressed: () {
                                 Navigator.pushNamed(
-                                    context, Routes.driverprofilescreen);
+                                    context, Routes.businessprofilescreen);
                               },
                               child: TextRegular(
                                 text: 'PROFILE',
@@ -232,8 +232,8 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                                           var usthQuery = AuthQuery();
                                           await usthQuery.signOut();
                                           await userData.clear();
-                                          Navigator.pushNamed(
-                                              context, Routes.driverloginpage);
+                                          Navigator.pushNamed(context,
+                                              Routes.businessloginpage);
                                         },
                                         child: const Text(
                                           'Continue',

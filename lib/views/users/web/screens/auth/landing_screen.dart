@@ -69,6 +69,18 @@ class LandingScreen extends StatelessWidget {
                                 context, Routes.driverloginpage);
                           },
                         ),
+                        const SizedBox(width: 20),
+                        ButtonWidget(
+                          fontSize: 14,
+                          height: 45,
+                          width: 150,
+                          label: 'Continue as Business Owner',
+                          color: primary,
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, Routes.businessloginpage);
+                          },
+                        ),
                       ],
                     ),
                     const SizedBox(height: 20),
