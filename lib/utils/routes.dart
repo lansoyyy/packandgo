@@ -9,5 +9,9 @@ class Routes {
       driverloginpage = '/driverloginpage',
       driversignuppage = '/driversignuppage',
       driverhomescreen = '/driverhomescreen',
-      driverprofilescreen = '/driverprofilescreen';
+      driverprofilescreen = '/driverprofilescreen',
+      businessloginpage = '/businessloginpage',
+      businesssignuppage = '/businesssignuppage',
+      businesshomescreen = '/businesshomescreen',
+      businessprofilescreen = '/businessprofilescreen';
 }

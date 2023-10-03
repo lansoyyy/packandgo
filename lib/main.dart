@@ -6,6 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:packandgo/utils/routes.dart';
+import 'package:packandgo/views/business/auth/login_screen.dart';
+import 'package:packandgo/views/business/auth/signup_screen.dart';
+import 'package:packandgo/views/business/business_home_screen.dart';
+import 'package:packandgo/views/business/business_profile_screen.dart';
 import 'package:packandgo/views/drivers/auth/login_screen.dart';
 import 'package:packandgo/views/drivers/auth/signup_screen.dart';
 import 'package:packandgo/views/drivers/driver_home_screen.dart';
@@ -64,6 +68,10 @@ class MyApp extends StatelessWidget {
         Routes.driversignuppage: (context) => DriverSignupScreen(),
         Routes.driverhomescreen: (context) => DriverHomeScreen(),
         Routes.driverprofilescreen: (context) => DriverProfileScreen(),
+        Routes.businessloginpage: (context) => BusinessLoginScreen(),
+        Routes.businesssignuppage: (context) => BusinessSignupScreen(),
+        Routes.businesshomescreen: (context) => BusinessHomeScreen(),
+        Routes.businessprofilescreen: (context) => BusinessProfileScreen(),
       },
     );
   }
