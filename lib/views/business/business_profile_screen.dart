@@ -935,9 +935,61 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
         const SizedBox(
           height: 10,
         ),
+        TextRegular(
+            text: 'Ratings: (4.0) Ratings', fontSize: 24, color: Colors.black),
         const SizedBox(
+          height: 10,
+        ),
+        SizedBox(
           height: 425,
           width: 800,
+          child: ListView.separated(
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: Image.asset(
+                    'assets/images/profile.png',
+                    height: 75,
+                  ),
+                  title: TextBold(
+                      text: 'Username here', fontSize: 18, color: Colors.black),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          for (int i = 0; i < 5; i++)
+                            const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                        ],
+                      ),
+                      TextRegular(
+                          text: 'January 05, 2023',
+                          fontSize: 14,
+                          color: Colors.grey),
+                    ],
+                  ),
+                  trailing: Container(
+                    color: Colors.white,
+                    width: 250,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: TextRegular(
+                          text:
+                              'Labore excepteur occaecat ad commodo incididunt magna occaecat.',
+                          fontSize: 14,
+                          color: Colors.grey),
+                    ),
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) {
+                return const Divider();
+              },
+              itemCount: 50),
         ),
       ],
     );
