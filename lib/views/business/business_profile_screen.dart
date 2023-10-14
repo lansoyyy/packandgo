@@ -23,6 +23,8 @@ class BusinessProfileScreen extends StatefulWidget {
 class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
   bool profiletab = true;
   bool changepasswordtab = false;
+  bool vehilces = false;
+  bool ratings = false;
   bool isLoading = false;
 
   final emailController = TextEditingController();
@@ -283,6 +285,8 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                               setState(() {
                                 profiletab = true;
                                 changepasswordtab = false;
+                                vehilces = false;
+                                ratings = false;
                               });
                             },
                             child: TextRegular(
@@ -298,6 +302,8 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                               setState(() {
                                 profiletab = false;
                                 changepasswordtab = true;
+                                vehilces = false;
+                                ratings = false;
                               });
                             },
                             child: TextRegular(
@@ -306,6 +312,40 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                 color: changepasswordtab
                                     ? Colors.amber
                                     : Colors.grey),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                profiletab = false;
+                                changepasswordtab = false;
+                                vehilces = true;
+                                ratings = false;
+                              });
+                            },
+                            child: TextRegular(
+                                text: 'Vehicles',
+                                fontSize: 12,
+                                color: vehilces ? Colors.amber : Colors.grey),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                profiletab = false;
+                                changepasswordtab = false;
+                                vehilces = false;
+                                ratings = true;
+                              });
+                            },
+                            child: TextRegular(
+                                text: 'Ratings',
+                                fontSize: 12,
+                                color: ratings ? Colors.amber : Colors.grey),
                           ),
                         ],
                       ),
@@ -318,7 +358,11 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                       ),
                       profiletab
                           ? profileTab(userDetails)
-                          : changepasswordTab(userDetails),
+                          : vehilces
+                              ? vehiclesTab(userDetails)
+                              : ratings
+                                  ? ratingsTab(userDetails)
+                                  : changepasswordTab(userDetails),
                     ],
                   ),
                 ),
@@ -703,5 +747,199 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
               ),
             ],
           );
+  }
+
+  Widget vehiclesTab(details) {
+    emailController.text = "${details['email'] ?? ''}";
+    phoneController.text = "${details['contact_number'] ?? ''}";
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 800,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextRegular(
+                text: 'My Vehicles',
+                fontSize: 32,
+                color: Colors.black,
+              ),
+              ButtonWidget(
+                radius: 5,
+                color: primary,
+                fontSize: 14,
+                width: 150,
+                label: 'Add Vehicle',
+                onPressed: () async {},
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        TextRegular(
+            text: 'Manage your vehicles', fontSize: 14, color: Colors.grey),
+        const SizedBox(
+          height: 10,
+        ),
+        const SizedBox(width: 300, child: Divider()),
+        const SizedBox(
+          height: 10,
+        ),
+        SizedBox(
+            height: 425,
+            width: 800,
+            child: DataTable(columns: [
+              DataColumn(
+                label: TextBold(
+                  text: 'Type',
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
+              ),
+              DataColumn(
+                label: TextBold(
+                  text: 'Maker',
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
+              ),
+              DataColumn(
+                label: TextBold(
+                  text: 'Year Model',
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
+              ),
+              DataColumn(
+                label: TextBold(
+                  text: 'Plate Number',
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
+              ),
+              DataColumn(
+                label: TextBold(
+                  text: 'Status',
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
+              ),
+              DataColumn(
+                label: TextBold(
+                  text: '',
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
+              ),
+              DataColumn(
+                label: TextBold(
+                  text: '',
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
+              ),
+            ], rows: [
+              DataRow(cells: [
+                DataCell(
+                  TextRegular(
+                    text: 'Sample',
+                    fontSize: 14,
+                    color: Colors.black,
+                  ),
+                ),
+                DataCell(
+                  TextRegular(
+                    text: 'Sample',
+                    fontSize: 14,
+                    color: Colors.black,
+                  ),
+                ),
+                DataCell(
+                  TextRegular(
+                    text: 'Sample',
+                    fontSize: 14,
+                    color: Colors.black,
+                  ),
+                ),
+                DataCell(
+                  TextRegular(
+                    text: 'Sample',
+                    fontSize: 14,
+                    color: Colors.black,
+                  ),
+                ),
+                DataCell(
+                  TextRegular(
+                    text: 'Sample',
+                    fontSize: 14,
+                    color: Colors.black,
+                  ),
+                ),
+                DataCell(
+                  ButtonWidget(
+                    radius: 5,
+                    color: Colors.red,
+                    fontSize: 12,
+                    width: 100,
+                    height: 35,
+                    label: 'Delete',
+                    onPressed: () async {},
+                  ),
+                ),
+                DataCell(
+                  ButtonWidget(
+                    radius: 5,
+                    color: Colors.green,
+                    fontSize: 12,
+                    width: 100,
+                    height: 35,
+                    label: 'Update',
+                    onPressed: () async {},
+                  ),
+                ),
+              ])
+            ])),
+      ],
+    );
+  }
+
+  Widget ratingsTab(details) {
+    emailController.text = "${details['email'] ?? ''}";
+    phoneController.text = "${details['contact_number'] ?? ''}";
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        TextRegular(
+          text: 'Ratings',
+          fontSize: 32,
+          color: Colors.black,
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        TextRegular(
+            text: 'View customer ratings of your service',
+            fontSize: 14,
+            color: Colors.grey),
+        const SizedBox(
+          height: 10,
+        ),
+        const SizedBox(width: 300, child: Divider()),
+        const SizedBox(
+          height: 10,
+        ),
+        const SizedBox(
+          height: 425,
+          width: 800,
+        ),
+      ],
+    );
   }
 }
