@@ -66,7 +66,8 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     stream: streamQuery.getMultipleSnapsByData(roots: [
                       {"root": "messages", "key": "uid"},
                     ]),
-                    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot) {
                       if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       }
@@ -119,11 +120,21 @@ class _RecordsScreenState extends State<RecordsScreen> {
                                     leading: const CircleAvatar(
                                       minRadius: 35,
                                       maxRadius: 35,
-                                      backgroundImage: AssetImage('assets/images/profile.png'),
+                                      backgroundImage: AssetImage(
+                                          'assets/images/profile.png'),
                                     ),
-                                    title: TextBold(text: record["convo"][0]["message"], fontSize: 14, color: Colors.black),
-                                    subtitle: TextRegular(text: record["name"], fontSize: 12, color: Colors.grey),
-                                    trailing: TextRegular(text: record["convo"][0]["date"], fontSize: 12, color: Colors.black),
+                                    title: TextBold(
+                                        text: record["convo"][0]["message"],
+                                        fontSize: 14,
+                                        color: Colors.black),
+                                    subtitle: TextRegular(
+                                        text: record["name"],
+                                        fontSize: 12,
+                                        color: Colors.grey),
+                                    trailing: TextRegular(
+                                        text: record["convo"][0]["date"],
+                                        fontSize: 12,
+                                        color: Colors.black),
                                   ),
                                 );
                               },
@@ -264,7 +275,8 @@ class _RecordsScreenState extends State<RecordsScreen> {
                                         });
                                       },
                                       child: Padding(
-                                        padding: const EdgeInsets.only(left: 10, right: 10),
+                                        padding: const EdgeInsets.only(
+                                            left: 10, right: 10),
                                         child: TextRegular(
                                           text: 'Status: ${statuses[i]}',
                                           fontSize: 14,
@@ -293,9 +305,14 @@ class _RecordsScreenState extends State<RecordsScreen> {
                 StreamBuilder(
                   stream: streamQuery.getMultipleSnapsByData(roots: [
                     // {"root": "user-details", "key": "uid", "value": _auth.currentUser!.uid},
-                    {"root": "records", "key": "uid", "value": _auth.currentUser!.uid},
+                    {
+                      "root": "records",
+                      "key": "uid",
+                      "value": _auth.currentUser!.uid
+                    },
                   ]),
-                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     }
@@ -345,60 +362,65 @@ class _RecordsScreenState extends State<RecordsScreen> {
                         }
                       }
 
-                      return DataTable(
-                        dataRowHeight: 100,
-                        columns: [
-                          DataColumn(
-                            label: TextBold(
-                              text: 'Status',
-                              fontSize: 18,
-                              color: Colors.black,
-                            ),
+                      return SingleChildScrollView(
+                        child: SizedBox(
+                          height: 200,
+                          child: DataTable(
+                            dataRowHeight: 100,
+                            columns: [
+                              DataColumn(
+                                label: TextBold(
+                                  text: 'Status',
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              DataColumn(
+                                label: TextBold(
+                                  text: 'Delivery Rate',
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              DataColumn(
+                                label: TextBold(
+                                  text: 'Route',
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              DataColumn(
+                                label: TextBold(
+                                  text: 'Driver/Mover',
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              DataColumn(
+                                label: TextBold(
+                                  text: 'Type',
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              DataColumn(
+                                label: TextBold(
+                                  text: 'Price',
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              DataColumn(
+                                label: TextBold(
+                                  text: '',
+                                  fontSize: 0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                            rows: dataRows(recordsData),
                           ),
-                          DataColumn(
-                            label: TextBold(
-                              text: 'Delivery Rate',
-                              fontSize: 18,
-                              color: Colors.black,
-                            ),
-                          ),
-                          DataColumn(
-                            label: TextBold(
-                              text: 'Route',
-                              fontSize: 18,
-                              color: Colors.black,
-                            ),
-                          ),
-                          DataColumn(
-                            label: TextBold(
-                              text: 'Driver/Mover',
-                              fontSize: 18,
-                              color: Colors.black,
-                            ),
-                          ),
-                          DataColumn(
-                            label: TextBold(
-                              text: 'Type',
-                              fontSize: 18,
-                              color: Colors.black,
-                            ),
-                          ),
-                          DataColumn(
-                            label: TextBold(
-                              text: 'Price',
-                              fontSize: 18,
-                              color: Colors.black,
-                            ),
-                          ),
-                          DataColumn(
-                            label: TextBold(
-                              text: '',
-                              fontSize: 0,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                        rows: dataRows(recordsData),
+                        ),
                       );
                     } else {
                       return const Center(child: Text("No data available!"));
@@ -442,27 +464,44 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     height: 30,
                     width: 125,
                     child: Center(
-                      child: TextRegular(text: value['booking-status'], fontSize: 14, color: Colors.white),
+                      child: TextRegular(
+                          text: value['booking-status'],
+                          fontSize: 14,
+                          color: Colors.white),
                     ),
                   ),
-                  TextRegular(text: value['booking-id'], fontSize: 14, color: Colors.black),
+                  TextRegular(
+                      text: value['booking-id'],
+                      fontSize: 14,
+                      color: Colors.black),
                 ],
               ),
             ),
             DataCell(
-              TextRegular(text: 'July 02, 2023 (3:30pm - 4:30pm)', fontSize: 14, color: Colors.black),
+              TextRegular(
+                  text: 'July 02, 2023 (3:30pm - 4:30pm)',
+                  fontSize: 14,
+                  color: Colors.black),
             ),
             DataCell(
-              TextRegular(text: value['drop-off-location'], fontSize: 14, color: Colors.black),
+              TextRegular(
+                  text: value['drop-off-location'],
+                  fontSize: 14,
+                  color: Colors.black),
             ),
             DataCell(
-              TextRegular(text: value['name'], fontSize: 14, color: Colors.black),
+              TextRegular(
+                  text: value['name'], fontSize: 14, color: Colors.black),
             ),
             DataCell(
-              TextRegular(text: value['vehicle-type'], fontSize: 14, color: Colors.black),
+              TextRegular(
+                  text: value['vehicle-type'],
+                  fontSize: 14,
+                  color: Colors.black),
             ),
             DataCell(
-              TextRegular(text: value['price'], fontSize: 14, color: Colors.black),
+              TextRegular(
+                  text: value['price'], fontSize: 14, color: Colors.black),
             ),
             DataCell(
               Column(
@@ -484,7 +523,8 @@ class _RecordsScreenState extends State<RecordsScreen> {
                       height: 30,
                       width: 125,
                       child: Center(
-                        child: TextRegular(text: 'Cancel', fontSize: 14, color: Colors.white),
+                        child: TextRegular(
+                            text: 'Cancel', fontSize: 14, color: Colors.white),
                       ),
                     ),
                   ),
@@ -521,7 +561,8 @@ class _RecordsScreenState extends State<RecordsScreen> {
                       height: 30,
                       width: 125,
                       child: Center(
-                        child: TextRegular(text: 'View', fontSize: 14, color: Colors.white),
+                        child: TextRegular(
+                            text: 'View', fontSize: 14, color: Colors.white),
                       ),
                     ),
                   ),
@@ -569,7 +610,10 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     ),
                     height: 50,
                     child: Center(
-                      child: TextRegular(text: 'Booking Details', fontSize: 18, color: Colors.white),
+                      child: TextRegular(
+                          text: 'Booking Details',
+                          fontSize: 18,
+                          color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -652,7 +696,10 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     ),
                     height: 50,
                     child: Center(
-                      child: TextRegular(text: 'Your Information', fontSize: 18, color: Colors.white),
+                      child: TextRegular(
+                          text: 'Your Information',
+                          fontSize: 18,
+                          color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -761,7 +808,11 @@ class _RecordsScreenState extends State<RecordsScreen> {
             const SizedBox(
               height: 10,
             ),
-            option == 'Others' ? TextFieldWidget(label: 'Please specify your reason', controller: othersController) : const SizedBox(),
+            option == 'Others'
+                ? TextFieldWidget(
+                    label: 'Please specify your reason',
+                    controller: othersController)
+                : const SizedBox(),
           ],
         );
       }),
@@ -810,7 +861,9 @@ class _RecordsScreenState extends State<RecordsScreen> {
                             data["id"],
                             {
                               'booking-status': 'canceled',
-                              'cancel-reasons': option == 'Others' ? othersController.text : option,
+                              'cancel-reasons': option == 'Others'
+                                  ? othersController.text
+                                  : option,
                             },
                           );
                           Navigator.pop(context);

@@ -57,27 +57,29 @@
 
 <!DOCTYPE html>
 <html>
-  <head>
-    <base href="$FLUTTER_BASE_HREF" />
 
-    <meta charset="UTF-8" />
-    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
-    <meta name="description" content="A new Flutter project." />
+<head>
+  <!-- <base href="https://alenpeter1234.github.io/packandgo/"> -->
+  <base href="$FLUTTER_BASE_HREF" />
 
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="apple-mobile-web-app-title" content="packandgo" />
-    <link rel="apple-touch-icon" href="icons/Icon-192.png" />
+  <meta charset="UTF-8" />
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+  <meta name="description" content="A new Flutter project." />
 
-    <link rel="icon" type="image/png" href="favicon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="packandgo" />
+  <link rel="apple-touch-icon" href="icons/Icon-192.png" />
 
-    <title>packandgo</title>
-    <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" href="favicon.png" />
 
-    <script>
-      var serviceWorkerVersion = null;
-    </script>
-    <!-- <script src="https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js"></script>
+  <title>packandgo</title>
+  <link rel="manifest" href="manifest.json" />
+
+  <script>
+    var serviceWorkerVersion = null;
+  </script>
+  <!-- <script src="https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.4.0/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js"></script>
     <script type="module">
@@ -91,64 +93,69 @@
       };
       const app = initializeApp(firebaseConfig);
     </script> -->
-    <script src="flutter.js" defer></script>
-  </head>
-  <body>
-    <script>
-      window.addEventListener("load", function (ev) {
-        _flutter.loader.loadEntrypoint({
-          serviceWorker: {
-            serviceWorkerVersion: serviceWorkerVersion,
-          },
-          onEntrypointLoaded: function (engineInitializer) {
-            engineInitializer.initializeEngine().then(function (appRunner) {
-              appRunner.runApp();
-            });
-          },
-        });
+  <script src="flutter.js" defer></script>
+</head>
+
+<body>
+  <script>
+    window.addEventListener("load", function (ev) {
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function (engineInitializer) {
+          engineInitializer.initializeEngine().then(function (appRunner) {
+            appRunner.runApp();
+          });
+        },
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
+
 </html>
 
 <!DOCTYPE html>
 <html>
-  <head>
-    <base href="$FLUTTER_BASE_HREF" />
 
-    <meta charset="UTF-8" />
-    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
-    <meta name="description" content="A new Flutter project." />
+<head>
+  <base href="$FLUTTER_BASE_HREF" />
 
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="apple-mobile-web-app-title" content="phara_driver" />
-    <link rel="apple-touch-icon" href="icons/Icon-192.png" />
+  <meta charset="UTF-8" />
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+  <meta name="description" content="A new Flutter project." />
 
-    <link rel="icon" type="image/png" href="favicon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="phara_driver" />
+  <link rel="apple-touch-icon" href="icons/Icon-192.png" />
 
-    <title>packandgo</title>
-    <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" href="favicon.png" />
 
-    <script>
-      var serviceWorkerVersion = null;
-    </script>
-    <script src="flutter.js" defer></script>
-  </head>
-  <body>
-    <script>
-      window.addEventListener("load", function (ev) {
-        _flutter.loader.loadEntrypoint({
-          serviceWorker: {
-            serviceWorkerVersion: serviceWorkerVersion,
-          },
-          onEntrypointLoaded: function (engineInitializer) {
-            engineInitializer.initializeEngine().then(function (appRunner) {
-              appRunner.runApp();
-            });
-          },
-        });
+  <title>packandgo</title>
+  <link rel="manifest" href="manifest.json" />
+
+  <script>
+    var serviceWorkerVersion = null;
+  </script>
+  <script src="flutter.js" defer></script>
+</head>
+
+<body>
+  <script>
+    window.addEventListener("load", function (ev) {
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function (engineInitializer) {
+          engineInitializer.initializeEngine().then(function (appRunner) {
+            appRunner.runApp();
+          });
+        },
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
+
 </html>
