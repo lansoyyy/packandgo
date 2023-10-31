@@ -174,7 +174,7 @@ class _BusinessSignupScreenState extends State<BusinessSignupScreen> {
                                         const SizedBox(
                                           width: 300,
                                           child: Text(
-                                            'PUJ/Jeepney Operator',
+                                            'Business Owner',
                                             style: TextStyle(
                                                 fontFamily: 'QRegular'),
                                           ),

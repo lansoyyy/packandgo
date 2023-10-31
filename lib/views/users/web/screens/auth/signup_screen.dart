@@ -148,50 +148,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                     ),
                                   ],
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Checkbox(
-                                      value: check2,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          check2 = !check2;
-                                          check1 = false;
-                                          check3 = false;
-                                        });
-                                      },
-                                    ),
-                                    const SizedBox(
-                                      width: 300,
-                                      child: Text(
-                                        'PUJ/Jeepney Operator',
-                                        style: TextStyle(fontFamily: 'QRegular'),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Checkbox(
-                                      value: check3,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          check3 = !check3;
-                                          check1 = false;
-                                          check2 = false;
-                                        });
-                                      },
-                                    ),
-                                    const SizedBox(
-                                      width: 300,
-                                      child: Text(
-                                        'Moving Service Business Owner',
-                                        style: TextStyle(fontFamily: 'QRegular'),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                             
                                 const SizedBox(
                                   height: 20,
                                 ),
