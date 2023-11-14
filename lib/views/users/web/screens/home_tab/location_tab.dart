@@ -225,7 +225,7 @@ class _LocationTabState extends State<LocationTab> {
                 hintText: 'Unit or apartment number',
                 border: InputBorder.none,
               ),
-              controller: pickupController,
+              controller: dropoffController,
             ),
           ),
           const SizedBox(

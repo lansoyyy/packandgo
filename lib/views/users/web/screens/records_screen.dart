@@ -151,220 +151,221 @@ class _RecordsScreenState extends State<RecordsScreen> {
         },
       ),
       body: !isLoading
-          ? Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 80,
-                  color: primary,
-                  child: Padding(
+          ? SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 80,
+                    color: primary,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 50, right: 50),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextBold(
+                            text: 'Pack & Go',
+                            fontSize: 38,
+                            color: Colors.white,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, Routes.homepage);
+                            },
+                            child: TextRegular(
+                              text: 'New Order',
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
                     padding: const EdgeInsets.only(left: 50, right: 50),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        TextBold(
-                          text: 'Pack & Go',
-                          fontSize: 38,
-                          color: Colors.white,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, Routes.homepage);
-                          },
-                          child: TextRegular(
-                            text: 'New Order',
-                            fontSize: 16,
-                            color: Colors.white,
+                        Container(
+                          height: 45,
+                          width: 300,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.black,
+                              ),
+                              borderRadius: BorderRadius.circular(5)),
+                          child: TextFormField(
+                            onChanged: (value) {
+                              setState(() {
+                                nameSearched = value;
+                              });
+                            },
+                            decoration: const InputDecoration(
+                                hintText: 'Search by delivery info',
+                                hintStyle: TextStyle(fontFamily: 'QRegular'),
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  color: Colors.grey,
+                                )),
+                            controller: searchController,
                           ),
                         ),
                       ],
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 50, right: 50),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 45,
-                        width: 300,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.black,
-                            ),
-                            borderRadius: BorderRadius.circular(5)),
-                        child: TextFormField(
-                          onChanged: (value) {
-                            setState(() {
-                              nameSearched = value;
-                            });
-                          },
-                          decoration: const InputDecoration(
-                              hintText: 'Search by delivery info',
-                              hintStyle: TextStyle(fontFamily: 'QRegular'),
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: Colors.grey,
-                              )),
-                          controller: searchController,
-                        ),
-                      ),
-                    ],
+                  const SizedBox(
+                    height: 20,
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 50, right: 50),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextBold(
-                        text: 'Records',
-                        fontSize: 24,
-                        color: Colors.black,
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: IconButton(
-                              onPressed: () {
-                                // this code is is for as is base on the design
-                                // this table dont need reload becaus eit is stream it always listen to the database
-                                setState(() => isLoading = true);
-                                Future.delayed(const Duration(seconds: 1), () {
-                                  setState(() => isLoading = false);
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.refresh,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 50, right: 50),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextBold(
+                          text: 'Records',
+                          fontSize: 24,
+                          color: Colors.black,
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: IconButton(
+                                onPressed: () {
+                                  // this code is is for as is base on the design
+                                  // this table dont need reload becaus eit is stream it always listen to the database
+                                  setState(() => isLoading = true);
+                                  Future.delayed(const Duration(seconds: 1),
+                                      () {
+                                    setState(() => isLoading = false);
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.refresh,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(5),
+                            const SizedBox(
+                              width: 20,
                             ),
-                            child: DropdownButton(
-                                underline: const SizedBox(),
-                                value: dropValue,
-                                items: [
-                                  for (int i = 0; i < statuses.length; i++)
-                                    DropdownMenuItem(
-                                      value: i,
-                                      onTap: () {
-                                        setState(() {
-                                          status = statuses[i];
-                                        });
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10, right: 10),
-                                        child: TextRegular(
-                                          text: 'Status: ${statuses[i]}',
-                                          fontSize: 14,
-                                          color: Colors.black,
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: DropdownButton(
+                                  underline: const SizedBox(),
+                                  value: dropValue,
+                                  items: [
+                                    for (int i = 0; i < statuses.length; i++)
+                                      DropdownMenuItem(
+                                        value: i,
+                                        onTap: () {
+                                          setState(() {
+                                            status = statuses[i];
+                                          });
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, right: 10),
+                                          child: TextRegular(
+                                            text: 'Status: ${statuses[i]}',
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                ],
-                                onChanged: (value) {
-                                  setState(() {
-                                    dropValue = int.parse(value.toString());
-                                  });
-                                }),
-                          ),
-                          const SizedBox(
-                            width: 50,
-                          ),
-                        ],
-                      ),
-                    ],
+                                  ],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      dropValue = int.parse(value.toString());
+                                    });
+                                  }),
+                            ),
+                            const SizedBox(
+                              width: 50,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                StreamBuilder(
-                  stream: streamQuery.getMultipleSnapsByData(roots: [
-                    // {"root": "user-details", "key": "uid", "value": _auth.currentUser!.uid},
-                    {
-                      "root": "records",
-                      "key": "uid",
-                      "value": _auth.currentUser!.uid
-                    },
-                  ]),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    }
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  StreamBuilder(
+                    stream: streamQuery.getMultipleSnapsByData(roots: [
+                      // {"root": "user-details", "key": "uid", "value": _auth.currentUser!.uid},
+                      {
+                        "root": "records",
+                        "key": "uid",
+                        "value": _auth.currentUser!.uid
+                      },
+                    ]),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
 
-                    if (snapshot.hasData) {
-                      final data = snapshot.data;
-                      var snapshotList = snapshot.data as List<QuerySnapshot>;
-                      recordsData = [];
-                      for (var doc in snapshotList[0].docs) {
-                        var value = doc.data()! as Map;
-                        value['id'] = doc.id;
+                      if (snapshot.hasData) {
+                        final data = snapshot.data;
+                        var snapshotList = snapshot.data as List<QuerySnapshot>;
+                        recordsData = [];
+                        for (var doc in snapshotList[0].docs) {
+                          var value = doc.data()! as Map;
+                          value['id'] = doc.id;
 
-                        filterData() {
-                          String searchString = value.toString();
-                          if (searchController.text.isNotEmpty) {
-                            if (searchString.contains(searchController.text)) {
+                          filterData() {
+                            String searchString = value.toString();
+                            if (searchController.text.isNotEmpty) {
+                              if (searchString
+                                  .contains(searchController.text)) {
+                                recordsData.add(value);
+                              }
+                            } else {
                               recordsData.add(value);
                             }
-                          } else {
-                            recordsData.add(value);
+                          }
+
+                          switch (status) {
+                            case 'All':
+                              filterData();
+                              break;
+                            case 'Canceled':
+                              if (value['booking-status'] == 'canceled') {
+                                filterData();
+                              }
+                              break;
+                            case 'Completed':
+                              if (value['booking-status'] == 'completed') {
+                                filterData();
+                              }
+                              break;
+                            case 'Pending':
+                              if (value['booking-status'] == 'pending') {
+                                filterData();
+                              }
+                              break;
+                            default:
                           }
                         }
 
-                        switch (status) {
-                          case 'All':
-                            filterData();
-                            break;
-                          case 'Canceled':
-                            if (value['booking-status'] == 'canceled') {
-                              filterData();
-                            }
-                            break;
-                          case 'Completed':
-                            if (value['booking-status'] == 'completed') {
-                              filterData();
-                            }
-                            break;
-                          case 'Pending':
-                            if (value['booking-status'] == 'pending') {
-                              filterData();
-                            }
-                            break;
-                          default:
-                        }
-                      }
-
-                      return SingleChildScrollView(
-                        child: SizedBox(
-                          height: 200,
+                        return SingleChildScrollView(
                           child: DataTable(
                             dataRowHeight: 100,
                             columns: [
@@ -420,14 +421,14 @@ class _RecordsScreenState extends State<RecordsScreen> {
                             ],
                             rows: dataRows(recordsData),
                           ),
-                        ),
-                      );
-                    } else {
-                      return const Center(child: Text("No data available!"));
-                    }
-                  },
-                ),
-              ],
+                        );
+                      } else {
+                        return const Center(child: Text("No data available!"));
+                      }
+                    },
+                  ),
+                ],
+              ),
             )
           : SizedBox(
               width: size.width,
