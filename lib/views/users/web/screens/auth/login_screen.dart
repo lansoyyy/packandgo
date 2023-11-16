@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, sized_box_for_whitespace, prefer_const_constructors, avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:packandgo/services/emailChecker.dart';
 import 'package:packandgo/utils/colors.dart';
 import 'package:packandgo/utils/routes.dart';
@@ -38,8 +37,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    emailController.text = "admin@gmail.com";
-    passwordController.text = "password";
     super.initState();
   }
 
@@ -173,24 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     label: 'Login',
                     onPressed: () async {
                       if (_form.currentState!.validate()) {
-                        _form.currentState!.save();
-                        setState(() => isLoading = true);
-                        var response = await auth.signInWithEmailAndPassword(
-                          email: emailController.text,
-                          password: passwordController.text,
-                          context: context,
-                        );
-                        if (!response['error']) {
-                          await userDetailsQuery.getUserData(response['user-data'].uid);
-                          showToast('Logged in successfuly!');
-                          Navigator.pushNamed(context, Routes.homepage);
-                        } else {
-                          showToast(
-                            response['error-message'],
-                            toastLength: Toast.LENGTH_LONG,
-                          );
-                        }
-                        setState(() => isLoading = false);
+                        login(context);
                       }
                     },
                   ),
@@ -234,7 +214,8 @@ class _LoginScreenState extends State<LoginScreen> {
         try {
           GoogleSignInAccount googleSignInAccount = await _handleGoogleSignIn();
           final googleAuth = await googleSignInAccount.authentication;
-          final googleAuthCred = GoogleAuthProvider.credential(idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+          final googleAuthCred = GoogleAuthProvider.credential(
+              idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
           final user = await firebaseAuth.signInWithCredential(googleAuthCred);
           // print("User : $user");
           if (user.credential!.accessToken != null) {
@@ -249,6 +230,29 @@ class _LoginScreenState extends State<LoginScreen> {
         }
     }
     return 0;
+  }
+
+  login(context) async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+      showToast('Logged in succesfully!');
+      Navigator.of(context).pushReplacementNamed(Routes.homepage);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        showToast("No user found with that email.");
+      } else if (e.code == 'wrong-password') {
+        showToast("Wrong password provided for that user.");
+      } else if (e.code == 'invalid-email') {
+        showToast("Invalid email provided.");
+      } else if (e.code == 'user-disabled') {
+        showToast("User account has been disabled.");
+      } else {
+        showToast("An error occurred: ${e.message}");
+      }
+    } on Exception catch (e) {
+      showToast("An error occurred: $e");
+    }
   }
 
   // Future _handleFBSignIn() async {
@@ -269,7 +273,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future _handleFBSignIn() async {
     FacebookLogin facebookLogin = FacebookLogin();
-    FacebookLoginResult facebookLoginResult = await facebookLogin.logIn(permissions: [FacebookPermission.email, FacebookPermission.publicProfile]);
+    FacebookLoginResult facebookLoginResult = await facebookLogin.logIn(
+        permissions: [
+          FacebookPermission.email,
+          FacebookPermission.publicProfile
+        ]);
     print("facebookLoginResult $facebookLoginResult");
     // switch (facebookLoginResult.status) {
     //   case FacebookLoginStatus.cancelledByUser:
@@ -288,7 +296,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Future _handleGoogleSignIn() async {
     GoogleSignIn googleSignIn = GoogleSignIn(
       scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly'],
-      clientId: "370229023048-9p71ocm86lavkn5bi9u5779e1bi47tvg.apps.googleusercontent.com",
+      clientId:
+          "370229023048-9p71ocm86lavkn5bi9u5779e1bi47tvg.apps.googleusercontent.com",
     );
     GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
     return googleSignInAccount;

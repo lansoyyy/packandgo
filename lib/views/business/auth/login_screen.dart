@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, sized_box_for_whitespace, prefer_const_constructors, avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:packandgo/services/emailChecker.dart';
 import 'package:packandgo/utils/colors.dart';
 import 'package:packandgo/utils/routes.dart';
@@ -144,26 +143,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
                     label: 'Login',
                     onPressed: () async {
                       if (_form.currentState!.validate()) {
-                        _form.currentState!.save();
-                        setState(() => isLoading = true);
-                        var response = await auth.signInWithEmailAndPassword(
-                          email: emailController.text,
-                          password: passwordController.text,
-                          context: context,
-                        );
-                        if (!response['error']) {
-                          await userDetailsQuery
-                              .getUserData(response['user-data'].uid);
-                          showToast('Logged in successfuly!');
-                          Navigator.pushNamed(
-                              context, Routes.businesshomescreen);
-                        } else {
-                          showToast(
-                            response['error-message'],
-                            toastLength: Toast.LENGTH_LONG,
-                          );
-                        }
-                        setState(() => isLoading = false);
+                        login(context);
                       }
                     },
                   ),
@@ -173,6 +153,29 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
             )
           : const Center(child: CircularProgressIndicator()),
     );
+  }
+
+  login(context) async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+      showToast('Logged in succesfully!');
+      Navigator.of(context).pushReplacementNamed(Routes.businesshomescreen);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        showToast("No user found with that email.");
+      } else if (e.code == 'wrong-password') {
+        showToast("Wrong password provided for that user.");
+      } else if (e.code == 'invalid-email') {
+        showToast("Invalid email provided.");
+      } else if (e.code == 'user-disabled') {
+        showToast("User account has been disabled.");
+      } else {
+        showToast("An error occurred: ${e.message}");
+      }
+    } on Exception catch (e) {
+      showToast("An error occurred: $e");
+    }
   }
 
   Future<int> _handleSignIn(String type) async {

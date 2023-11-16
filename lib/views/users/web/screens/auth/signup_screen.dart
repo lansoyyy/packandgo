@@ -1,15 +1,12 @@
 // ignore_for_file: use_build_context_synchronously, sized_box_for_whitespace, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, unnecessary_null_comparison
 
-import 'dart:math';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:packandgo/services/add_user.dart';
 import 'package:packandgo/services/emailChecker.dart';
 import 'package:packandgo/utils/colors.dart';
 import 'package:packandgo/widgets/text_widget.dart';
 import 'package:packandgo/widgets/toast_widget.dart';
-import 'package:flutter_verification_code/flutter_verification_code.dart';
 
 import '../../../../../queries/authQuery.dart';
 import '../../../../../queries/queries.dart';
@@ -40,14 +37,14 @@ class _SignupScreenState extends State<SignupScreen> {
   bool check3 = false;
   bool isLoading = false;
   bool isObscure = true;
-  bool _onEditing = false;
+  final bool _onEditing = false;
 
   final _form = GlobalKey<FormState>();
   var auth = AuthQuery();
   var userDetailsQuery = Queries();
-  int _currentStep = 0;
+  final int _currentStep = 0;
   StepperType stepperType = StepperType.horizontal;
-  var _code = "";
+  final _code = "";
   var credential;
   var codeVerificationId;
 
@@ -85,7 +82,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(context, Routes.landingpage);
+                                Navigator.pushNamed(
+                                    context, Routes.landingpage);
                               },
                               child: TextBold(
                                 text: 'Pack & Go',
@@ -143,12 +141,12 @@ class _SignupScreenState extends State<SignupScreen> {
                                       width: 300,
                                       child: Text(
                                         'New Customer',
-                                        style: TextStyle(fontFamily: 'QRegular'),
+                                        style:
+                                            TextStyle(fontFamily: 'QRegular'),
                                       ),
                                     ),
                                   ],
                                 ),
-                             
                                 const SizedBox(
                                   height: 20,
                                 ),
@@ -231,7 +229,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                   validator: (value) {
                                     if (emailController.text.isEmpty) {
                                       return "Email is required";
-                                    } else if (!isValidEmail(emailController.text)) {
+                                    } else if (!isValidEmail(
+                                        emailController.text)) {
                                       return "Please enter a valid email";
                                     } else {
                                       return null;
@@ -257,152 +256,16 @@ class _SignupScreenState extends State<SignupScreen> {
                                 ),
                               ],
                             ),
-                          if (_currentStep == 1)
-                            Wrap(
-                              alignment: WrapAlignment.center,
-                              children: [
-                                Text(
-                                  'Two Step Authentication',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(height: 20),
-                                Text("Kindly enter your phone number and we will send you a security code."),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: labelText(label: "Contact Number"),
-                                ),
-                                inputField(
-                                  controller: contactnumberController,
-                                  isDense: true,
-                                  validator: (value) {
-                                    if (contactnumberController.text.isEmpty) {
-                                      return "  This field is required!";
-                                    } else {
-                                      return null;
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                          if (_currentStep == 2)
-                            Container(
-                              alignment: Alignment.center,
-                              width: 500,
-                              child: Wrap(
-                                alignment: WrapAlignment.center,
-                                crossAxisAlignment: WrapCrossAlignment.center,
-                                direction: Axis.vertical,
-                                children: [
-                                  Icon(Icons.task_alt, size: 50),
-                                  SizedBox(height: 20),
-                                  Text(
-                                    'ENTER SECURITY CODE',
-                                  ),
-                                  SizedBox(height: 20),
-                                  Text("Enter the code that was sent to (+63) ${contactnumberController.text}"),
-                                  SizedBox(height: 20),
-                                  VerificationCode(
-                                    textStyle: TextStyle(fontSize: 20.0, color: Colors.red[900]),
-                                    keyboardType: TextInputType.number,
-                                    underlineColor: Colors.amber,
-                                    length: 6,
-                                    cursorColor: Colors.blue,
-                                    clearAll: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'clear all',
-                                        style: TextStyle(fontSize: 14.0, color: Colors.blue[700]),
-                                      ),
-                                    ),
-                                    onCompleted: (String value) {
-                                      setState(() {
-                                        _code = value;
-                                        print("code value: $value");
-                                      });
-                                    },
-                                    onEditing: (bool value) {
-                                      setState(() {
-                                        _onEditing = value;
-                                      });
-                                      if (!_onEditing) FocusScope.of(context).unfocus();
-                                    },
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      twoStepAuth('send');
-                                      showToast("Another code was sent to ${contactnumberController.text}");
-                                    },
-                                    child: Text(
-                                      "Send another code",
-                                      style: TextStyle(color: Colors.blue),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
                           const SizedBox(height: 20),
                           ButtonWidget(
                             radius: 5,
                             color: green,
                             height: 45,
                             width: 500,
-                            label: _currentStep == 2 ? "Verify" : 'Continue',
+                            label: 'Continue',
                             onPressed: () async {
                               if (_form.currentState!.validate()) {
-                                _form.currentState!.save();
-                                setState(() => isLoading = true);
-                                // var userDetailsAPI = Queries();
-                                switch (_currentStep) {
-                                  case 0:
-                                    print("case 0");
-                                    _currentStep += 1;
-                                    // await twoStepAuth("send");
-                                    break;
-                                  case 1:
-                                    print("case 1");
-                                    if (await twoStepAuth('send')) {
-                                      _currentStep += 1;
-                                    }
-                                    break;
-                                  case 2:
-                                    print("case 2");
-                                    if (await twoStepAuth('verify')) {
-                                      var response = await auth.signUpWithEmailAndPassword(
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                      );
-                                      if (response != null) {
-                                        var userDetailsData = {
-                                          "uid": response.uid,
-                                          "firstname": firstnameController.text,
-                                          "lastname": lastnameController.text,
-                                          "username": usernameController.text,
-                                          "email": emailController.text,
-                                          "contact_number": contactnumberController.text,
-                                          "gender": genderController.text,
-                                          "birthday": birthdayController.text,
-                                          "user_type": check1
-                                              ? "customer"
-                                              : check2
-                                                  ? "operator"
-                                                  : check3
-                                                      ? "owner"
-                                                      : "customer",
-                                          "status": true
-                                        };
-
-                                        await userDetailsQuery.push("user-details", userDetailsData);
-                                      } else {
-                                        showToast('Email already used!');
-                                      }
-                                    }
-                                    showToast('Account created successfuly!');
-                                    Navigator.pushNamed(context, Routes.loginpage);
-                                    break;
-                                  default:
-                                }
-
-                                setState(() => isLoading = false);
+                                register(context);
                               }
                             },
                           ),
@@ -418,7 +281,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(context, Routes.loginpage);
+                                    Navigator.pushNamed(
+                                        context, Routes.loginpage);
                                   },
                                   child: TextBold(
                                     text: 'Login',
@@ -444,71 +308,38 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  Future<bool> twoStepAuth(action) async {
-    var auth = FirebaseAuth.instance;
-    switch (action) {
-      case 'send':
-        try {
-          await auth.verifyPhoneNumber(
-            phoneNumber: '+63${(contactnumberController.text).substring(1)}',
-            verificationCompleted: (response) {
-              print("completed $response");
-            },
-            verificationFailed: (response) {
-              print("failed $response");
-              throw FirebaseAuthException(
-                code: "verification_failed",
-                message: "Phone number verification failed",
-              );
-            },
-            codeSent: (String verificationId, int? resendToken) async {
-              codeVerificationId = verificationId;
-              print('verification id $verificationId');
-              print('resendToken $resendToken');
-              setState(() {});
-            },
-            timeout: const Duration(minutes: 5),
-            codeAutoRetrievalTimeout: (response) {
-              print("retrival timeout $response");
-              showToast("Code expired");
-            },
-          );
-          return true;
-        } on FirebaseAuthException catch (e, _) {
-          showToast(e.message, toastLength: Toast.LENGTH_LONG);
-          return false;
-        }
+  register(context) async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
 
-      case 'verify':
-        if (codeVerificationId != null && _code != "") {
-          String smsCode = _code;
-          print("see code: $_code");
-          credential = PhoneAuthProvider.credential(verificationId: codeVerificationId, smsCode: smsCode);
-          try {
-            var result = await auth.signInWithCredential(credential);
-            _code = "";
-            codeVerificationId = null;
-            print('see result $result');
-            setState(() {});
-            return true;
-          } on FirebaseAuthException catch (e, _) {
-            print("see error ${e.code}");
-            if (e.code == 'invalid-phone-number') {
-              showToast('The provided phone number is not valid.');
-            } else if (e.code == 'invalid-verification-code') {
-              showToast("Verification code is invalid");
-            } else {
-              print("omething wend wrong ${e.message}");
-              showToast("something wend wrong ${e.message}");
-            }
-            return false;
-          }
-        } else {
-          showToast('Insuficient code crredentials');
-          return false;
-        }
-      default:
-        return false;
+      addUser(
+          firstnameController.text,
+          lastnameController.text,
+          usernameController.text,
+          contactnumberController.text,
+          genderController.text,
+          birthdayController.text,
+          emailController.text,
+          'User');
+
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+
+      showToast('Account created succesfully!');
+      Navigator.of(context).pushReplacementNamed(Routes.homepage);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        showToast('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        showToast('The account already exists for that email.');
+      } else if (e.code == 'invalid-email') {
+        showToast('The email address is not valid.');
+      } else {
+        showToast(e.toString());
+      }
+    } on Exception catch (e) {
+      showToast("An error occurred: $e");
     }
   }
 }
