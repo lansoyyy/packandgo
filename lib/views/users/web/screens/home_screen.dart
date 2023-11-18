@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,12 +20,21 @@ import 'home_tab/map_tab.dart';
 
 List<Map<String, String>> vehicles = [
   {"name": "Motorcycle", "image": "motorcycle.png"},
-  {"name": "500 Kg Jeepney (Standard Type)", "image": "500-kg-Jeepney-(Standard-Type).png"},
-  {"name": "800 Kg Jeepney (Lawin Type)", "image": "800-kg-Jeepney-(Lawin-Type).png"},
+  {
+    "name": "500 Kg Jeepney (Standard Type)",
+    "image": "500-kg-Jeepney-(Standard-Type).png"
+  },
+  {
+    "name": "800 Kg Jeepney (Lawin Type)",
+    "image": "800-kg-Jeepney-(Lawin-Type).png"
+  },
   {"name": "300 Kg Taxi Sedan", "image": "300-Kg-Taxi.png"},
   {"name": "500 Kg Taxi MPV", "image": "500-Kg-Taxi-MPV.png"},
   {"name": "6-Wheel Truck Close Type", "image": "6-Wheel-Truck-Close-Type.png"},
-  {"name": "10-Wheel Truck Close Type", "image": "10-Wheel-Truck-Close-Type.png"},
+  {
+    "name": "10-Wheel Truck Close Type",
+    "image": "10-Wheel-Truck-Close-Type.png"
+  },
   {"name": "6-Wheel Truck Open Type", "image": "6-Wheel-Truck-Open-Type.png"},
   {"name": "10-Wheel Truck Open Type", "image": "10-Wheel-Truck-Open-Type.png"},
 ];
@@ -67,14 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
   DateTime selectedDateTime = DateTime.now();
 
-  getUserData() async {
-    setState(() => isLoading = true);
-    final SharedPreferences userData = await SharedPreferences.getInstance();
-    var details = userData.getString('userDetails');
-    userDetails = details != null ? json.decode(details) : null;
-    setState(() => isLoading = false);
-  }
-
   Future<void> _selectDateTime(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -94,7 +93,8 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
 
-    final TimeOfDay? timePicked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    final TimeOfDay? timePicked =
+        await showTimePicker(context: context, initialTime: TimeOfDay.now());
     if (timePicked != null) {
       setState(() {
         selectedDateTime = DateTime(
@@ -110,17 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  void initState() {
-    getUserData();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (userDetails != null) {
-      newContactnumberController.text = userDetails['contact_number'] ?? "";
-      newEmailController.text = userDetails['email'] ?? "";
-    }
     var size = MediaQuery.of(context).size;
     return Scaffold(
       body: !isLoading
@@ -149,7 +139,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(context, Routes.recordspage);
+                                    Navigator.pushNamed(
+                                        context, Routes.recordspage);
                                   },
                                   child: TextRegular(
                                     text: 'Records',
@@ -160,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 PopupMenuButton(
                                   iconSize: 150,
                                   icon: TextRegular(
-                                    text: userDetails['firstname'] ?? "User",
+                                    text: "User",
                                     fontSize: 16,
                                     color: Colors.white,
                                   ),
@@ -168,8 +159,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     return [
                                       PopupMenuItem(
                                         onTap: () {
-                                          Navigator.pushNamed(context, Routes.profilepag);
-                                          Navigator.pushNamed(context, Routes.profilepag);
+                                          Navigator.pushNamed(
+                                              context, Routes.profilepag);
+                                          Navigator.pushNamed(
+                                              context, Routes.profilepag);
                                         },
                                         child: TextRegular(
                                           text: 'My Account',
@@ -184,31 +177,51 @@ class _HomeScreenState extends State<HomeScreen> {
                                               builder: (context) => AlertDialog(
                                                     title: const Text(
                                                       'Logout Confirmation',
-                                                      style: TextStyle(fontFamily: 'QBold', fontWeight: FontWeight.bold),
+                                                      style: TextStyle(
+                                                          fontFamily: 'QBold',
+                                                          fontWeight:
+                                                              FontWeight.bold),
                                                     ),
                                                     content: const Text(
                                                       'Are you sure you want to Logout?',
-                                                      style: TextStyle(fontFamily: 'QRegular'),
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              'QRegular'),
                                                     ),
                                                     actions: <Widget>[
                                                       MaterialButton(
-                                                        onPressed: () => Navigator.of(context).pop(true),
+                                                        onPressed: () =>
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(true),
                                                         child: const Text(
                                                           'Close',
-                                                          style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'QRegular',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
                                                         ),
                                                       ),
                                                       MaterialButton(
                                                         onPressed: () async {
-                                                          Navigator.of(context).pushReplacement(
+                                                          Navigator.of(context)
+                                                              .pushReplacement(
                                                             MaterialPageRoute(
-                                                              builder: (context) => LoginScreen(),
+                                                              builder: (context) =>
+                                                                  LoginScreen(),
                                                             ),
                                                           );
                                                         },
                                                         child: const Text(
                                                           'Continue',
-                                                          style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'QRegular',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
                                                         ),
                                                       ),
                                                     ],
@@ -218,32 +231,60 @@ class _HomeScreenState extends State<HomeScreen> {
                                               builder: (context) => AlertDialog(
                                                     title: const Text(
                                                       'Logout Confirmation',
-                                                      style: TextStyle(fontFamily: 'QBold', fontWeight: FontWeight.bold),
+                                                      style: TextStyle(
+                                                          fontFamily: 'QBold',
+                                                          fontWeight:
+                                                              FontWeight.bold),
                                                     ),
                                                     content: const Text(
                                                       'Are you sure you want to Logout?',
-                                                      style: TextStyle(fontFamily: 'QRegular'),
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              'QRegular'),
                                                     ),
                                                     actions: <Widget>[
                                                       MaterialButton(
-                                                        onPressed: () => Navigator.of(context).pop(true),
+                                                        onPressed: () =>
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(true),
                                                         child: const Text(
                                                           'Close',
-                                                          style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'QRegular',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
                                                         ),
                                                       ),
                                                       MaterialButton(
                                                         onPressed: () async {
-                                                          final SharedPreferences userData = await SharedPreferences.getInstance();
-                                                          var usthQuery = AuthQuery();
-                                                          await usthQuery.signOut();
-                                                          await userData.clear();
+                                                          final SharedPreferences
+                                                              userData =
+                                                              await SharedPreferences
+                                                                  .getInstance();
+                                                          var usthQuery =
+                                                              AuthQuery();
+                                                          await usthQuery
+                                                              .signOut();
+                                                          await userData
+                                                              .clear();
                                                           Navigator.of(context)
-                                                              .pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen()));
+                                                              .pushReplacement(
+                                                                  MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              LoginScreen()));
                                                         },
                                                         child: const Text(
                                                           'Continue',
-                                                          style: TextStyle(fontFamily: 'QRegular', fontWeight: FontWeight.bold),
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'QRegular',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
                                                         ),
                                                       ),
                                                     ],
@@ -311,7 +352,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: 45,
                                 width: 150,
                                 fontSize: 14,
-                                label: currentIndex != 3 ? 'Continue' : 'Request Booking',
+                                label: currentIndex != 3
+                                    ? 'Continue'
+                                    : 'Request Booking',
                                 onPressed: () async {
                                   switch (currentIndex) {
                                     case 0:
@@ -326,8 +369,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                       break;
                                     case 3:
                                       var details = {
-                                        "pick-up-location": pickupController.text,
-                                        "drop-off-location": dropoffController.text,
+                                        "pick-up-location":
+                                            pickupController.text,
+                                        "drop-off-location":
+                                            dropoffController.text,
                                         "pickup-service": check1
                                             ? 'use-stairs'
                                             : check2
@@ -335,7 +380,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 : check3
                                                     ? 'ring-doorbell'
                                                     : '',
-                                        "additional-pickup-location": pickupAdditionalController.text,
+                                        "additional-pickup-location":
+                                            pickupAdditionalController.text,
                                         "drop-off-service": check1
                                             ? 'use-stairs'
                                             : check2
@@ -343,14 +389,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 : check3
                                                     ? 'ring-doorbell'
                                                     : '',
-                                        "additional-dropoff-location": dropoffAdditionalController.text,
-                                        "date-time": selectedDateTime.toString(),
-                                        "add-loader-and-unloader": addLoaderAndUnloader,
+                                        "additional-dropoff-location":
+                                            dropoffAdditionalController.text,
+                                        "date-time":
+                                            selectedDateTime.toString(),
+                                        "add-loader-and-unloader":
+                                            addLoaderAndUnloader,
                                         "add-rearranger": addRearranger,
-                                        "vehicle-type": selectedIndex != -1 ? vehicles[selectedIndex]['name'].toString() : "",
-                                        "name": "${userDetails['firstname']} ${userDetails['lastname']}",
-                                        "contact-number": "${userDetails['contact_number']}",
-                                        "alternative-contact-number": newAlernativcontactnumberController.text,
+                                        "vehicle-type": selectedIndex != -1
+                                            ? vehicles[selectedIndex]['name']
+                                                .toString()
+                                            : "",
+                                        "name":
+                                            "${userDetails['firstname']} ${userDetails['lastname']}",
+                                        "contact-number":
+                                            "${userDetails['contact_number']}",
+                                        "alternative-contact-number":
+                                            newAlernativcontactnumberController
+                                                .text,
                                         "email": newEmailController.text,
                                         "price": "0.00",
                                         "booking-status": "pending",
@@ -359,7 +415,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       };
                                       var messages = {
                                         "uid": _auth.currentUser!.uid,
-                                        "name": "${userDetails['firstname']} ${userDetails['lastname']}",
+                                        "name":
+                                            "${userDetails['firstname']} ${userDetails['lastname']}",
                                         "convo": [
                                           {
                                             "message": "Message here...",
@@ -368,7 +425,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           },
                                         ]
                                       };
-                                      await saveBookingDetails(bookingDetails: details, initialConvo: messages);
+                                      await saveBookingDetails(
+                                          bookingDetails: details,
+                                          initialConvo: messages);
                                       bookingRequestDIalog();
                                       break;
                                     default:
