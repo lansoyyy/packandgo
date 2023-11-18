@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:flutter_map/flutter_map.dart';
 
 import '../../../../../widgets/text_widget.dart';
@@ -50,41 +51,63 @@ class MapTab extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          Container(
-            height: 50,
-            width: 500,
-            decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.black,
+          GestureDetector(
+            onTap: () async {
+              await PlacesAutocomplete.show(
+                context: context,
+                apiKey: 'AIzaSyDdXaMN5htLGHo8BkCfefPpuTauwHGXItU',
+                mode: Mode.overlay, // Mode.fullscreen
+                language: "fr",
+              );
+            },
+            child: Container(
+              height: 50,
+              width: 500,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black,
+                  ),
+                  borderRadius: BorderRadius.circular(5)),
+              child: TextFormField(
+                enabled: false,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.location_on_rounded),
+                  hintText: 'Pick-Up Location',
+                  border: InputBorder.none,
                 ),
-                borderRadius: BorderRadius.circular(5)),
-            child: TextFormField(
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.location_on_rounded),
-                hintText: 'Pick-Up Location',
-                border: InputBorder.none,
+                controller: pickupController,
               ),
-              controller: pickupController,
             ),
           ),
           const SizedBox(
             height: 20,
           ),
-          Container(
-            height: 50,
-            width: 500,
-            decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.black,
+          GestureDetector(
+            onTap: () async {
+              await PlacesAutocomplete.show(
+                context: context,
+                apiKey: 'AIzaSyDdXaMN5htLGHo8BkCfefPpuTauwHGXItU',
+                mode: Mode.overlay, // Mode.fullscreen
+                language: "fr",
+              );
+            },
+            child: Container(
+              height: 50,
+              width: 500,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black,
+                  ),
+                  borderRadius: BorderRadius.circular(5)),
+              child: TextFormField(
+                enabled: false,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.location_on_rounded),
+                  hintText: 'Drop-Off Location',
+                  border: InputBorder.none,
                 ),
-                borderRadius: BorderRadius.circular(5)),
-            child: TextFormField(
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.location_on_rounded),
-                hintText: 'Drop-Off Location',
-                border: InputBorder.none,
+                controller: dropoffController,
               ),
-              controller: dropoffController,
             ),
           ),
         ],
