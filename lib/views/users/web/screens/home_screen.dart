@@ -3,7 +3,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:packandgo/services/add_order.dart';
-import 'package:packandgo/widgets/toast_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../queries/authQuery.dart';
@@ -106,7 +105,6 @@ class _HomeScreenState extends State<HomeScreen> {
           timePicked.hour,
           timePicked.minute,
         );
-        currentIndex++;
       });
     }
   }
@@ -376,8 +374,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         selectedDateTime,
                                         addLoaderAndUnloader,
                                         addRearranger,
-                                        vehicle);
-                                    showToast('Request added succesfully!');
+                                        vehicle,
+                                        newContactnumberController.text,
+                                        newAlernativcontactnumberController
+                                            .text,
+                                        newEmailController.text);
+                                    bookingRequestDIalog();
 
                                     setState(() {
                                       currentIndex = 0;

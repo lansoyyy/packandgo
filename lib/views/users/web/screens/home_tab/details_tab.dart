@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:packandgo/widgets/button_widget.dart';
 import 'package:packandgo/widgets/text_widget.dart';
 import 'package:packandgo/widgets/textfield_widget.dart';
@@ -36,6 +37,12 @@ class _DetailsTabState extends State<DetailsTab> {
             return const SizedBox();
           }
           dynamic data = snapshot.data;
+
+          if (!isLoading) {
+            newContactnumberController.text = data['number'];
+            newEmailController.text = data['email'];
+            isLoading = true;
+          }
           return Center(
               child: SingleChildScrollView(
             child: Column(
@@ -86,7 +93,8 @@ class _DetailsTabState extends State<DetailsTab> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
                         child: TextRegular(
-                          text: 'Date and Time: ${DateTime.now()}',
+                          text:
+                              'Date and Time: ${DateFormat.yMMMd().add_jm().format(data['dateTime'].toDate())}',
                           fontSize: 14,
                           color: Colors.grey,
                         ),

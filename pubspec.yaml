@@ -55,6 +55,7 @@ dependencies:
   google_maps_utils: ^1.5.0+0
   html: ^0.15.0
   flutter_google_places:
+  intl:
 
 dev_dependencies:
   flutter_test:

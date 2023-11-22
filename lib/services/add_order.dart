@@ -1,11 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-Future addOrder(lat, long, pickup, dropoff, additionalpickup, additionaldropoff,
-    dateAndTime, hasLoader, hasRearranger, vehicletype) async {
+Future addOrder(
+    lat,
+    long,
+    pickup,
+    dropoff,
+    additionalpickup,
+    additionaldropoff,
+    dateAndTime,
+    hasLoader,
+    hasRearranger,
+    vehicletype,
+    number,
+    altnumber,
+    email) async {
   final docUser = FirebaseFirestore.instance.collection('Orders').doc();
 
   final json = {
+    'number': number,
+    'altnumber': altnumber,
+    'email': email,
     'lat': lat,
     'long': long,
     'pickup': pickup,
