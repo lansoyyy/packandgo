@@ -30,24 +30,6 @@ class _LocationTabState extends State<LocationTab> {
           const SizedBox(
             height: 10,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextRegular(
-                text: 'Location A',
-                fontSize: 14,
-                color: Colors.grey,
-              ),
-              const SizedBox(
-                width: 30,
-              ),
-              TextRegular(
-                text: 'Location B',
-                fontSize: 14,
-                color: Colors.grey,
-              ),
-            ],
-          ),
           const SizedBox(
             height: 20,
           ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:flutter_map/flutter_map.dart';
 
 import '../../../../../widgets/text_widget.dart';
@@ -52,14 +51,14 @@ class MapTab extends StatelessWidget {
             height: 20,
           ),
           GestureDetector(
-            onTap: () async {
-              await PlacesAutocomplete.show(
-                context: context,
-                apiKey: 'AIzaSyDdXaMN5htLGHo8BkCfefPpuTauwHGXItU',
-                mode: Mode.overlay, // Mode.fullscreen
-                language: "fr",
-              );
-            },
+            // onTap: () async {
+            //   await PlacesAutocomplete.show(
+            //     context: context,
+            //     apiKey: 'AIzaSyDdXaMN5htLGHo8BkCfefPpuTauwHGXItU',
+            //     mode: Mode.overlay, // Mode.fullscreen
+            //     language: "fr",
+            //   );
+            // },
             child: Container(
               height: 50,
               width: 500,
@@ -69,7 +68,7 @@ class MapTab extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(5)),
               child: TextFormField(
-                enabled: false,
+                enabled: true,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.location_on_rounded),
                   hintText: 'Pick-Up Location',
@@ -83,14 +82,14 @@ class MapTab extends StatelessWidget {
             height: 20,
           ),
           GestureDetector(
-            onTap: () async {
-              await PlacesAutocomplete.show(
-                context: context,
-                apiKey: 'AIzaSyDdXaMN5htLGHo8BkCfefPpuTauwHGXItU',
-                mode: Mode.overlay, // Mode.fullscreen
-                language: "fr",
-              );
-            },
+            // onTap: () async {
+            //   await PlacesAutocomplete.show(
+            //     context: context,
+            //     apiKey: 'AIzaSyDdXaMN5htLGHo8BkCfefPpuTauwHGXItU',
+            //     mode: Mode.overlay, // Mode.fullscreen
+            //     language: "fr",
+            //   );
+            // },
             child: Container(
               height: 50,
               width: 500,
@@ -100,7 +99,7 @@ class MapTab extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(5)),
               child: TextFormField(
-                enabled: false,
+                enabled: true,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.location_on_rounded),
                   hintText: 'Drop-Off Location',

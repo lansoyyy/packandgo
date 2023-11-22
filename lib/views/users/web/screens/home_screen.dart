@@ -2,11 +2,11 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:packandgo/services/add_order.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../queries/authQuery.dart';
 import '../../../../queries/queries.dart';
-import '../../../../services/generateRandomNumbers.dart';
 import '../../../../utils/colors.dart';
 import '../../../../utils/routes.dart';
 import '../../../../widgets/button_widget.dart';
@@ -48,6 +48,7 @@ final dropoffAdditionalController = TextEditingController();
 final newContactnumberController = TextEditingController();
 final newAlernativcontactnumberController = TextEditingController();
 final newEmailController = TextEditingController();
+String vehicle = 'Motorcycle';
 
 bool check1 = true;
 bool check2 = false;
@@ -115,197 +116,192 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: !isLoading
           ? SingleChildScrollView(
-              child: SizedBox(
-                height: 1000,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      height: 80,
-                      color: primary,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 50, right: 50),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TextBold(
-                              text: 'Pack & Go',
-                              fontSize: 38,
-                              color: Colors.white,
-                            ),
-                            Row(
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, Routes.recordspage);
-                                  },
-                                  child: TextRegular(
-                                    text: 'Records',
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                  ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 80,
+                    color: primary,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 50, right: 50),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextBold(
+                            text: 'Pack & Go',
+                            fontSize: 38,
+                            color: Colors.white,
+                          ),
+                          Row(
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, Routes.recordspage);
+                                },
+                                child: TextRegular(
+                                  text: 'Records',
+                                  fontSize: 16,
+                                  color: Colors.white,
                                 ),
-                                PopupMenuButton(
-                                  iconSize: 150,
-                                  icon: TextRegular(
-                                    text: "User",
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                  ),
-                                  itemBuilder: (context) {
-                                    return [
-                                      PopupMenuItem(
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                              context, Routes.profilepag);
-                                          Navigator.pushNamed(
-                                              context, Routes.profilepag);
-                                        },
-                                        child: TextRegular(
-                                          text: 'My Account',
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                      PopupMenuItem(
-                                        onTap: () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) => AlertDialog(
-                                                    title: const Text(
-                                                      'Logout Confirmation',
-                                                      style: TextStyle(
-                                                          fontFamily: 'QBold',
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    content: const Text(
-                                                      'Are you sure you want to Logout?',
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'QRegular'),
-                                                    ),
-                                                    actions: <Widget>[
-                                                      MaterialButton(
-                                                        onPressed: () =>
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop(true),
-                                                        child: const Text(
-                                                          'Close',
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  'QRegular',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      ),
-                                                      MaterialButton(
-                                                        onPressed: () async {
-                                                          Navigator.of(context)
-                                                              .pushReplacement(
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  LoginScreen(),
-                                                            ),
-                                                          );
-                                                        },
-                                                        child: const Text(
-                                                          'Continue',
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  'QRegular',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ));
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) => AlertDialog(
-                                                    title: const Text(
-                                                      'Logout Confirmation',
-                                                      style: TextStyle(
-                                                          fontFamily: 'QBold',
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    content: const Text(
-                                                      'Are you sure you want to Logout?',
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'QRegular'),
-                                                    ),
-                                                    actions: <Widget>[
-                                                      MaterialButton(
-                                                        onPressed: () =>
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop(true),
-                                                        child: const Text(
-                                                          'Close',
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  'QRegular',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      ),
-                                                      MaterialButton(
-                                                        onPressed: () async {
-                                                          final SharedPreferences
-                                                              userData =
-                                                              await SharedPreferences
-                                                                  .getInstance();
-                                                          var usthQuery =
-                                                              AuthQuery();
-                                                          await usthQuery
-                                                              .signOut();
-                                                          await userData
-                                                              .clear();
-                                                          Navigator.of(context)
-                                                              .pushReplacement(
-                                                                  MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              LoginScreen()));
-                                                        },
-                                                        child: const Text(
-                                                          'Continue',
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  'QRegular',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ));
-                                        },
-                                        child: TextRegular(
-                                          text: 'Logout',
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ];
-                                  },
+                              ),
+                              PopupMenuButton(
+                                iconSize: 150,
+                                icon: TextRegular(
+                                  text: "User",
+                                  fontSize: 16,
+                                  color: Colors.white,
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                itemBuilder: (context) {
+                                  return [
+                                    PopupMenuItem(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, Routes.profilepag);
+                                        Navigator.pushNamed(
+                                            context, Routes.profilepag);
+                                      },
+                                      child: TextRegular(
+                                        text: 'My Account',
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      onTap: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                                  title: const Text(
+                                                    'Logout Confirmation',
+                                                    style: TextStyle(
+                                                        fontFamily: 'QBold',
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  content: const Text(
+                                                    'Are you sure you want to Logout?',
+                                                    style: TextStyle(
+                                                        fontFamily: 'QRegular'),
+                                                  ),
+                                                  actions: <Widget>[
+                                                    MaterialButton(
+                                                      onPressed: () =>
+                                                          Navigator.of(context)
+                                                              .pop(true),
+                                                      child: const Text(
+                                                        'Close',
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'QRegular',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                    MaterialButton(
+                                                      onPressed: () async {
+                                                        Navigator.of(context)
+                                                            .pushReplacement(
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                LoginScreen(),
+                                                          ),
+                                                        );
+                                                      },
+                                                      child: const Text(
+                                                        'Continue',
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'QRegular',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ));
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                                  title: const Text(
+                                                    'Logout Confirmation',
+                                                    style: TextStyle(
+                                                        fontFamily: 'QBold',
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  content: const Text(
+                                                    'Are you sure you want to Logout?',
+                                                    style: TextStyle(
+                                                        fontFamily: 'QRegular'),
+                                                  ),
+                                                  actions: <Widget>[
+                                                    MaterialButton(
+                                                      onPressed: () =>
+                                                          Navigator.of(context)
+                                                              .pop(true),
+                                                      child: const Text(
+                                                        'Close',
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'QRegular',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                    MaterialButton(
+                                                      onPressed: () async {
+                                                        final SharedPreferences
+                                                            userData =
+                                                            await SharedPreferences
+                                                                .getInstance();
+                                                        var usthQuery =
+                                                            AuthQuery();
+                                                        await usthQuery
+                                                            .signOut();
+                                                        await userData.clear();
+                                                        Navigator.of(context)
+                                                            .pushReplacement(
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            LoginScreen()));
+                                                      },
+                                                      child: const Text(
+                                                        'Continue',
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'QRegular',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ));
+                                      },
+                                      child: TextRegular(
+                                        text: 'Logout',
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ];
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    IndexedStack(
+                  ),
+                  SizedBox(
+                    height: 500,
+                    child: IndexedStack(
                       index: currentIndex,
                       children: [
                         MapTab(),
@@ -314,133 +310,83 @@ class _HomeScreenState extends State<HomeScreen> {
                         DetailsTab(),
                       ],
                     ),
-                    const Expanded(child: SizedBox()),
-                    const Divider(),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: 80,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 50, right: 50),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              currentIndex != 0
-                                  ? ButtonWidget(
-                                      textColor: Colors.black,
-                                      radius: 5,
-                                      color: Colors.white,
-                                      height: 45,
-                                      width: 150,
-                                      fontSize: 14,
-                                      label: 'Back',
-                                      onPressed: () {
-                                        setState(() {
-                                          currentIndex--;
-                                        });
-                                      },
-                                    )
-                                  : const SizedBox(),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              ButtonWidget(
-                                radius: 5,
-                                color: primary,
-                                height: 45,
-                                width: 150,
-                                fontSize: 14,
-                                label: currentIndex != 3
-                                    ? 'Continue'
-                                    : 'Request Booking',
-                                onPressed: () async {
-                                  switch (currentIndex) {
-                                    case 0:
-                                      setState(() => currentIndex++);
-                                      break;
-                                    case 1:
-                                      _selectDateTime(context);
-                                      setState(() => currentIndex++);
-                                      break;
-                                    case 2:
-                                      setState(() => currentIndex++);
-                                      break;
-                                    case 3:
-                                      var details = {
-                                        "pick-up-location":
-                                            pickupController.text,
-                                        "drop-off-location":
-                                            dropoffController.text,
-                                        "pickup-service": check1
-                                            ? 'use-stairs'
-                                            : check2
-                                                ? 'use-elevator'
-                                                : check3
-                                                    ? 'ring-doorbell'
-                                                    : '',
-                                        "additional-pickup-location":
-                                            pickupAdditionalController.text,
-                                        "drop-off-service": check1
-                                            ? 'use-stairs'
-                                            : check2
-                                                ? 'use-elevator'
-                                                : check3
-                                                    ? 'ring-doorbell'
-                                                    : '',
-                                        "additional-dropoff-location":
-                                            dropoffAdditionalController.text,
-                                        "date-time":
-                                            selectedDateTime.toString(),
-                                        "add-loader-and-unloader":
-                                            addLoaderAndUnloader,
-                                        "add-rearranger": addRearranger,
-                                        "vehicle-type": selectedIndex != -1
-                                            ? vehicles[selectedIndex]['name']
-                                                .toString()
-                                            : "",
-                                        "name":
-                                            "${userDetails['firstname']} ${userDetails['lastname']}",
-                                        "contact-number":
-                                            "${userDetails['contact_number']}",
-                                        "alternative-contact-number":
-                                            newAlernativcontactnumberController
-                                                .text,
-                                        "email": newEmailController.text,
-                                        "price": "0.00",
-                                        "booking-status": "pending",
-                                        "booking-id": getRandomString(10),
-                                        "uid": _auth.currentUser!.uid,
-                                      };
-                                      var messages = {
-                                        "uid": _auth.currentUser!.uid,
-                                        "name":
-                                            "${userDetails['firstname']} ${userDetails['lastname']}",
-                                        "convo": [
-                                          {
-                                            "message": "Message here...",
-                                            "date": (DateTime.now()).toString(),
-                                            "sender": "customer",
-                                          },
-                                        ]
-                                      };
-                                      await saveBookingDetails(
-                                          bookingDetails: details,
-                                          initialConvo: messages);
-                                      bookingRequestDIalog();
-                                      break;
-                                    default:
-                                  }
-                                },
-                              )
-                            ],
-                          ),
+                  ),
+                  SizedBox(),
+                  const Divider(),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 80,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 50, right: 50),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            currentIndex != 0
+                                ? ButtonWidget(
+                                    textColor: Colors.black,
+                                    radius: 5,
+                                    color: Colors.white,
+                                    height: 45,
+                                    width: 150,
+                                    fontSize: 14,
+                                    label: 'Back',
+                                    onPressed: () {
+                                      setState(() {
+                                        currentIndex--;
+                                      });
+                                    },
+                                  )
+                                : const SizedBox(),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            ButtonWidget(
+                              radius: 5,
+                              color: primary,
+                              height: 45,
+                              width: 150,
+                              fontSize: 14,
+                              label: currentIndex != 3
+                                  ? 'Continue'
+                                  : 'Request Booking',
+                              onPressed: () async {
+                                switch (currentIndex) {
+                                  case 0:
+                                    setState(() => currentIndex++);
+                                    break;
+                                  case 1:
+                                    _selectDateTime(context);
+                                    setState(() => currentIndex++);
+                                    break;
+                                  case 2:
+                                    setState(() => currentIndex++);
+                                    break;
+                                  case 3:
+                                    addOrder(
+                                        0,
+                                        0,
+                                        pickupController.text,
+                                        dropoffController.text,
+                                        pickupAdditionalController.text,
+                                        dropoffAdditionalController.text,
+                                        selectedDateTime,
+                                        addLoaderAndUnloader,
+                                        addRearranger,
+                                        vehicle);
+                                    break;
+                                  default:
+                                }
+                              },
+                            )
+                          ],
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             )
           : SizedBox(
