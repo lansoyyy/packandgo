@@ -37,8 +37,6 @@ class _DriverLoginScreenState extends State<DriverLoginScreen> {
 
   @override
   void initState() {
-    emailController.text = "driver@gmail.com";
-    passwordController.text = "password";
     super.initState();
   }
 
