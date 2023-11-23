@@ -295,16 +295,20 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     height: 20,
                   ),
                   StreamBuilder<QuerySnapshot>(
-                    stream: status == 'All' ? FirebaseFirestore.instance
-                        .collection('Orders')
-                        .where('uid',
-                            isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                        .snapshots() : FirebaseFirestore.instance
-                        .collection('Orders')
-                        .where('uid',
-                            isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                            .where('status', isEqualTo:status)
-                        .snapshots(),
+                    stream: status == 'All'
+                        ? FirebaseFirestore.instance
+                            .collection('Orders')
+                            .where('uid',
+                                isEqualTo:
+                                    FirebaseAuth.instance.currentUser!.uid)
+                            .snapshots()
+                        : FirebaseFirestore.instance
+                            .collection('Orders')
+                            .where('uid',
+                                isEqualTo:
+                                    FirebaseAuth.instance.currentUser!.uid)
+                            .where('status', isEqualTo: status)
+                            .snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError) {
@@ -419,7 +423,10 @@ class _RecordsScreenState extends State<RecordsScreen> {
                                   ),
                                   DataCell(
                                     TextRegular(
-                                        text: 'July 02, 2023 (3:30pm - 4:30pm)',
+                                        text: DateFormat.yMMMd()
+                                            .add_jm()
+                                            .format(data.docs[i]['dateTime']
+                                                .toDate()),
                                         fontSize: 14,
                                         color: Colors.black),
                                   ),
