@@ -539,7 +539,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
-                                          content: viewDetailDialog(),
+                                          content:
+                                              viewDetailDialog(data.docs[i]),
                                           actions: [
                                             TextButton(
                                               onPressed: () {
@@ -596,7 +597,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
         ));
   }
 
-  viewDetailDialog() {
+  viewDetailDialog(data) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -641,7 +642,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
                     child: TextRegular(
-                      text: 'Vehicle Type: Vehicle Type',
+                      text: 'Vehicle Type: ${data['vehicletype']}',
                       fontSize: 14,
                       color: Colors.grey,
                     ),
@@ -649,7 +650,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
                     child: TextRegular(
-                      text: 'Date and Time: ${DateTime.now()}',
+                      text:
+                          'Date and Time: ${DateFormat.yMMMd().add_jm().format(data['dateTime'].toDate())}',
                       fontSize: 14,
                       color: Colors.grey,
                     ),
@@ -657,7 +659,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
                     child: TextRegular(
-                      text: 'Drop off Location',
+                      text: 'Pick-up: ${data['pickup']}',
                       fontSize: 14,
                       color: Colors.grey,
                     ),
@@ -665,7 +667,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
                     child: TextRegular(
-                      text: 'Pick-up: Pick up Location',
+                      text: 'Drop-off: ${data['dropoff']}',
                       fontSize: 14,
                       color: Colors.grey,
                     ),
@@ -673,15 +675,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
                     child: TextRegular(
-                      text: 'Drop-off: Drop off Location',
-                      fontSize: 14,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
-                    child: TextRegular(
-                      text: 'Notes to driver: Sample note details',
+                      text: 'Notes to driver: notes',
                       fontSize: 14,
                       color: Colors.grey,
                     ),
@@ -735,7 +729,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
                     child: TextRegular(
-                      text: 'Contact Number: 09090104355',
+                      text: 'Contact Number: ${data['number']}',
                       fontSize: 14,
                       color: Colors.grey,
                     ),
@@ -743,7 +737,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
                     child: TextRegular(
-                      text: 'Alternative Contact Number: 09639530422',
+                      text: 'Alternative Contact Number: ${data['altnumber']}',
                       fontSize: 14,
                       color: Colors.grey,
                     ),
@@ -754,7 +748,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         TextRegular(
-                          text: 'Email: doe@gmail.com',
+                          text: 'Email: ${data['email']}',
                           fontSize: 14,
                           color: Colors.grey,
                         ),
