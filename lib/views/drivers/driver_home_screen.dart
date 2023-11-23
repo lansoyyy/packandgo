@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:packandgo/queries/queries.dart';
 import 'package:packandgo/widgets/textfield_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -544,8 +543,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                                           actions: [
                                             TextButton(
                                               onPressed: () {
-                                                confirmationDialog(
-                                                    data.docs[i]);
+                                                confirmationDialog(data.docs[i],
+                                                    data.docs[i].id);
                                               },
                                               child: TextRegular(
                                                 text: 'Complete',
@@ -771,7 +770,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     );
   }
 
-  cancelDialog(data) {
+  cancelDialog(data, id) {
     return AlertDialog(
       title: TextRegular(
         text: 'Cancel Booking',
@@ -875,17 +874,10 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                       ),
                       TextButton(
                         onPressed: () async {
-                          var query = Queries();
-                          await query.update(
-                            'records',
-                            data["id"],
-                            {
-                              'booking-status': 'canceled',
-                              'cancel-reasons': option == 'Others'
-                                  ? othersController.text
-                                  : option,
-                            },
-                          );
+                          await FirebaseFirestore.instance
+                              .collection('Orders')
+                              .doc(id)
+                              .update({'status': 'Cancelled'});
                           Navigator.pop(context);
                         },
                         child: TextRegular(
@@ -908,7 +900,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     );
   }
 
-  confirmationDialog(data) {
+  confirmationDialog(data, id) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -931,16 +923,12 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
           ),
           MaterialButton(
             onPressed: () async {
-              var query = Queries();
-              await query.update(
-                'records',
-                data["id"],
-                {
-                  'booking-status': 'Completed',
-                  // 'cancel-reasons': option == 'Others' ? othersController.text : option,
-                },
-              );
-              Navigator.of(context).pop(true);
+              await FirebaseFirestore.instance
+                  .collection('Orders')
+                  .doc(id)
+                  .update({'status': 'Completed'});
+              Navigator.pop(context);
+              Navigator.pop(context);
             },
             child: const Text(
               'Continue',
