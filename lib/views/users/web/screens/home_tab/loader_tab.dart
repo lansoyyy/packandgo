@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:packandgo/utils/colors.dart';
 import 'package:packandgo/views/users/web/screens/home_screen.dart';
@@ -15,6 +16,9 @@ class LoaderTab extends StatefulWidget {
 
 class _LoaderTabState extends State<LoaderTab> {
   final scrollController = ScrollController();
+
+  int dropValue = 0;
+  int dropValue1 = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -191,6 +195,155 @@ class _LoaderTabState extends State<LoaderTab> {
                 },
               ),
             ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          TextBold(
+            text: 'Select Business Provider:',
+            fontSize: 18,
+            color: Colors.black,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          StreamBuilder<QuerySnapshot>(
+              stream:
+                  FirebaseFirestore.instance.collection('Business').snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  print(snapshot.error);
+                  return const Center(child: Text('Error'));
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 50),
+                    child: Center(
+                        child: CircularProgressIndicator(
+                      color: Colors.black,
+                    )),
+                  );
+                }
+
+                final data = snapshot.requireData;
+
+                return Container(
+                  width: 300,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: DropdownButton(
+                      underline: const SizedBox(),
+                      value: dropValue1,
+                      items: [
+                        for (int i = 0; i < data.docs.length; i++)
+                          DropdownMenuItem(
+                            value: i,
+                            onTap: () {
+                              setState(() {
+                                businessname = data.docs[i]['fname'] +
+                                    ' ' +
+                                    data.docs[i]['lname'];
+                                businessid = data.docs[i].id;
+                              });
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              child: TextRegular(
+                                text:
+                                    'Name: ${data.docs[i]['fname'] + ' ' + data.docs[i]['lname']}',
+                                fontSize: 14,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          dropValue1 = int.parse(value.toString());
+                        });
+                      }),
+                );
+              }),
+          const SizedBox(
+            height: 10,
+          ),
+          TextBold(
+            text: 'Select a Driver:',
+            fontSize: 18,
+            color: Colors.black,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          StreamBuilder<QuerySnapshot>(
+              stream:
+                  FirebaseFirestore.instance.collection('Drivers').snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  print(snapshot.error);
+                  return const Center(child: Text('Error'));
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 50),
+                    child: Center(
+                        child: CircularProgressIndicator(
+                      color: Colors.black,
+                    )),
+                  );
+                }
+
+                final data = snapshot.requireData;
+
+                return Container(
+                  width: 300,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: DropdownButton(
+                      underline: const SizedBox(),
+                      value: dropValue,
+                      items: [
+                        for (int i = 0; i < data.docs.length; i++)
+                          DropdownMenuItem(
+                            value: i,
+                            onTap: () {
+                              setState(() {
+                                drivername = data.docs[i]['fname'] +
+                                    ' ' +
+                                    data.docs[i]['lname'];
+                                driverid = data.docs[i].id;
+                              });
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              child: TextRegular(
+                                text:
+                                    'Driver: ${data.docs[i]['fname'] + ' ' + data.docs[i]['lname']}',
+                                fontSize: 14,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          dropValue = int.parse(value.toString());
+                        });
+                      }),
+                );
+              }),
+          const SizedBox(
+            height: 20,
           ),
         ],
       ),

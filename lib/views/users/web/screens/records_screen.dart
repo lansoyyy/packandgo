@@ -439,7 +439,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                                   ),
                                   DataCell(
                                     TextRegular(
-                                        text: 'Name of driver',
+                                        text: data.docs[i]['drivername'],
                                         fontSize: 14,
                                         color: Colors.black),
                                   ),
@@ -675,7 +675,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
                     child: TextRegular(
-                      text: 'Name: John Doe',
+                      text: 'Name: ${data['drivername']}',
                       fontSize: 14,
                       color: Colors.grey,
                     ),

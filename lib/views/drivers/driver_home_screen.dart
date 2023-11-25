@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:packandgo/widgets/textfield_widget.dart';
@@ -377,13 +378,13 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
               stream: status == 'All'
                   ? FirebaseFirestore.instance
                       .collection('Orders')
-                      // .where('uid',
-                      //     isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                      .where('driverid',
+                          isEqualTo: FirebaseAuth.instance.currentUser!.uid)
                       .snapshots()
                   : FirebaseFirestore.instance
                       .collection('Orders')
-                      // .where('uid',
-                      //     isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                      .where('driverid',
+                          isEqualTo: FirebaseAuth.instance.currentUser!.uid)
                       .where('status', isEqualTo: status)
                       .snapshots(),
               builder: (BuildContext context,
@@ -429,7 +430,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                     ),
                     DataColumn(
                       label: TextBold(
-                        text: 'Driver/Mover',
+                        text: 'Customer',
                         fontSize: 18,
                         color: Colors.black,
                       ),
@@ -510,7 +511,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                           ),
                           DataCell(
                             TextRegular(
-                                text: 'Driver Name',
+                                text: data.docs[i]['myname'],
                                 fontSize: 14,
                                 color: Colors.black),
                           ),
@@ -721,7 +722,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
                     child: TextRegular(
-                      text: 'Name: John Doe',
+                      text: 'Name: ${data['drivername']}',
                       fontSize: 14,
                       color: Colors.grey,
                     ),

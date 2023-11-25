@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:packandgo/services/add_order.dart';
@@ -50,6 +51,11 @@ final newAlernativcontactnumberController = TextEditingController();
 final newEmailController = TextEditingController();
 String vehicle = 'Motorcycle';
 
+String drivername = '';
+String driverid = '';
+String businessname = '';
+String businessid = '';
+
 bool check1 = true;
 bool check2 = false;
 bool check3 = false;
@@ -72,6 +78,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final Stream<DocumentSnapshot> userData = FirebaseFirestore.instance
+      .collection('Users')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .snapshots();
   int currentIndex = 0;
   DateTime selectedDateTime = DateTime.now();
 
@@ -312,88 +322,111 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(),
                   const Divider(),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 80,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 50, right: 50),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            currentIndex != 0
-                                ? ButtonWidget(
-                                    textColor: Colors.black,
+                  StreamBuilder<DocumentSnapshot>(
+                      stream: userData,
+                      builder:
+                          (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if (!snapshot.hasData) {
+                          return const SizedBox();
+                        } else if (snapshot.hasError) {
+                          return const Center(
+                              child: Text('Something went wrong'));
+                        } else if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const SizedBox();
+                        }
+                        dynamic userDetails = snapshot.data;
+                        return Align(
+                          alignment: Alignment.bottomCenter,
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 80,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 50, right: 50),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  currentIndex != 0
+                                      ? ButtonWidget(
+                                          textColor: Colors.black,
+                                          radius: 5,
+                                          color: Colors.white,
+                                          height: 45,
+                                          width: 150,
+                                          fontSize: 14,
+                                          label: 'Back',
+                                          onPressed: () {
+                                            setState(() {
+                                              currentIndex--;
+                                            });
+                                          },
+                                        )
+                                      : const SizedBox(),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  ButtonWidget(
                                     radius: 5,
-                                    color: Colors.white,
+                                    color: primary,
                                     height: 45,
                                     width: 150,
                                     fontSize: 14,
-                                    label: 'Back',
-                                    onPressed: () {
-                                      setState(() {
-                                        currentIndex--;
-                                      });
+                                    label: currentIndex != 3
+                                        ? 'Continue'
+                                        : 'Request Booking',
+                                    onPressed: () async {
+                                      switch (currentIndex) {
+                                        case 0:
+                                          setState(() => currentIndex++);
+                                          break;
+                                        case 1:
+                                          _selectDateTime(context);
+                                          setState(() => currentIndex++);
+                                          break;
+                                        case 2:
+                                          setState(() => currentIndex++);
+                                          break;
+                                        case 3:
+                                          addOrder(
+                                              0,
+                                              0,
+                                              pickupController.text,
+                                              dropoffController.text,
+                                              pickupAdditionalController.text,
+                                              dropoffAdditionalController.text,
+                                              selectedDateTime,
+                                              addLoaderAndUnloader,
+                                              addRearranger,
+                                              vehicle,
+                                              newContactnumberController.text,
+                                              newAlernativcontactnumberController
+                                                  .text,
+                                              newEmailController.text,
+                                              drivername,
+                                              driverid,
+                                              businessname,
+                                              businessid,
+                                              userDetails['fname'] +
+                                                  ' ' +
+                                                  userDetails['lname']);
+                                          bookingRequestDIalog();
+
+                                          setState(() {
+                                            currentIndex = 0;
+                                          });
+                                          break;
+                                        default:
+                                      }
                                     },
                                   )
-                                : const SizedBox(),
-                            const SizedBox(
-                              width: 20,
+                                ],
+                              ),
                             ),
-                            ButtonWidget(
-                              radius: 5,
-                              color: primary,
-                              height: 45,
-                              width: 150,
-                              fontSize: 14,
-                              label: currentIndex != 3
-                                  ? 'Continue'
-                                  : 'Request Booking',
-                              onPressed: () async {
-                                switch (currentIndex) {
-                                  case 0:
-                                    setState(() => currentIndex++);
-                                    break;
-                                  case 1:
-                                    _selectDateTime(context);
-                                    setState(() => currentIndex++);
-                                    break;
-                                  case 2:
-                                    setState(() => currentIndex++);
-                                    break;
-                                  case 3:
-                                    addOrder(
-                                        0,
-                                        0,
-                                        pickupController.text,
-                                        dropoffController.text,
-                                        pickupAdditionalController.text,
-                                        dropoffAdditionalController.text,
-                                        selectedDateTime,
-                                        addLoaderAndUnloader,
-                                        addRearranger,
-                                        vehicle,
-                                        newContactnumberController.text,
-                                        newAlernativcontactnumberController
-                                            .text,
-                                        newEmailController.text);
-                                    bookingRequestDIalog();
-
-                                    setState(() {
-                                      currentIndex = 0;
-                                    });
-                                    break;
-                                  default:
-                                }
-                              },
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                          ),
+                        );
+                      }),
                 ],
               ),
             )
