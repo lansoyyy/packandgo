@@ -11,6 +11,8 @@ class LocationTab extends StatefulWidget {
 }
 
 class _LocationTabState extends State<LocationTab> {
+  List<bool> selectedChoices = [false, false, false];
+  List<bool> selectedChoices1 = [false, false, false];
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -76,71 +78,41 @@ class _LocationTabState extends State<LocationTab> {
           const SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Checkbox(
-                value: check1,
-                onChanged: (value) {
-                  setState(() {
-                    check1 = !check1;
-                    check2 = false;
-                    check3 = false;
-                  });
-                },
-              ),
-              const SizedBox(
-                width: 400,
-                child: Text(
-                  'Helper needs to use stairs',
-                  style: TextStyle(fontFamily: 'QRegular'),
+          SizedBox(
+            width: 300,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CheckboxListTile(
+                  title: const Text('Helper needs to use stairs'),
+                  value: selectedChoices[0],
+                  onChanged: (value) {
+                    setState(() {
+                      selectedChoices[0] = value!;
+                    });
+                  },
                 ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Checkbox(
-                value: check2,
-                onChanged: (value) {
-                  setState(() {
-                    check2 = !check2;
-                    check1 = false;
-                    check3 = false;
-                  });
-                },
-              ),
-              const SizedBox(
-                width: 400,
-                child: Text(
-                  'Helper can use the elevator',
-                  style: TextStyle(fontFamily: 'QRegular'),
+                CheckboxListTile(
+                  title: const Text('Helper can use the elevator'),
+                  value: selectedChoices[1],
+                  onChanged: (value) {
+                    setState(() {
+                      selectedChoices[1] = value!;
+                    });
+                  },
                 ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Checkbox(
-                value: check3,
-                onChanged: (value) {
-                  setState(() {
-                    check3 = !check3;
-                    check1 = false;
-                    check2 = false;
-                  });
-                },
-              ),
-              const SizedBox(
-                width: 400,
-                child: Text(
-                  'Need to ring doorbell',
-                  style: TextStyle(fontFamily: 'QRegular'),
+                CheckboxListTile(
+                  title: const Text('Need to ring doorbell'),
+                  value: selectedChoices[2],
+                  onChanged: (value) {
+                    setState(() {
+                      selectedChoices[2] = value!;
+                    });
+                  },
                 ),
-              ),
-            ],
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
           const SizedBox(
             height: 20,
@@ -213,71 +185,41 @@ class _LocationTabState extends State<LocationTab> {
           const SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Checkbox(
-                value: check1,
-                onChanged: (value) {
-                  setState(() {
-                    check1 = !check1;
-                    check2 = false;
-                    check3 = false;
-                  });
-                },
-              ),
-              const SizedBox(
-                width: 400,
-                child: Text(
-                  'Helper needs to use stairs',
-                  style: TextStyle(fontFamily: 'QRegular'),
+          SizedBox(
+            width: 300,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CheckboxListTile(
+                  title: const Text('Helper needs to use stairs'),
+                  value: selectedChoices1[0],
+                  onChanged: (value) {
+                    setState(() {
+                      selectedChoices1[0] = value!;
+                    });
+                  },
                 ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Checkbox(
-                value: check2,
-                onChanged: (value) {
-                  setState(() {
-                    check2 = !check2;
-                    check1 = false;
-                    check3 = false;
-                  });
-                },
-              ),
-              const SizedBox(
-                width: 400,
-                child: Text(
-                  'Helper can use the elevator',
-                  style: TextStyle(fontFamily: 'QRegular'),
+                CheckboxListTile(
+                  title: const Text('Helper can use the elevator'),
+                  value: selectedChoices1[1],
+                  onChanged: (value) {
+                    setState(() {
+                      selectedChoices1[1] = value!;
+                    });
+                  },
                 ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Checkbox(
-                value: check3,
-                onChanged: (value) {
-                  setState(() {
-                    check3 = !check3;
-                    check1 = false;
-                    check2 = false;
-                  });
-                },
-              ),
-              const SizedBox(
-                width: 400,
-                child: Text(
-                  'Need to ring doorbell',
-                  style: TextStyle(fontFamily: 'QRegular'),
+                CheckboxListTile(
+                  title: const Text('Need to ring doorbell'),
+                  value: selectedChoices1[2],
+                  onChanged: (value) {
+                    setState(() {
+                      selectedChoices1[2] = value!;
+                    });
+                  },
                 ),
-              ),
-            ],
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
           const SizedBox(
             height: 20,
