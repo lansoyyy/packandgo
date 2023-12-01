@@ -319,7 +319,7 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                     ),
                     DataColumn(
                       label: TextBold(
-                        text: 'Delivery Rate',
+                        text: 'Delivery Date',
                         fontSize: 18,
                         color: Colors.black,
                       ),
@@ -398,9 +398,8 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                           ),
                           DataCell(
                             TextRegular(
-                                text: DateFormat.yMMMd()
-                                    .add_jm()
-                                    .format(data.docs[i]['dateTime'].toDate()),
+                                text: DateFormat.yMMMd().add_jm().format(
+                                    data.docs[i]['dateAndTime'].toDate()),
                                 fontSize: 14,
                                 color: Colors.black),
                           ),

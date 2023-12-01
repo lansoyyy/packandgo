@@ -340,7 +340,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                             ),
                             DataColumn(
                               label: TextBold(
-                                text: 'Delivery Rate',
+                                text: 'Delivery Date',
                                 fontSize: 18,
                                 color: Colors.black,
                               ),
@@ -425,7 +425,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                                     TextRegular(
                                         text: DateFormat.yMMMd()
                                             .add_jm()
-                                            .format(data.docs[i]['dateTime']
+                                            .format(data.docs[i]['dateAndTime']
                                                 .toDate()),
                                         fontSize: 14,
                                         color: Colors.black),

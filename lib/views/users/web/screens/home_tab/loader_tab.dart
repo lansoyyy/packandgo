@@ -345,6 +345,37 @@ class _LoaderTabState extends State<LoaderTab> {
           const SizedBox(
             height: 20,
           ),
+          GestureDetector(
+            // onTap: () async {
+            //   await PlacesAutocomplete.show(
+            //     context: context,
+            //     apiKey: 'AIzaSyDdXaMN5htLGHo8BkCfefPpuTauwHGXItU',
+            //     mode: Mode.overlay, // Mode.fullscreen
+            //     language: "fr",
+            //   );
+            // },
+            child: Container(
+              height: 50,
+              width: 500,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black,
+                  ),
+                  borderRadius: BorderRadius.circular(5)),
+              child: TextFormField(
+                enabled: true,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.notes),
+                  hintText: 'Driver Notes',
+                  border: InputBorder.none,
+                ),
+                controller: notesController,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
         ],
       ),
     ));

@@ -19,7 +19,8 @@ Future addOrder(
     driverid,
     businessname,
     businessid,
-    myname) async {
+    myname,
+    notes) async {
   final docUser = FirebaseFirestore.instance.collection('Orders').doc();
 
   final json = {
@@ -44,7 +45,8 @@ Future addOrder(
     'driverid': driverid,
     'businessname': businessname,
     'businessid': businessid,
-    'myname': myname
+    'myname': myname,
+    'notes': notes
   };
 
   await docUser.set(json);

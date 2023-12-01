@@ -416,7 +416,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                     ),
                     DataColumn(
                       label: TextBold(
-                        text: 'Delivery Rate',
+                        text: 'Delivery Date',
                         fontSize: 18,
                         color: Colors.black,
                       ),
@@ -495,9 +495,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                           ),
                           DataCell(
                             TextRegular(
-                                text: DateFormat.yMMMd()
-                                    .add_jm()
-                                    .format(data.docs[i]['dateTime'].toDate()),
+                                text: DateFormat.yMMMd().add_jm().format(
+                                    data.docs[i]['dateAndTime'].toDate()),
                                 fontSize: 14,
                                 color: Colors.black),
                           ),

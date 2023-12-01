@@ -94,7 +94,7 @@ class _DetailsTabState extends State<DetailsTab> {
                         padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
                         child: TextRegular(
                           text:
-                              'Date and Time: ${DateFormat.yMMMd().add_jm().format(data['dateTime'].toDate())}',
+                              'Date and Time: ${DateFormat.yMMMd().add_jm().format(selectedDateTime)}',
                           fontSize: 14,
                           color: Colors.grey,
                         ),
@@ -111,6 +111,31 @@ class _DetailsTabState extends State<DetailsTab> {
                         padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
                         child: TextRegular(
                           text: 'Drop-off: ${dropoffController.text}',
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                        child: TextRegular(
+                          text: 'Notes: ${notesController.text}',
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                        child: TextRegular(
+                          text:
+                              'Include loader & unloader: $addLoaderAndUnloader',
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                        child: TextRegular(
+                          text: 'Include rearranger: $addRearranger',
                           fontSize: 14,
                           color: Colors.grey,
                         ),

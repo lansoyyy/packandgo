@@ -41,6 +41,8 @@ List<Map<String, String>> vehicles = [
 ];
 
 final pickupController = TextEditingController();
+
+final notesController = TextEditingController();
 final dropoffController = TextEditingController();
 // final pickupUnitController = TextEditingController();
 // final dropoffUnitController = TextEditingController();
@@ -77,13 +79,14 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+DateTime selectedDateTime = DateTime.now();
+
 class _HomeScreenState extends State<HomeScreen> {
   final Stream<DocumentSnapshot> userData = FirebaseFirestore.instance
       .collection('Users')
       .doc(FirebaseAuth.instance.currentUser!.uid)
       .snapshots();
   int currentIndex = 0;
-  DateTime selectedDateTime = DateTime.now();
 
   Future<void> _selectDateTime(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -410,7 +413,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               businessid,
                                               userDetails['fname'] +
                                                   ' ' +
-                                                  userDetails['lname']);
+                                                  userDetails['lname'],
+                                              notesController.text);
                                           bookingRequestDIalog();
 
                                           setState(() {
