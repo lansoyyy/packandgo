@@ -675,7 +675,15 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
                     child: TextRegular(
-                      text: 'Notes to driver: notes',
+                      text: 'Notes to driver: ${data['notes']}',
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                    child: TextRegular(
+                      text: 'Include helper: ${data['hasLoader']}',
                       fontSize: 14,
                       color: Colors.grey,
                     ),
