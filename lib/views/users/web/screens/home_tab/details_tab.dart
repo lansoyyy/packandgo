@@ -126,16 +126,7 @@ class _DetailsTabState extends State<DetailsTab> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
                         child: TextRegular(
-                          text:
-                              'Include loader & unloader: $addLoaderAndUnloader',
-                          fontSize: 14,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                        child: TextRegular(
-                          text: 'Include rearranger: $addRearranger',
+                          text: 'Include helper: $addLoaderAndUnloader',
                           fontSize: 14,
                           color: Colors.grey,
                         ),

@@ -30,7 +30,7 @@ class _LoaderTabState extends State<LoaderTab> {
             height: 20,
           ),
           TextBold(
-            text: 'Would you like to add a loader & unloader?',
+            text: 'Would you like to add a helper?',
             fontSize: 22,
             color: Colors.black,
           ),
@@ -48,67 +48,6 @@ class _LoaderTabState extends State<LoaderTab> {
               setState(() {
                 addLoaderAndUnloader =
                     true; // Update the variable when "Yes" button is pressed
-              });
-            },
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          ButtonWidget(
-            textColor: Colors.white,
-            color: Colors.red,
-            width: 150,
-            radius: 5,
-            label: 'No',
-            onPressed: () {
-              showToast('Selected');
-              setState(() {
-                addLoaderAndUnloader =
-                    false; // Update the variable when "No" button is pressed
-              });
-            },
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Divider(),
-          const SizedBox(
-            height: 20,
-          ),
-          TextBold(
-            text: 'Would you like to add a rearranger?',
-            fontSize: 22,
-            color: Colors.black,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          ButtonWidget(
-            textColor: Colors.white,
-            color: Colors.green,
-            width: 150,
-            radius: 5,
-            label: 'Yes',
-            onPressed: () {
-              showToast('Selected');
-              setState(() {
-                addRearranger = true;
-              });
-            },
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          ButtonWidget(
-            textColor: Colors.white,
-            color: Colors.red,
-            width: 150,
-            radius: 5,
-            label: 'No',
-            onPressed: () {
-              showToast('Selected');
-              setState(() {
-                addRearranger = false;
               });
             },
           ),
