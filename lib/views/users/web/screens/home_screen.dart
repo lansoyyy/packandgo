@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:packandgo/services/add_order.dart';
+import 'package:packandgo/widgets/toast_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../queries/authQuery.dart';
@@ -53,8 +54,6 @@ final newAlernativcontactnumberController = TextEditingController();
 final newEmailController = TextEditingController();
 String vehicle = 'Motorcycle';
 
-String drivername = '';
-String driverid = '';
 String businessname = '';
 String businessid = '';
 
@@ -370,61 +369,106 @@ class _HomeScreenState extends State<HomeScreen> {
                                   const SizedBox(
                                     width: 20,
                                   ),
-                                  ButtonWidget(
-                                    radius: 5,
-                                    color: primary,
-                                    height: 45,
-                                    width: 150,
-                                    fontSize: 14,
-                                    label: currentIndex != 3
-                                        ? 'Continue'
-                                        : 'Request Booking',
-                                    onPressed: () async {
-                                      switch (currentIndex) {
-                                        case 0:
-                                          setState(() => currentIndex++);
-                                          break;
-                                        case 1:
-                                          _selectDateTime(context);
-                                          setState(() => currentIndex++);
-                                          break;
-                                        case 2:
-                                          setState(() => currentIndex++);
-                                          break;
-                                        case 3:
-                                          addOrder(
-                                              0,
-                                              0,
-                                              pickupController.text,
-                                              dropoffController.text,
-                                              pickupAdditionalController.text,
-                                              dropoffAdditionalController.text,
-                                              selectedDateTime,
-                                              addLoaderAndUnloader,
-                                              addRearranger,
-                                              vehicle,
-                                              newContactnumberController.text,
-                                              newAlernativcontactnumberController
-                                                  .text,
-                                              newEmailController.text,
-                                              drivername,
-                                              driverid,
-                                              businessname,
-                                              businessid,
-                                              userDetails['fname'] +
-                                                  ' ' +
-                                                  userDetails['lname'],
-                                              notesController.text);
-                                          bookingRequestDIalog();
+                                  StreamBuilder<QuerySnapshot>(
+                                      stream: FirebaseFirestore.instance
+                                          .collection('Drivers')
+                                          .where('isActive', isEqualTo: true)
+                                          .snapshots(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<QuerySnapshot>
+                                              snapshot) {
+                                        if (snapshot.hasError) {
+                                          print(snapshot.error);
+                                          return const Center(
+                                              child: Text('Error'));
+                                        }
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return const Padding(
+                                            padding: EdgeInsets.only(top: 50),
+                                            child: Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                              color: Colors.black,
+                                            )),
+                                          );
+                                        }
 
-                                          setState(() {
-                                            currentIndex = 0;
-                                          });
-                                          break;
-                                        default:
-                                      }
-                                    },
-                                  )
+                                        final data = snapshot.requireData;
+                                        return ButtonWidget(
+                                          radius: 5,
+                                          color: primary,
+                                          height: 45,
+                                          width: 150,
+                                          fontSize: 14,
+                                          label: currentIndex != 3
+                                              ? 'Continue'
+                                              : 'Request Booking',
+                                          onPressed: () async {
+                                            switch (currentIndex) {
+                                              case 0:
+                                                setState(() => currentIndex++);
+                                                break;
+                                              case 1:
+                                                _selectDateTime(context);
+                                                setState(() => currentIndex++);
+                                                break;
+                                              case 2:
+                                                setState(() => currentIndex++);
+                                                break;
+                                              case 3:
+                                                if (data.docs.isNotEmpty) {
+                                                  addOrder(
+                                                      0,
+                                                      0,
+                                                      pickupController.text,
+                                                      dropoffController.text,
+                                                      pickupAdditionalController
+                                                          .text,
+                                                      dropoffAdditionalController
+                                                          .text,
+                                                      selectedDateTime,
+                                                      addLoaderAndUnloader,
+                                                      addRearranger,
+                                                      vehicle,
+                                                      newContactnumberController
+                                                          .text,
+                                                      newAlernativcontactnumberController
+                                                          .text,
+                                                      newEmailController.text,
+                                                      data.docs.first['fname'] +
+                                                          ' ' +
+                                                          data.docs
+                                                              .first['lname'],
+                                                      data.docs.first.id,
+                                                      businessname,
+                                                      businessid,
+                                                      userDetails['fname'] +
+                                                          ' ' +
+                                                          userDetails['lname'],
+                                                      notesController.text);
+                                                  bookingRequestDIalog();
+
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection('Drivers')
+                                                      .doc(data.docs.first.id)
+                                                      .update(
+                                                          {'isActive': false});
+
+                                                  setState(() {
+                                                    currentIndex = 0;
+                                                  });
+                                                } else {
+                                                  showToast(
+                                                      'Cannot proceed! No driver available');
+                                                }
+                                                break;
+                                              default:
+                                            }
+                                          },
+                                        );
+                                      })
                                 ],
                               ),
                             ),

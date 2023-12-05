@@ -880,6 +880,10 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                               .collection('Orders')
                               .doc(id)
                               .update({'status': 'Cancelled'});
+                          await FirebaseFirestore.instance
+                              .collection('Drivers')
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .update({'isActive': true});
                           Navigator.pop(context);
                         },
                         child: TextRegular(
@@ -929,6 +933,10 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   .collection('Orders')
                   .doc(id)
                   .update({'status': 'Completed'});
+              await FirebaseFirestore.instance
+                  .collection('Drivers')
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .update({'isActive': true});
               Navigator.pop(context);
               Navigator.pop(context);
             },

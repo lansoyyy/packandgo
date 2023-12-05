@@ -578,7 +578,15 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
                     child: TextRegular(
-                      text: 'Notes to driver: notes',
+                      text: 'Notes to driver: ${data['notes']}',
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
+                    child: TextRegular(
+                      text: 'Has Helper: ${data['hasLoader']}',
                       fontSize: 14,
                       color: Colors.grey,
                     ),

@@ -24,6 +24,7 @@ Future addDriver(fname, lname, username, number, email, license, expiredate,
     'dateTime': DateTime.now(),
     'uid': FirebaseAuth.instance.currentUser!.uid,
     'profilePicture': 'https://cdn-icons-png.flaticon.com/256/149/149071.png',
+    'isActive': true
   };
 
   await docUser.set(json);
