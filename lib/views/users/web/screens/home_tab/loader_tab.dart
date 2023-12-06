@@ -54,6 +54,23 @@ class _LoaderTabState extends State<LoaderTab> {
           const SizedBox(
             height: 20,
           ),
+          ButtonWidget(
+            textColor: Colors.white,
+            color: Colors.red,
+            width: 150,
+            radius: 5,
+            label: 'No',
+            onPressed: () {
+              showToast('Selected');
+              setState(() {
+                addLoaderAndUnloader =
+                    false; // Update the variable when "Yes" button is pressed
+              });
+            },
+          ),
+          const SizedBox(
+            height: 20,
+          ),
           const Divider(),
           const SizedBox(
             height: 20,

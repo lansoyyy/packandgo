@@ -629,7 +629,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
                     child: TextRegular(
-                      text: 'Notes to driver',
+                      text: 'Notes to driver :  ${data['notes']}',
                       fontSize: 14,
                       color: Colors.grey,
                     ),

@@ -86,17 +86,6 @@ class _BusinessSignupScreenState extends State<BusinessSignupScreen> {
 
   @override
   void initState() {
-    firstnameController.text = "Jhon";
-    lastnameController.text = "Doe";
-    contactnumberController.text = "3894756354";
-    emailController.text = "admin@gmail.com";
-    passwordController.text = "password";
-    licenseNumberController.text = "D1234567890";
-    expirationDateController.text = "07/04/2024";
-    makerController.text = "Jane Doe";
-    yearModelController.text = "2018";
-    plateNumberController.text = "XYZ-789";
-
     super.initState();
   }
 

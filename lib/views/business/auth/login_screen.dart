@@ -37,8 +37,6 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
 
   @override
   void initState() {
-    emailController.text = "driver@gmail.com";
-    passwordController.text = "password";
     super.initState();
   }
 
