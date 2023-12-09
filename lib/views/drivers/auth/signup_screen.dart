@@ -1,6 +1,9 @@
 // ignore_for_file: use_build_context_synchronously, sized_box_for_whitespace, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers
 
+import 'dart:html';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:packandgo/services/add_driver.dart';
@@ -82,6 +85,10 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
 
   String selectedVehicle = '';
   int dropValue = 0;
+
+  String imgUrl = '';
+
+  String imgUrl2 = '';
 
   @override
   void initState() {
@@ -435,6 +442,103 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                     ),
                                   ],
                                 ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  ButtonWidget(
+                                    height: 40,
+                                    radius: 10,
+                                    width: 125,
+                                    fontSize: 10,
+                                    textColor: Colors.black,
+                                    color: Colors.grey[300],
+                                    label: 'UPLOAD ID PICTURE (FRONT)',
+                                    onPressed: () {
+                                      InputElement input =
+                                          FileUploadInputElement()
+                                              as InputElement
+                                            ..accept = 'image/*';
+                                      FirebaseStorage fs =
+                                          FirebaseStorage.instance;
+                                      input.click();
+                                      input.onChange.listen((event) {
+                                        final file = input.files!.first;
+                                        final reader = FileReader();
+                                        reader.readAsDataUrl(file);
+                                        reader.onLoadEnd.listen((event) async {
+                                          var snapshot = await fs
+                                              .ref()
+                                              .child(DateTime.now().toString())
+                                              .putBlob(file);
+                                          String downloadUrl = await snapshot
+                                              .ref
+                                              .getDownloadURL();
+                                          setState(
+                                            () {
+                                              imgUrl = downloadUrl;
+                                            },
+                                          );
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: TextRegular(
+                                                      text:
+                                                          'Photo Updated Succesfully!',
+                                                      fontSize: 14,
+                                                      color: Colors.white)));
+                                        });
+                                      });
+                                    },
+                                  ),
+                                  ButtonWidget(
+                                    height: 40,
+                                    radius: 10,
+                                    width: 125,
+                                    fontSize: 10,
+                                    textColor: Colors.black,
+                                    color: Colors.grey[300],
+                                    label: 'UPLOAD ID PICTURE (BACK)',
+                                    onPressed: () {
+                                      InputElement input =
+                                          FileUploadInputElement()
+                                              as InputElement
+                                            ..accept = 'image/*';
+                                      FirebaseStorage fs =
+                                          FirebaseStorage.instance;
+                                      input.click();
+                                      input.onChange.listen((event) {
+                                        final file = input.files!.first;
+                                        final reader = FileReader();
+                                        reader.readAsDataUrl(file);
+                                        reader.onLoadEnd.listen((event) async {
+                                          var snapshot = await fs
+                                              .ref()
+                                              .child(DateTime.now().toString())
+                                              .putBlob(file);
+                                          String downloadUrl = await snapshot
+                                              .ref
+                                              .getDownloadURL();
+                                          setState(
+                                            () {
+                                              imgUrl2 = downloadUrl;
+                                            },
+                                          );
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: TextRegular(
+                                                      text:
+                                                          'Photo Updated Succesfully!',
+                                                      fontSize: 14,
+                                                      color: Colors.white)));
+                                        });
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
                               const SizedBox(height: 20),
                               ButtonWidget(
                                 radius: 5,
@@ -443,8 +547,13 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
                                 width: 500,
                                 label: 'Continue',
                                 onPressed: () async {
-                                  if (_form.currentState!.validate()) {
-                                    register(context);
+                                  if (imgUrl == '' && imgUrl2 == '') {
+                                    showToast(
+                                        'Registration cannot proceed! Please upload an image of your drivers license');
+                                  } else {
+                                    if (_form.currentState!.validate()) {
+                                      register(context);
+                                    }
                                   }
                                 },
                               ),
@@ -511,7 +620,9 @@ class _DriverSignupScreenState extends State<DriverSignupScreen> {
           makerController.text,
           yearModelController.text,
           selectedVehicle,
-          plateNumberController.text);
+          plateNumberController.text,
+          imgUrl,
+          imgUrl2);
 
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);

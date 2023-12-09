@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 Future addDriver(fname, lname, username, number, email, license, expiredate,
-    maker, yearmodel, type, platenumber) async {
+    maker, yearmodel, type, platenumber, idfront, idback) async {
   final docUser = FirebaseFirestore.instance
       .collection('Drivers')
       .doc(FirebaseAuth.instance.currentUser!.uid);
@@ -24,7 +24,9 @@ Future addDriver(fname, lname, username, number, email, license, expiredate,
     'dateTime': DateTime.now(),
     'uid': FirebaseAuth.instance.currentUser!.uid,
     'profilePicture': 'https://cdn-icons-png.flaticon.com/256/149/149071.png',
-    'isActive': true
+    'isActive': true,
+    'idfront': idfront,
+    'idback': idback
   };
 
   await docUser.set(json);
