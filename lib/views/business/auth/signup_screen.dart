@@ -37,6 +37,8 @@ class _BusinessSignupScreenState extends State<BusinessSignupScreen> {
 
   final usernameController = TextEditingController();
 
+  final addressController = TextEditingController();
+
   bool check2 = true;
 
   bool hasHelper = true;
@@ -256,10 +258,22 @@ class _BusinessSignupScreenState extends State<BusinessSignupScreen> {
                                         }
                                       },
                                     ),
+                                    labelText(label: "Business Address"),
+                                    inputField(
+                                      controller: addressController,
+                                      isDense: true,
+                                      validator: (value) {
+                                        if (addressController.text.isEmpty) {
+                                          return "Address is required";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
                                     SizedBox(
                                       height: 20,
                                     ),
-                                    const SizedBox(height: 20),
+                                    const SizedBox(height: 75),
                                     ButtonWidget(
                                       radius: 5,
                                       color: green,
@@ -319,7 +333,8 @@ class _BusinessSignupScreenState extends State<BusinessSignupScreen> {
           lastnameController.text,
           usernameController.text,
           contactnumberController.text,
-          emailController.text);
+          emailController.text,
+          addressController.text);
 
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);

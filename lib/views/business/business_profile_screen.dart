@@ -21,6 +21,8 @@ class BusinessProfileScreen extends StatefulWidget {
 class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
   bool profiletab = true;
   bool changepasswordtab = false;
+
+  bool ratingstab = false;
   bool isLoading = false;
 
   final emailController = TextEditingController();
@@ -287,6 +289,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
+                                  ratingstab = false;
                                   profiletab = true;
                                   changepasswordtab = false;
                                 });
@@ -303,6 +306,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
+                                  ratingstab = false;
                                   profiletab = false;
                                   changepasswordtab = true;
                                 });
@@ -313,6 +317,23 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                   color: changepasswordtab
                                       ? Colors.amber
                                       : Colors.grey),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  profiletab = false;
+                                  changepasswordtab = false;
+                                  ratingstab = true;
+                                });
+                              },
+                              child: TextRegular(
+                                  text: 'Ratings',
+                                  fontSize: 12,
+                                  color:
+                                      ratingstab ? Colors.amber : Colors.grey),
                             ),
                           ],
                         ),
@@ -325,7 +346,9 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                         ),
                         profiletab
                             ? profileTab(userDetails)
-                            : changepasswordTab(userDetails),
+                            : ratingstab
+                                ? ratingsTab(userDetails)
+                                : changepasswordTab(userDetails),
                       ],
                     ),
                   ),
@@ -702,5 +725,85 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
               ),
             ],
           );
+  }
+
+  Widget ratingsTab(details) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        TextRegular(
+          text: 'Ratings',
+          fontSize: 32,
+          color: Colors.black,
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        TextRegular(
+            text: 'View customer ratings of your service.',
+            fontSize: 14,
+            color: Colors.grey),
+        const SizedBox(
+          height: 10,
+        ),
+        const SizedBox(width: 800, child: Divider()),
+        const SizedBox(
+          height: 10,
+        ),
+        SizedBox(
+          height: 500,
+          width: 800,
+          child: ListView.builder(
+            itemBuilder: (context, index) {
+              return ListTile(
+                  leading: Image.asset(
+                    'assets/images/profile.png',
+                    height: 50,
+                    width: 50,
+                  ),
+                  title: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextRegular(
+                              text: 'John Doe',
+                              fontSize: 18,
+                              color: Colors.black),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              for (int i = 0; i < 5; i++)
+                                const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TextRegular(
+                              text: '10/23/2023',
+                              fontSize: 14,
+                              color: Colors.black)
+                        ],
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      textWidget(
+                          text:
+                              'Nisi elit duis nulla minim cupidatat reprehenderit laboris aliqua qui magna ullamco cupidatat. Deserunt aliqua consectetur ex eiusmod sunt eiusmod dolor ut ad duis Lorem. Ad culpa exercitation dolor duis occaecat nulla consectetur elit aliqua adipisicing anim amet. Sint culpa eu ut elit occaecat ipsum in aliqua ex in nisi est aliqua. Ullamco voluptate reprehenderit enim cupidatat ut laborum est adipisicing do tempor sit pariatur dolor. Nulla mollit ut ex velit aute id aliqua id qui excepteur nisi officia amet.')
+                    ],
+                  ));
+            },
+          ),
+        ),
+      ],
+    );
   }
 }
