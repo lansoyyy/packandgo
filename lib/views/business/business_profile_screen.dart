@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:packandgo/queries/authQuery.dart';
 import 'package:packandgo/views/drivers/auth/login_screen.dart';
 import 'package:packandgo/widgets/button_widget.dart';
@@ -751,58 +752,84 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
         const SizedBox(
           height: 10,
         ),
-        SizedBox(
-          height: 500,
-          width: 800,
-          child: ListView.builder(
-            itemBuilder: (context, index) {
-              return ListTile(
-                  leading: Image.asset(
-                    'assets/images/profile.png',
-                    height: 50,
-                    width: 50,
-                  ),
-                  title: Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextRegular(
-                              text: 'John Doe',
-                              fontSize: 18,
-                              color: Colors.black),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              for (int i = 0; i < 5; i++)
-                                const Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
+        StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('Ratings')
+                .where('businessid',
+                    isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                .snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return const Center(child: Text('Error'));
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Center(
+                      child: CircularProgressIndicator(
+                    color: Colors.black,
+                  )),
+                );
+              }
+
+              final data = snapshot.requireData;
+              return SizedBox(
+                height: 500,
+                width: 800,
+                child: ListView.builder(
+                  itemCount: data.docs.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                        leading: Image.asset(
+                          'assets/images/profile.png',
+                          height: 50,
+                          width: 50,
+                        ),
+                        title: Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TextRegular(
+                                    text: data.docs[index]['myname'],
+                                    fontSize: 18,
+                                    color: Colors.black),
+                                const SizedBox(
+                                  height: 10,
                                 ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          TextRegular(
-                              text: '10/23/2023',
-                              fontSize: 14,
-                              color: Colors.black)
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      textWidget(
-                          text:
-                              'Nisi elit duis nulla minim cupidatat reprehenderit laboris aliqua qui magna ullamco cupidatat. Deserunt aliqua consectetur ex eiusmod sunt eiusmod dolor ut ad duis Lorem. Ad culpa exercitation dolor duis occaecat nulla consectetur elit aliqua adipisicing anim amet. Sint culpa eu ut elit occaecat ipsum in aliqua ex in nisi est aliqua. Ullamco voluptate reprehenderit enim cupidatat ut laborum est adipisicing do tempor sit pariatur dolor. Nulla mollit ut ex velit aute id aliqua id qui excepteur nisi officia amet.')
-                    ],
-                  ));
-            },
-          ),
-        ),
+                                Row(
+                                  children: [
+                                    for (int i = 0;
+                                        i < data.docs[index]['stars'];
+                                        i++)
+                                      const Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextRegular(
+                                    text: DateFormat.jm().add_yMMMd().format(
+                                        data.docs[index]['dateTime'].toDate()),
+                                    fontSize: 14,
+                                    color: Colors.black)
+                              ],
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            textWidget(text: data.docs[index]['msg'])
+                          ],
+                        ));
+                  },
+                ),
+              );
+            }),
       ],
     );
   }
