@@ -60,6 +60,7 @@ dependencies:
   path_provider:
   image_picker:
   firebase_storage:
+  flutter_rating_bar:
 
 dev_dependencies:
   flutter_test:

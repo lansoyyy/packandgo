@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:packandgo/services/add_ratings.dart';
 import 'package:packandgo/widgets/textfield_widget.dart';
 
 import '../../../../queries/streamQueries.dart';
@@ -44,6 +46,9 @@ class _RecordsScreenState extends State<RecordsScreen> {
 
   int dropValue = 0;
   int dropValue1 = 0;
+
+  double rating = 0.0;
+  TextEditingController reviewController = TextEditingController();
 
   final othersController = TextEditingController();
   @override
@@ -456,80 +461,257 @@ class _RecordsScreenState extends State<RecordsScreen> {
                                         color: Colors.black),
                                   ),
                                   DataCell(
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return cancelDialog(
-                                                      data, data.docs[i].id);
-                                                });
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.red,
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                            ),
-                                            height: 30,
-                                            width: 125,
-                                            child: Center(
-                                              child: TextRegular(
-                                                  text: 'Cancel',
-                                                  fontSize: 14,
-                                                  color: Colors.white),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return AlertDialog(
-                                                    content: viewDetailDialog(
-                                                        data.docs[i]),
-                                                    actions: [
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                        child: TextRegular(
-                                                          text: 'Close',
-                                                          fontSize: 18,
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                });
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.blue,
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                            ),
-                                            height: 30,
-                                            width: 125,
-                                            child: Center(
-                                              child: TextRegular(
-                                                  text: 'View',
-                                                  fontSize: 14,
-                                                  color: Colors.white),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                    StreamBuilder<QuerySnapshot>(
+                                        stream: FirebaseFirestore.instance
+                                            .collection('Business')
+                                            .where('id',
+                                                isEqualTo: data.docs[i]
+                                                    ['businessid'])
+                                            .snapshots(),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<QuerySnapshot>
+                                                snapshot) {
+                                          if (snapshot.hasError) {
+                                            print(snapshot.error);
+                                            return const Center(
+                                                child: Text('Error'));
+                                          }
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return const Padding(
+                                              padding: EdgeInsets.only(top: 50),
+                                              child: Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                color: Colors.black,
+                                              )),
+                                            );
+                                          }
+
+                                          final data111 = snapshot.requireData;
+
+                                          List raters =
+                                              data111.docs.first['usersRated'];
+                                          return Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              data.docs[i]['status'] ==
+                                                      "Completed"
+                                                  ? !raters.contains(
+                                                          FirebaseAuth.instance
+                                                              .currentUser!.uid)
+                                                      ? GestureDetector(
+                                                          onTap: () {
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return AlertDialog(
+                                                                    title: const Text(
+                                                                        'Rate this item'),
+                                                                    content:
+                                                                        Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .min,
+                                                                      children: [
+                                                                        RatingBar
+                                                                            .builder(
+                                                                          initialRating:
+                                                                              rating,
+                                                                          minRating:
+                                                                              1,
+                                                                          direction:
+                                                                              Axis.horizontal,
+                                                                          allowHalfRating:
+                                                                              true,
+                                                                          itemCount:
+                                                                              5,
+                                                                          itemSize:
+                                                                              40,
+                                                                          itemBuilder: (context, _) =>
+                                                                              const Icon(
+                                                                            Icons.star,
+                                                                            color:
+                                                                                Colors.amber,
+                                                                          ),
+                                                                          onRatingUpdate:
+                                                                              (value) {
+                                                                            setState(() {
+                                                                              rating = value;
+                                                                            });
+                                                                          },
+                                                                        ),
+                                                                        const SizedBox(
+                                                                            height:
+                                                                                20),
+                                                                        TextField(
+                                                                          controller:
+                                                                              reviewController,
+                                                                          maxLines:
+                                                                              3,
+                                                                          decoration:
+                                                                              const InputDecoration(
+                                                                            labelText:
+                                                                                'Write your review',
+                                                                            border:
+                                                                                OutlineInputBorder(),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    actions: [
+                                                                      TextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .pop(); // Close the dialog
+                                                                        },
+                                                                        child: const Text(
+                                                                            'Cancel'),
+                                                                      ),
+                                                                      TextButton(
+                                                                        onPressed:
+                                                                            () async {
+                                                                          await FirebaseFirestore
+                                                                              .instance
+                                                                              .collection('Business')
+                                                                              .doc(data.docs[i]['businessid'])
+                                                                              .update({
+                                                                            'usersRated':
+                                                                                FieldValue.arrayUnion([
+                                                                              FirebaseAuth.instance.currentUser!.uid
+                                                                            ]),
+                                                                          });
+                                                                          addRatings(
+                                                                              data.docs[i]['myname'],
+                                                                              rating,
+                                                                              reviewController.text,
+                                                                              data.docs[i]['businessid']);
+                                                                          Navigator.of(context)
+                                                                              .pop(); // Close the dialog
+                                                                        },
+                                                                        child: const Text(
+                                                                            'Submit'),
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                });
+                                                          },
+                                                          child: Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color:
+                                                                  Colors.amber,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5),
+                                                            ),
+                                                            height: 30,
+                                                            width: 125,
+                                                            child: Center(
+                                                              child: TextRegular(
+                                                                  text: 'Rate',
+                                                                  fontSize: 14,
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : data.docs[i]
+                                                                  ['status'] !=
+                                                              "Completed"
+                                                          ? GestureDetector(
+                                                              onTap: () {
+                                                                showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (context) {
+                                                                      return cancelDialog(
+                                                                          data,
+                                                                          data.docs[i]
+                                                                              .id);
+                                                                    });
+                                                              },
+                                                              child: Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5),
+                                                                ),
+                                                                height: 30,
+                                                                width: 125,
+                                                                child: Center(
+                                                                  child: TextRegular(
+                                                                      text:
+                                                                          'Cancel',
+                                                                      fontSize:
+                                                                          14,
+                                                                      color: Colors
+                                                                          .white),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : const SizedBox()
+                                                  : const SizedBox(),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return AlertDialog(
+                                                          content:
+                                                              viewDetailDialog(
+                                                                  data.docs[i]),
+                                                          actions: [
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child:
+                                                                  TextRegular(
+                                                                text: 'Close',
+                                                                fontSize: 18,
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      });
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.blue,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                  ),
+                                                  height: 30,
+                                                  width: 125,
+                                                  child: Center(
+                                                    child: TextRegular(
+                                                        text: 'View',
+                                                        fontSize: 14,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        }),
                                   ),
                                 ],
                               ),
