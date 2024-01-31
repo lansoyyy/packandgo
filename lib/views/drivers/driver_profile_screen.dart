@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:packandgo/queries/authQuery.dart';
+import 'package:packandgo/services/add_vehicle.dart';
 import 'package:packandgo/views/drivers/auth/login_screen.dart';
 import 'package:packandgo/widgets/button_widget.dart';
 import 'package:packandgo/widgets/textfield_widget.dart';
@@ -21,6 +22,7 @@ class DriverProfileScreen extends StatefulWidget {
 class _DriverProfileScreenState extends State<DriverProfileScreen> {
   bool profiletab = true;
   bool changepasswordtab = false;
+  bool vehiclestab = false;
   bool isLoading = false;
 
   final emailController = TextEditingController();
@@ -289,6 +291,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                                 setState(() {
                                   profiletab = true;
                                   changepasswordtab = false;
+                                  vehiclestab = false;
                                 });
                               },
                               child: TextRegular(
@@ -305,6 +308,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                                 setState(() {
                                   profiletab = false;
                                   changepasswordtab = true;
+                                  vehiclestab = false;
                                 });
                               },
                               child: TextRegular(
@@ -313,6 +317,23 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                                   color: changepasswordtab
                                       ? Colors.amber
                                       : Colors.grey),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  profiletab = false;
+                                  changepasswordtab = false;
+                                  vehiclestab = true;
+                                });
+                              },
+                              child: TextRegular(
+                                  text: 'Vehicles',
+                                  fontSize: 12,
+                                  color:
+                                      vehiclestab ? Colors.amber : Colors.grey),
                             ),
                           ],
                         ),
@@ -325,7 +346,9 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                         ),
                         profiletab
                             ? profileTab(userDetails)
-                            : changepasswordTab(userDetails),
+                            : vehiclestab
+                                ? vehicles()
+                                : changepasswordTab(userDetails),
                       ],
                     ),
                   ),
@@ -702,5 +725,498 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
               ),
             ],
           );
+  }
+
+  final maker = TextEditingController();
+  final yearModel = TextEditingController();
+  final platenumber = TextEditingController();
+
+  int dropValue = 0;
+
+  List<Map<String, String>> listVehicles = [
+    {"name": "Motorcycle", "image": "motorcycle.png"},
+    {
+      "name": "500 Kg Jeepney (Standard Type)",
+      "image": "500-kg-Jeepney-(Standard-Type).png"
+    },
+    {
+      "name": "800 Kg Jeepney (Lawin Type)",
+      "image": "800-kg-Jeepney-(Lawin-Type).png"
+    },
+    {"name": "300 Kg Taxi Sedan", "image": "300-Kg-Taxi.png"},
+    {"name": "500 Kg Taxi MPV", "image": "500-Kg-Taxi-MPV.png"},
+    {
+      "name": "6-Wheel Truck Close Type",
+      "image": "6-Wheel-Truck-Close-Type.png"
+    },
+    {
+      "name": "10-Wheel Truck Close Type",
+      "image": "10-Wheel-Truck-Close-Type.png"
+    },
+    {"name": "6-Wheel Truck Open Type", "image": "6-Wheel-Truck-Open-Type.png"},
+    {
+      "name": "10-Wheel Truck Open Type",
+      "image": "10-Wheel-Truck-Open-Type.png"
+    },
+  ];
+
+  String selectedVehicle = 'Motorcycle';
+
+  Widget vehicles() {
+    return SingleChildScrollView(
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            TextRegular(
+              text: 'My Vehicles',
+              fontSize: 32,
+              color: Colors.black,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextRegular(
+                    text: 'Manage your vehicles',
+                    fontSize: 14,
+                    color: Colors.grey),
+                const SizedBox(
+                  width: 500,
+                ),
+                ButtonWidget(
+                  height: 35,
+                  fontSize: 14,
+                  color: Colors.black,
+                  radius: 0,
+                  width: 100,
+                  label: 'Add vehicle',
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: TextRegular(
+                            text: 'Adding Vehicle',
+                            fontSize: 18,
+                            color: Colors.black,
+                          ),
+                          content:
+                              StatefulBuilder(builder: (context, setState) {
+                            return Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: DropdownButton(
+                                      underline: const SizedBox(),
+                                      value: dropValue,
+                                      items: [
+                                        for (int i = 0;
+                                            i < listVehicles.length;
+                                            i++)
+                                          DropdownMenuItem(
+                                            value: i,
+                                            onTap: () {
+                                              setState(() {
+                                                selectedVehicle =
+                                                    listVehicles[i]['name']!;
+                                              });
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 10, right: 10),
+                                              child: TextRegular(
+                                                text:
+                                                    'Type: ${listVehicles[i]['name']}',
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                      onChanged: (value) {
+                                        setState(() {
+                                          dropValue =
+                                              int.parse(value.toString());
+                                        });
+                                      }),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextFieldWidget(
+                                  label: 'Maker',
+                                  controller: maker,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextFieldWidget(
+                                  label: 'Year Model',
+                                  controller: yearModel,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextFieldWidget(
+                                  label: 'Plate Number',
+                                  controller: platenumber,
+                                ),
+                              ],
+                            );
+                          }),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: TextRegular(
+                                text: 'Close',
+                                fontSize: 14,
+                                color: Colors.black,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                addVehicles(selectedVehicle, maker.text,
+                                    yearModel.text, platenumber.text);
+                                Navigator.pop(context);
+                              },
+                              child: TextRegular(
+                                text: 'Continue',
+                                fontSize: 14,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const SizedBox(width: 300, child: Divider()),
+            const SizedBox(
+              height: 20,
+            ),
+            StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('Vehicles')
+                    .where('uid',
+                        isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return const Center(child: Text('Error'));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 50),
+                      child: Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.black,
+                      )),
+                    );
+                  }
+
+                  final data = snapshot.requireData;
+                  return SingleChildScrollView(
+                    child: SizedBox(
+                      height: 300,
+                      child: DataTable(columns: [
+                        DataColumn(
+                          label: TextBold(
+                            text: 'Type',
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                        DataColumn(
+                          label: TextBold(
+                            text: 'Maker',
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                        DataColumn(
+                          label: TextBold(
+                            text: 'Year Model',
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                        DataColumn(
+                          label: TextBold(
+                            text: 'Plate Number',
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                        DataColumn(
+                          label: TextBold(
+                            text: '',
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ], rows: [
+                        for (int i = 0; i < data.docs.length; i++)
+                          DataRow(cells: [
+                            DataCell(
+                              TextRegular(
+                                text: data.docs[i]['type'],
+                                color: Colors.black,
+                                fontSize: 14,
+                              ),
+                            ),
+                            DataCell(
+                              TextRegular(
+                                color: Colors.black,
+                                fontSize: 14,
+                                text: data.docs[i]['yearmodel'],
+                              ),
+                            ),
+                            DataCell(
+                              TextRegular(
+                                color: Colors.black,
+                                fontSize: 14,
+                                text: data.docs[i]['maker'],
+                              ),
+                            ),
+                            DataCell(
+                              TextRegular(
+                                color: Colors.black,
+                                fontSize: 14,
+                                text: data.docs[i]['platenumber'],
+                              ),
+                            ),
+                            DataCell(SizedBox(
+                              width: 150,
+                              child: Row(
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      yearModel.text =
+                                          data.docs[i]['yearmodel'];
+                                      maker.text = data.docs[i]['maker'];
+                                      platenumber.text =
+                                          data.docs[i]['platenumber'];
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: TextRegular(
+                                              text: 'Updating Vehicle',
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                            ),
+                                            content: StatefulBuilder(
+                                                builder: (context, setState) {
+                                              return Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.rectangle,
+                                                      border: Border.all(
+                                                          color: Colors.grey),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                    ),
+                                                    child: DropdownButton(
+                                                        underline:
+                                                            const SizedBox(),
+                                                        value: dropValue,
+                                                        items: [
+                                                          for (int i = 0;
+                                                              i <
+                                                                  listVehicles
+                                                                      .length;
+                                                              i++)
+                                                            DropdownMenuItem(
+                                                              value: i,
+                                                              onTap: () {
+                                                                setState(() {
+                                                                  selectedVehicle =
+                                                                      listVehicles[
+                                                                              i]
+                                                                          [
+                                                                          'name']!;
+                                                                });
+                                                              },
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            10,
+                                                                        right:
+                                                                            10),
+                                                                child:
+                                                                    TextRegular(
+                                                                  text:
+                                                                      'Type: ${listVehicles[i]['name']}',
+                                                                  fontSize: 14,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                        ],
+                                                        onChanged: (value) {
+                                                          setState(() {
+                                                            dropValue =
+                                                                int.parse(value
+                                                                    .toString());
+                                                          });
+                                                        }),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  TextFieldWidget(
+                                                    label: 'Maker',
+                                                    controller: maker,
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  TextFieldWidget(
+                                                    label: 'Year Model',
+                                                    controller: yearModel,
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  TextFieldWidget(
+                                                    label: 'Plate Number',
+                                                    controller: platenumber,
+                                                  ),
+                                                ],
+                                              );
+                                            }),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: TextRegular(
+                                                  text: 'Close',
+                                                  fontSize: 14,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () async {
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection('Vehicles')
+                                                      .doc(data.docs[i].id)
+                                                      .update({
+                                                    'maker': maker.text,
+                                                    'yearmodel': yearModel.text,
+                                                    'platenumber':
+                                                        platenumber.text,
+                                                    'type': selectedVehicle,
+                                                  });
+                                                  Navigator.pop(context);
+                                                },
+                                                child: TextRegular(
+                                                  text: 'Update',
+                                                  fontSize: 14,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: TextBold(
+                                      text: 'Update',
+                                      fontSize: 14,
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: const Text(
+                                            'Delete Confirmation',
+                                            style: TextStyle(
+                                                fontFamily: 'QBold',
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          content: const Text(
+                                            'Are you sure you want to delete this vehicle?',
+                                            style: TextStyle(
+                                                fontFamily: 'QRegular'),
+                                          ),
+                                          actions: <Widget>[
+                                            MaterialButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context)
+                                                      .pop(true),
+                                              child: const Text(
+                                                'Close',
+                                                style: TextStyle(
+                                                    fontFamily: 'QRegular',
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                            MaterialButton(
+                                              onPressed: () async {
+                                                await FirebaseFirestore.instance
+                                                    .collection('Vehicles')
+                                                    .doc(data.docs[i].id)
+                                                    .delete();
+
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text(
+                                                'Continue',
+                                                style: TextStyle(
+                                                    fontFamily: 'QRegular',
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    child: TextBold(
+                                      text: 'Delete',
+                                      fontSize: 14,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                          ])
+                      ]),
+                    ),
+                  );
+                })
+          ]),
+    );
   }
 }
