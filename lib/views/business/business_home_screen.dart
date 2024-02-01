@@ -65,438 +65,443 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
           ),
           onPressed: () {},
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: double.infinity,
-              height: 80,
-              color: primary,
-              child: Padding(
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: double.infinity,
+                height: 80,
+                color: primary,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 50, right: 50),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {},
+                        child: TextBold(
+                          text: 'Pack & Go',
+                          fontSize: 38,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Wrap(
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, Routes.businessprofilescreen);
+                            },
+                            child: TextRegular(
+                              text: 'PROFILE',
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text(
+                                    'Logout Confirmation',
+                                    style: TextStyle(
+                                        fontFamily: 'QBold',
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  content: const Text(
+                                    'Are you sure you want to Logout?',
+                                    style: TextStyle(fontFamily: 'QRegular'),
+                                  ),
+                                  actions: <Widget>[
+                                    MaterialButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(true),
+                                      child: const Text(
+                                        'Close',
+                                        style: TextStyle(
+                                            fontFamily: 'QRegular',
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    MaterialButton(
+                                      onPressed: () async {
+                                        final SharedPreferences userData =
+                                            await SharedPreferences
+                                                .getInstance();
+                                        var usthQuery = AuthQuery();
+                                        await usthQuery.signOut();
+                                        await userData.clear();
+                                        Navigator.pushNamed(
+                                            context, Routes.businessloginpage);
+                                      },
+                                      child: const Text(
+                                        'Continue',
+                                        style: TextStyle(
+                                            fontFamily: 'QRegular',
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            child: TextRegular(
+                              text: 'LOGOUT',
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    GestureDetector(
-                      onTap: () {},
-                      child: TextBold(
-                        text: 'Pack & Go',
-                        fontSize: 38,
-                        color: Colors.white,
+                    Container(
+                      height: 45,
+                      width: 300,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black,
+                        ),
+                        borderRadius: BorderRadius.circular(5),
                       ),
-                    ),
-                    Wrap(
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(
-                                context, Routes.businessprofilescreen);
-                          },
-                          child: TextRegular(
-                            text: 'PROFILE',
-                            fontSize: 16,
-                            color: Colors.white,
+                      child: TextFormField(
+                        onChanged: (value) {
+                          setState(() {
+                            nameSearched = value;
+                          });
+                        },
+                        decoration: const InputDecoration(
+                          hintText: 'Search by delivery info',
+                          hintStyle: TextStyle(fontFamily: 'QRegular'),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: Colors.grey,
                           ),
                         ),
-                        TextButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text(
-                                  'Logout Confirmation',
-                                  style: TextStyle(
-                                      fontFamily: 'QBold',
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                content: const Text(
-                                  'Are you sure you want to Logout?',
-                                  style: TextStyle(fontFamily: 'QRegular'),
-                                ),
-                                actions: <Widget>[
-                                  MaterialButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(true),
-                                    child: const Text(
-                                      'Close',
-                                      style: TextStyle(
-                                          fontFamily: 'QRegular',
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  MaterialButton(
-                                    onPressed: () async {
-                                      final SharedPreferences userData =
-                                          await SharedPreferences.getInstance();
-                                      var usthQuery = AuthQuery();
-                                      await usthQuery.signOut();
-                                      await userData.clear();
-                                      Navigator.pushNamed(
-                                          context, Routes.businessloginpage);
-                                    },
-                                    child: const Text(
-                                      'Continue',
-                                      style: TextStyle(
-                                          fontFamily: 'QRegular',
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                          child: TextRegular(
-                            text: 'LOGOUT',
-                            fontSize: 16,
-                            color: Colors.white,
+                        controller: searchController,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextBold(
+                      text: 'Records',
+                      fontSize: 24,
+                      color: Colors.black,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(5),
                           ),
+                          child: IconButton(
+                            onPressed: () {
+                              // this code is is for as is base on the design
+                              // this table dont need reload becaus eit is stream it always listen to the database
+                              setState(() => isLoading = true);
+                              Future.delayed(const Duration(seconds: 1), () {
+                                setState(() => isLoading = false);
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.refresh,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: DropdownButton(
+                              underline: const SizedBox(),
+                              value: dropValue,
+                              items: [
+                                for (int i = 0; i < statuses.length; i++)
+                                  DropdownMenuItem(
+                                    value: i,
+                                    onTap: () {
+                                      setState(() {
+                                        status = statuses[i];
+                                      });
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 10),
+                                      child: TextRegular(
+                                        text: 'Status: ${statuses[i]}',
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  dropValue = int.parse(value.toString());
+                                });
+                              }),
+                        ),
+                        const SizedBox(
+                          width: 50,
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 50, right: 50),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 45,
-                    width: 300,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black,
-                      ),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: TextFormField(
-                      onChanged: (value) {
-                        setState(() {
-                          nameSearched = value;
-                        });
-                      },
-                      decoration: const InputDecoration(
-                        hintText: 'Search by delivery info',
-                        hintStyle: TextStyle(fontFamily: 'QRegular'),
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      controller: searchController,
-                    ),
-                  ),
-                ],
+              const SizedBox(
+                height: 20,
               ),
-            ),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.only(left: 50, right: 50),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextBold(
-                    text: 'Records',
-                    fontSize: 24,
-                    color: Colors.black,
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: IconButton(
-                          onPressed: () {
-                            // this code is is for as is base on the design
-                            // this table dont need reload becaus eit is stream it always listen to the database
-                            setState(() => isLoading = true);
-                            Future.delayed(const Duration(seconds: 1), () {
-                              setState(() => isLoading = false);
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.refresh,
-                          ),
+              StreamBuilder<QuerySnapshot>(
+                stream: status == 'All'
+                    ? FirebaseFirestore.instance
+                        .collection('Orders')
+                        .where('businessid',
+                            isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                        .snapshots()
+                    : FirebaseFirestore.instance
+                        .collection('Orders')
+                        .where('businessid',
+                            isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                        .where('status', isEqualTo: status)
+                        .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return const Center(child: Text('Error'));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 50),
+                      child: Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.black,
+                      )),
+                    );
+                  }
+
+                  final data = snapshot.requireData;
+                  return DataTable(
+                    dataRowHeight: 100,
+                    columns: [
+                      DataColumn(
+                        label: TextBold(
+                          text: 'Status',
+                          fontSize: 18,
+                          color: Colors.black,
                         ),
                       ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(5),
+                      DataColumn(
+                        label: TextBold(
+                          text: 'Delivery Date',
+                          fontSize: 18,
+                          color: Colors.black,
                         ),
-                        child: DropdownButton(
-                            underline: const SizedBox(),
-                            value: dropValue,
-                            items: [
-                              for (int i = 0; i < statuses.length; i++)
-                                DropdownMenuItem(
-                                  value: i,
-                                  onTap: () {
-                                    setState(() {
-                                      status = statuses[i];
-                                    });
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, right: 10),
-                                    child: TextRegular(
-                                      text: 'Status: ${statuses[i]}',
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                            onChanged: (value) {
-                              setState(() {
-                                dropValue = int.parse(value.toString());
-                              });
-                            }),
                       ),
-                      const SizedBox(
-                        width: 50,
+                      DataColumn(
+                        label: TextBold(
+                          text: 'Route',
+                          fontSize: 18,
+                          color: Colors.black,
+                        ),
+                      ),
+                      DataColumn(
+                        label: TextBold(
+                          text: 'Customer',
+                          fontSize: 18,
+                          color: Colors.black,
+                        ),
+                      ),
+                      DataColumn(
+                        label: TextBold(
+                          text: 'Type',
+                          fontSize: 18,
+                          color: Colors.black,
+                        ),
+                      ),
+                      DataColumn(
+                        label: TextBold(
+                          text: 'Price',
+                          fontSize: 18,
+                          color: Colors.black,
+                        ),
+                      ),
+                      DataColumn(
+                        label: TextBold(
+                          text: '',
+                          fontSize: 0,
+                          color: Colors.black,
+                        ),
                       ),
                     ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            StreamBuilder<QuerySnapshot>(
-              stream: status == 'All'
-                  ? FirebaseFirestore.instance
-                      .collection('Orders')
-                      .where('businessid',
-                          isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                      .snapshots()
-                  : FirebaseFirestore.instance
-                      .collection('Orders')
-                      .where('businessid',
-                          isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                      .where('status', isEqualTo: status)
-                      .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasError) {
-                  print(snapshot.error);
-                  return const Center(child: Text('Error'));
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Padding(
-                    padding: EdgeInsets.only(top: 50),
-                    child: Center(
-                        child: CircularProgressIndicator(
-                      color: Colors.black,
-                    )),
-                  );
-                }
-
-                final data = snapshot.requireData;
-                return DataTable(
-                  dataRowHeight: 100,
-                  columns: [
-                    DataColumn(
-                      label: TextBold(
-                        text: 'Status',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    DataColumn(
-                      label: TextBold(
-                        text: 'Delivery Date',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    DataColumn(
-                      label: TextBold(
-                        text: 'Route',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    DataColumn(
-                      label: TextBold(
-                        text: 'Customer',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    DataColumn(
-                      label: TextBold(
-                        text: 'Type',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    DataColumn(
-                      label: TextBold(
-                        text: 'Price',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    DataColumn(
-                      label: TextBold(
-                        text: '',
-                        fontSize: 0,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                  rows: [
-                    for (int i = 0; i < data.docs.length; i++)
-                      DataRow(
-                        cells: [
-                          DataCell(
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: data.docs[i]['status'] == "Pending"
-                                        ? Colors.orange
-                                        : data.docs[i]['status'] == "Cancelled"
-                                            ? Colors.red
-                                            : data.docs[i]['status'] ==
-                                                    "Completed"
-                                                ? Colors.green
-                                                : Colors.grey,
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  height: 30,
-                                  width: 125,
-                                  child: Center(
-                                    child: TextRegular(
-                                        text: data.docs[i]['status'],
-                                        fontSize: 14,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                                TextRegular(
-                                    text: data.docs[i].id,
-                                    fontSize: 14,
-                                    color: Colors.black),
-                              ],
-                            ),
-                          ),
-                          DataCell(
-                            TextRegular(
-                                text: DateFormat.yMMMd().add_jm().format(
-                                    data.docs[i]['dateAndTime'].toDate()),
-                                fontSize: 14,
-                                color: Colors.black),
-                          ),
-                          DataCell(
-                            TextRegular(
-                                text: data.docs[i]['pickup'] +
-                                    ' - ' +
-                                    data.docs[i]['dropoff'],
-                                fontSize: 14,
-                                color: Colors.black),
-                          ),
-                          DataCell(
-                            TextRegular(
-                                text: data.docs[i]['myname'],
-                                fontSize: 14,
-                                color: Colors.black),
-                          ),
-                          DataCell(
-                            TextRegular(
-                                text: data.docs[i]['vehicletype'],
-                                fontSize: 14,
-                                color: Colors.black),
-                          ),
-                          DataCell(
-                            TextRegular(
-                                text: 'Price',
-                                fontSize: 14,
-                                color: Colors.black),
-                          ),
-                          DataCell(
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          content:
-                                              viewDetailDialog(data.docs[i]),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                confirmationDialog(data.docs[i],
-                                                    data.docs[i].id);
-                                              },
-                                              child: TextRegular(
-                                                text: 'Complete',
-                                                fontSize: 18,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: TextRegular(
-                                                text: 'Close',
-                                                fontSize: 18,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
+                    rows: [
+                      for (int i = 0; i < data.docs.length; i++)
+                        DataRow(
+                          cells: [
+                            DataCell(
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
                                     decoration: BoxDecoration(
-                                      color: Colors.blue,
+                                      color: data.docs[i]['status'] == "Pending"
+                                          ? Colors.orange
+                                          : data.docs[i]['status'] ==
+                                                  "Cancelled"
+                                              ? Colors.red
+                                              : data.docs[i]['status'] ==
+                                                      "Completed"
+                                                  ? Colors.green
+                                                  : Colors.grey,
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     height: 30,
                                     width: 125,
                                     child: Center(
                                       child: TextRegular(
-                                          text: 'View',
+                                          text: data.docs[i]['status'],
                                           fontSize: 14,
                                           color: Colors.white),
                                     ),
                                   ),
-                                ),
-                              ],
+                                  TextRegular(
+                                      text: data.docs[i].id,
+                                      fontSize: 14,
+                                      color: Colors.black),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                  ],
-                );
-              },
-            ),
-          ],
+                            DataCell(
+                              TextRegular(
+                                  text: DateFormat.yMMMd().add_jm().format(
+                                      data.docs[i]['dateAndTime'].toDate()),
+                                  fontSize: 14,
+                                  color: Colors.black),
+                            ),
+                            DataCell(
+                              TextRegular(
+                                  text: data.docs[i]['pickup'] +
+                                      ' - ' +
+                                      data.docs[i]['dropoff'],
+                                  fontSize: 14,
+                                  color: Colors.black),
+                            ),
+                            DataCell(
+                              TextRegular(
+                                  text: data.docs[i]['myname'],
+                                  fontSize: 14,
+                                  color: Colors.black),
+                            ),
+                            DataCell(
+                              TextRegular(
+                                  text: data.docs[i]['vehicletype'],
+                                  fontSize: 14,
+                                  color: Colors.black),
+                            ),
+                            DataCell(
+                              TextRegular(
+                                  text: 'Price',
+                                  fontSize: 14,
+                                  color: Colors.black),
+                            ),
+                            DataCell(
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            content:
+                                                viewDetailDialog(data.docs[i]),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  confirmationDialog(
+                                                      data.docs[i],
+                                                      data.docs[i].id);
+                                                },
+                                                child: TextRegular(
+                                                  text: 'Complete',
+                                                  fontSize: 18,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: TextRegular(
+                                                  text: 'Close',
+                                                  fontSize: 18,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      height: 30,
+                                      width: 125,
+                                      child: Center(
+                                        child: TextRegular(
+                                            text: 'View',
+                                            fontSize: 14,
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
         ));
   }
 
