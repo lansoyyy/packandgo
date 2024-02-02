@@ -28,12 +28,12 @@ void main() async {
   await Firebase.initializeApp(
     // name: "packandgo-86489",
     options: const FirebaseOptions(
-        authDomain: "packandgo-86489.firebaseapp.com",
-        apiKey: "AIzaSyBBnZDZEdz0iafvxFjx-77cR4cJRmzgoeQ",
-        appId: "1:370229023048:web:2939922840604ae142a37d",
-        messagingSenderId: "370229023048",
-        projectId: "packandgo-86489",
-        storageBucket: "packandgo-86489.appspot.com"),
+        apiKey: "AIzaSyAmkI_vbu64bvEFMg2novgZuc2X8IQet3Y",
+        authDomain: "pack-ac557.firebaseapp.com",
+        projectId: "pack-ac557",
+        storageBucket: "pack-ac557.appspot.com",
+        messagingSenderId: "82321265642",
+        appId: "1:82321265642:web:1805e5eacfaee9282d5893"),
   );
 
   final SharedPreferences userData = await SharedPreferences.getInstance();
