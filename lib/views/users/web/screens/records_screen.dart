@@ -7,9 +7,9 @@ import 'package:packandgo/services/add_ratings.dart';
 import 'package:packandgo/widgets/textfield_widget.dart';
 
 import '../../../../queries/streamQueries.dart';
+import '../../../../services/add_msg.dart';
 import '../../../../utils/colors.dart';
 import '../../../../utils/routes.dart';
-import '../../../../widgets/chat_widget.dart';
 import '../../../../widgets/text_widget.dart';
 
 class RecordsScreen extends StatefulWidget {
@@ -51,100 +51,12 @@ class _RecordsScreenState extends State<RecordsScreen> {
   TextEditingController reviewController = TextEditingController();
 
   final othersController = TextEditingController();
+
+  final msg = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: primary,
-        child: const Icon(
-          Icons.message_outlined,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              // print("user data from page $recordsData");
-              return Dialog(
-                child: StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('Orders')
-                        .where('uid',
-                            isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                        .snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        print(snapshot.error);
-                        return const Center(child: Text('Error'));
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Padding(
-                          padding: EdgeInsets.only(top: 50),
-                          child: Center(
-                              child: CircularProgressIndicator(
-                            color: Colors.black,
-                          )),
-                        );
-                      }
-
-                      final data = snapshot.requireData;
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-                        child: SizedBox(
-                          width: 400,
-                          height: 400,
-                          child: ListView.separated(
-                            itemCount: recordsData.length,
-                            separatorBuilder: (context, index) {
-                              return const Divider();
-                            },
-                            itemBuilder: (context, index) {
-                              final record = convoList[index];
-                              return Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: ListTile(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return ChatWidget(
-                                          customerData: record,
-                                        );
-                                      },
-                                    );
-                                  },
-                                  leading: const CircleAvatar(
-                                    minRadius: 35,
-                                    maxRadius: 35,
-                                    backgroundImage:
-                                        AssetImage('assets/images/profile.png'),
-                                  ),
-                                  title: TextBold(
-                                      text: record["convo"][0]["message"],
-                                      fontSize: 14,
-                                      color: Colors.black),
-                                  subtitle: TextRegular(
-                                      text: record["name"],
-                                      fontSize: 12,
-                                      color: Colors.grey),
-                                  trailing: TextRegular(
-                                      text: record["convo"][0]["date"],
-                                      fontSize: 12,
-                                      color: Colors.black),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      );
-                    }),
-              );
-            },
-          );
-        },
-      ),
       body: !isLoading
           ? SingleChildScrollView(
               child: Column(
@@ -443,10 +355,190 @@ class _RecordsScreenState extends State<RecordsScreen> {
                                         color: Colors.black),
                                   ),
                                   DataCell(
-                                    TextRegular(
-                                        text: data.docs[i]['drivername'],
-                                        fontSize: 14,
-                                        color: Colors.black),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        TextRegular(
+                                            text: data.docs[i]['drivername'],
+                                            fontSize: 14,
+                                            color: Colors.black),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                // print("user data from page $recordsData");
+                                                return Dialog(
+                                                  child: StreamBuilder(
+                                                      stream: FirebaseFirestore
+                                                          .instance
+                                                          .collection('Message')
+                                                          .where('userId',
+                                                              isEqualTo:
+                                                                  FirebaseAuth
+                                                                      .instance
+                                                                      .currentUser!
+                                                                      .uid)
+                                                          .where('driverId',
+                                                              isEqualTo: data
+                                                                      .docs[i]
+                                                                  ['driverid'])
+                                                          .orderBy('dateTime',
+                                                              descending: true)
+                                                          .snapshots(),
+                                                      builder: (BuildContext
+                                                              context,
+                                                          AsyncSnapshot<dynamic>
+                                                              snapshot) {
+                                                        if (snapshot.hasError) {
+                                                          print(snapshot.error);
+                                                          return const Center(
+                                                              child: Text(
+                                                                  'Error'));
+                                                        }
+                                                        if (snapshot
+                                                                .connectionState ==
+                                                            ConnectionState
+                                                                .waiting) {
+                                                          return const Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    top: 50),
+                                                            child: Center(
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                              color:
+                                                                  Colors.black,
+                                                            )),
+                                                          );
+                                                        }
+
+                                                        final data1 = snapshot
+                                                            .requireData;
+
+                                                        return Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .fromLTRB(
+                                                                  10,
+                                                                  20,
+                                                                  10,
+                                                                  20),
+                                                          child: SizedBox(
+                                                            width: 400,
+                                                            height: 450,
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                data1.docs.length !=
+                                                                        0
+                                                                    ? Expanded(
+                                                                        child:
+                                                                            SizedBox(
+                                                                          child:
+                                                                              ListView.separated(
+                                                                            itemCount:
+                                                                                data1.docs.length,
+                                                                            separatorBuilder:
+                                                                                (context, index) {
+                                                                              return const Divider();
+                                                                            },
+                                                                            itemBuilder:
+                                                                                (context, index) {
+                                                                              return Padding(
+                                                                                padding: const EdgeInsets.all(5.0),
+                                                                                child: ListTile(
+                                                                                  leading: const CircleAvatar(
+                                                                                    minRadius: 35,
+                                                                                    maxRadius: 35,
+                                                                                    backgroundImage: AssetImage('assets/images/profile.png'),
+                                                                                  ),
+                                                                                  title: TextBold(text: data1.docs[index]['msg'], fontSize: 14, color: Colors.black),
+                                                                                  subtitle: TextRegular(text: data1.docs[index]['name'], fontSize: 12, color: Colors.grey),
+                                                                                  trailing: TextRegular(text: DateFormat.yMMMd().add_jm().format(data1.docs[index]['dateTime'].toDate()), fontSize: 12, color: Colors.black),
+                                                                                ),
+                                                                              );
+                                                                            },
+                                                                          ),
+                                                                        ),
+                                                                      )
+                                                                    : Center(
+                                                                        child: TextRegular(
+                                                                            text:
+                                                                                'No Messages',
+                                                                            fontSize:
+                                                                                12,
+                                                                            color:
+                                                                                Colors.black),
+                                                                      ),
+                                                                Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .bottomCenter,
+                                                                  child:
+                                                                      TextFormField(
+                                                                    controller:
+                                                                        msg,
+                                                                    decoration:
+                                                                        InputDecoration(
+                                                                      suffixIcon:
+                                                                          IconButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          addMessage(
+                                                                              data.docs[i]['myname'],
+                                                                              msg.text,
+                                                                              data.docs[i]['driverid'],
+                                                                              FirebaseAuth.instance.currentUser!.uid);
+
+                                                                          msg.clear();
+                                                                        },
+                                                                        icon:
+                                                                            const Icon(
+                                                                          Icons
+                                                                              .send,
+                                                                          color:
+                                                                              Colors.blue,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }),
+                                                );
+                                              },
+                                            );
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.green,
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                            ),
+                                            height: 30,
+                                            width: 125,
+                                            child: Center(
+                                              child: TextRegular(
+                                                  text: 'Message',
+                                                  fontSize: 14,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   DataCell(
                                     TextRegular(

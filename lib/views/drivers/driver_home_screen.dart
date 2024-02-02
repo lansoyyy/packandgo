@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:packandgo/services/add_msg.dart';
 import 'package:packandgo/widgets/textfield_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -53,548 +54,629 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     super.initState();
   }
 
+  final msg = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: primary,
-          child: const Icon(
-            Icons.message_outlined,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            // showDialog(
-            //   context: context,
-            //   builder: (context) {
-            //     // print("user data from page $recordsData");
-            //     return Dialog(
-            //       child: StreamBuilder(
-            //           stream: streamQuery.getMultipleSnapsByData(roots: [
-            //             {"root": "messages", "key": "uid"},
-            //           ]),
-            //           builder: (BuildContext context,
-            //               AsyncSnapshot<dynamic> snapshot) {
-            //             if (snapshot.hasError) {
-            //               return Text('Error: ${snapshot.error}');
-            //             }
-            //             if (snapshot.connectionState ==
-            //                 ConnectionState.waiting) {
-            //               return const CircularProgressIndicator();
-            //             }
-
-            //             if (snapshot.hasData) {
-            //               final data = snapshot.data;
-            //               var snapshotList =
-            //                   snapshot.data as List<QuerySnapshot>;
-            //               print("somethinf outside for");
-            //               for (var doc in snapshotList[0].docs) {
-            //                 var value = doc.data()! as Map;
-            //                 value['id'] = doc.id;
-            //                 var messageList = value["convo"];
-            //                 print("see convo $messageList");
-            //                 convoList.add(value);
-
-            //                 // _messages.insert(
-            //                 //     0,
-            //                 //     ChatMessage(
-            //                 //       text: message["message"],
-            //                 //       name: widget.customerData["name"],
-            //                 //       messageOwner: message["sender"] ?? "driver",
-            //                 //     ));
-            //               }
-            //               return Padding(
-            //                 padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-            //                 child: SizedBox(
-            //                   width: 400,
-            //                   height: 400,
-            //                   child: ListView.separated(
-            //                     itemCount: recordsData.length,
-            //                     separatorBuilder: (context, index) {
-            //                       return const Divider();
-            //                     },
-            //                     itemBuilder: (context, index) {
-            //                       final record = convoList[index];
-            //                       return Padding(
-            //                         padding: const EdgeInsets.all(5.0),
-            //                         child: ListTile(
-            //                           onTap: () {
-            //                             showDialog(
-            //                               context: context,
-            //                               builder: (context) {
-            //                                 return ChatWidget(
-            //                                   customerData: record,
-            //                                 );
-            //                               },
-            //                             );
-            //                           },
-            //                           leading: const CircleAvatar(
-            //                             minRadius: 35,
-            //                             maxRadius: 35,
-            //                             backgroundImage: AssetImage(
-            //                                 'assets/images/profile.png'),
-            //                           ),
-            //                           title: TextBold(
-            //                               text: record["convo"][0]["message"],
-            //                               fontSize: 14,
-            //                               color: Colors.black),
-            //                           subtitle: TextRegular(
-            //                               text: record["name"],
-            //                               fontSize: 12,
-            //                               color: Colors.grey),
-            //                           trailing: TextRegular(
-            //                               text: record["convo"][0]["date"],
-            //                               fontSize: 12,
-            //                               color: Colors.black),
-            //                         ),
-            //                       );
-            //                     },
-            //                   ),
-            //                 ),
-            //               );
-            //             } else {
-            //               return const Center(
-            //                   child: Text("No data available!"));
-            //             }
-            //           }),
-            //     );
-            //   },
-            // );
-          },
-        ),
         body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: double.infinity,
-              height: 80,
-              color: primary,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 50, right: 50),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          width: double.infinity,
+          height: 80,
+          color: primary,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 50, right: 50),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {},
+                  child: TextBold(
+                    text: 'Pack & Go',
+                    fontSize: 38,
+                    color: Colors.white,
+                  ),
+                ),
+                Wrap(
                   children: [
-                    GestureDetector(
-                      onTap: () {},
-                      child: TextBold(
-                        text: 'Pack & Go',
-                        fontSize: 38,
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, Routes.driverprofilescreen);
+                      },
+                      child: TextRegular(
+                        text: 'PROFILE',
+                        fontSize: 16,
                         color: Colors.white,
                       ),
                     ),
-                    Wrap(
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(
-                                context, Routes.driverprofilescreen);
-                          },
-                          child: TextRegular(
-                            text: 'PROFILE',
-                            fontSize: 16,
-                            color: Colors.white,
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text(
-                                  'Logout Confirmation',
+                    TextButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text(
+                              'Logout Confirmation',
+                              style: TextStyle(
+                                  fontFamily: 'QBold',
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            content: const Text(
+                              'Are you sure you want to Logout?',
+                              style: TextStyle(fontFamily: 'QRegular'),
+                            ),
+                            actions: <Widget>[
+                              MaterialButton(
+                                onPressed: () =>
+                                    Navigator.of(context).pop(true),
+                                child: const Text(
+                                  'Close',
                                   style: TextStyle(
-                                      fontFamily: 'QBold',
+                                      fontFamily: 'QRegular',
                                       fontWeight: FontWeight.bold),
                                 ),
-                                content: const Text(
-                                  'Are you sure you want to Logout?',
-                                  style: TextStyle(fontFamily: 'QRegular'),
-                                ),
-                                actions: <Widget>[
-                                  MaterialButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(true),
-                                    child: const Text(
-                                      'Close',
-                                      style: TextStyle(
-                                          fontFamily: 'QRegular',
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  MaterialButton(
-                                    onPressed: () async {
-                                      final SharedPreferences userData =
-                                          await SharedPreferences.getInstance();
-                                      var usthQuery = AuthQuery();
-                                      await usthQuery.signOut();
-                                      await userData.clear();
-                                      Navigator.pushNamed(
-                                          context, Routes.driverloginpage);
-                                    },
-                                    child: const Text(
-                                      'Continue',
-                                      style: TextStyle(
-                                          fontFamily: 'QRegular',
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
                               ),
-                            );
-                          },
-                          child: TextRegular(
-                            text: 'LOGOUT',
-                            fontSize: 16,
-                            color: Colors.white,
+                              MaterialButton(
+                                onPressed: () async {
+                                  final SharedPreferences userData =
+                                      await SharedPreferences.getInstance();
+                                  var usthQuery = AuthQuery();
+                                  await usthQuery.signOut();
+                                  await userData.clear();
+                                  Navigator.pushNamed(
+                                      context, Routes.driverloginpage);
+                                },
+                                child: const Text(
+                                  'Continue',
+                                  style: TextStyle(
+                                      fontFamily: 'QRegular',
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
+                        );
+                      },
+                      child: TextRegular(
+                        text: 'LOGOUT',
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                 ),
-              ),
+              ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 50, right: 50),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 45,
-                    width: 300,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black,
-                      ),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: TextFormField(
-                      onChanged: (value) {
-                        setState(() {
-                          nameSearched = value;
-                        });
-                      },
-                      decoration: const InputDecoration(
-                        hintText: 'Search by delivery info',
-                        hintStyle: TextStyle(fontFamily: 'QRegular'),
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      controller: searchController,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.only(left: 50, right: 50),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextBold(
-                    text: 'Records',
-                    fontSize: 24,
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 50, right: 50),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                height: 45,
+                width: 300,
+                decoration: BoxDecoration(
+                  border: Border.all(
                     color: Colors.black,
                   ),
-                  Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: IconButton(
-                          onPressed: () {
-                            // this code is is for as is base on the design
-                            // this table dont need reload becaus eit is stream it always listen to the database
-                            setState(() => isLoading = true);
-                            Future.delayed(const Duration(seconds: 1), () {
-                              setState(() => isLoading = false);
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.refresh,
-                          ),
-                        ),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: TextFormField(
+                  onChanged: (value) {
+                    setState(() {
+                      nameSearched = value;
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    hintText: 'Search by delivery info',
+                    hintStyle: TextStyle(fontFamily: 'QRegular'),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  controller: searchController,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
+        Padding(
+          padding: const EdgeInsets.only(left: 50, right: 50),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextBold(
+                text: 'Records',
+                fontSize: 24,
+                color: Colors.black,
+              ),
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        // this code is is for as is base on the design
+                        // this table dont need reload becaus eit is stream it always listen to the database
+                        setState(() => isLoading = true);
+                        Future.delayed(const Duration(seconds: 1), () {
+                          setState(() => isLoading = false);
+                        });
+                      },
+                      icon: const Icon(
+                        Icons.refresh,
                       ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: DropdownButton(
-                            underline: const SizedBox(),
-                            value: dropValue,
-                            items: [
-                              for (int i = 0; i < statuses.length; i++)
-                                DropdownMenuItem(
-                                  value: i,
-                                  onTap: () {
-                                    setState(() {
-                                      status = statuses[i];
-                                    });
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, right: 10),
-                                    child: TextRegular(
-                                      text: 'Status: ${statuses[i]}',
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                    ),
-                                  ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: DropdownButton(
+                        underline: const SizedBox(),
+                        value: dropValue,
+                        items: [
+                          for (int i = 0; i < statuses.length; i++)
+                            DropdownMenuItem(
+                              value: i,
+                              onTap: () {
+                                setState(() {
+                                  status = statuses[i];
+                                });
+                              },
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 10, right: 10),
+                                child: TextRegular(
+                                  text: 'Status: ${statuses[i]}',
+                                  fontSize: 14,
+                                  color: Colors.black,
                                 ),
-                            ],
-                            onChanged: (value) {
-                              setState(() {
-                                dropValue = int.parse(value.toString());
-                              });
-                            }),
-                      ),
-                      const SizedBox(
-                        width: 50,
-                      ),
-                    ],
+                              ),
+                            ),
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            dropValue = int.parse(value.toString());
+                          });
+                        }),
+                  ),
+                  const SizedBox(
+                    width: 50,
                   ),
                 ],
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            StreamBuilder<QuerySnapshot>(
-              stream: status == 'All'
-                  ? FirebaseFirestore.instance
-                      .collection('Orders')
-                      .where('driverid',
-                          isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                      .snapshots()
-                  : FirebaseFirestore.instance
-                      .collection('Orders')
-                      .where('driverid',
-                          isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                      .where('status', isEqualTo: status)
-                      .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasError) {
-                  print(snapshot.error);
-                  return const Center(child: Text('Error'));
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Padding(
-                    padding: EdgeInsets.only(top: 50),
-                    child: Center(
-                        child: CircularProgressIndicator(
-                      color: Colors.black,
-                    )),
-                  );
-                }
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        StreamBuilder<QuerySnapshot>(
+          stream: status == 'All'
+              ? FirebaseFirestore.instance
+                  .collection('Orders')
+                  .where('driverid',
+                      isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                  .snapshots()
+              : FirebaseFirestore.instance
+                  .collection('Orders')
+                  .where('driverid',
+                      isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                  .where('status', isEqualTo: status)
+                  .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              print(snapshot.error);
+              return const Center(child: Text('Error'));
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Padding(
+                padding: EdgeInsets.only(top: 50),
+                child: Center(
+                    child: CircularProgressIndicator(
+                  color: Colors.black,
+                )),
+              );
+            }
 
-                final data = snapshot.requireData;
-                return DataTable(
-                  dataRowHeight: 100,
-                  columns: [
-                    DataColumn(
-                      label: TextBold(
-                        text: 'Status',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    DataColumn(
-                      label: TextBold(
-                        text: 'Delivery Date',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    DataColumn(
-                      label: TextBold(
-                        text: 'Route',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    DataColumn(
-                      label: TextBold(
-                        text: 'Customer',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    DataColumn(
-                      label: TextBold(
-                        text: 'Type',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    DataColumn(
-                      label: TextBold(
-                        text: 'Price',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    DataColumn(
-                      label: TextBold(
-                        text: '',
-                        fontSize: 0,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                  rows: [
-                    for (int i = 0; i < data.docs.length; i++)
-                      DataRow(
-                        cells: [
-                          DataCell(
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: data.docs[i]['status'] == "Pending"
-                                        ? Colors.orange
-                                        : data.docs[i]['status'] == "Cancelled"
-                                            ? Colors.red
-                                            : data.docs[i]['status'] ==
-                                                    "Completed"
-                                                ? Colors.green
-                                                : Colors.grey,
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  height: 30,
-                                  width: 125,
-                                  child: Center(
-                                    child: TextRegular(
-                                        text: data.docs[i]['status'],
-                                        fontSize: 14,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                                TextRegular(
-                                    text: data.docs[i].id,
+            final data = snapshot.requireData;
+            return DataTable(
+              dataRowHeight: 100,
+              columns: [
+                DataColumn(
+                  label: TextBold(
+                    text: 'Status',
+                    fontSize: 18,
+                    color: Colors.black,
+                  ),
+                ),
+                DataColumn(
+                  label: TextBold(
+                    text: 'Delivery Date',
+                    fontSize: 18,
+                    color: Colors.black,
+                  ),
+                ),
+                DataColumn(
+                  label: TextBold(
+                    text: 'Route',
+                    fontSize: 18,
+                    color: Colors.black,
+                  ),
+                ),
+                DataColumn(
+                  label: TextBold(
+                    text: 'Customer',
+                    fontSize: 18,
+                    color: Colors.black,
+                  ),
+                ),
+                DataColumn(
+                  label: TextBold(
+                    text: 'Type',
+                    fontSize: 18,
+                    color: Colors.black,
+                  ),
+                ),
+                DataColumn(
+                  label: TextBold(
+                    text: 'Price',
+                    fontSize: 18,
+                    color: Colors.black,
+                  ),
+                ),
+                DataColumn(
+                  label: TextBold(
+                    text: '',
+                    fontSize: 0,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+              rows: [
+                for (int i = 0; i < data.docs.length; i++)
+                  DataRow(
+                    cells: [
+                      DataCell(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: data.docs[i]['status'] == "Pending"
+                                    ? Colors.orange
+                                    : data.docs[i]['status'] == "Cancelled"
+                                        ? Colors.red
+                                        : data.docs[i]['status'] == "Completed"
+                                            ? Colors.green
+                                            : Colors.grey,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              height: 30,
+                              width: 125,
+                              child: Center(
+                                child: TextRegular(
+                                    text: data.docs[i]['status'],
                                     fontSize: 14,
-                                    color: Colors.black),
-                              ],
+                                    color: Colors.white),
+                              ),
                             ),
-                          ),
-                          DataCell(
                             TextRegular(
-                                text: DateFormat.yMMMd().add_jm().format(
-                                    data.docs[i]['dateAndTime'].toDate()),
+                                text: data.docs[i].id,
                                 fontSize: 14,
                                 color: Colors.black),
-                          ),
-                          DataCell(
-                            TextRegular(
-                                text: data.docs[i]['pickup'] +
-                                    ' - ' +
-                                    data.docs[i]['dropoff'],
-                                fontSize: 14,
-                                color: Colors.black),
-                          ),
-                          DataCell(
+                          ],
+                        ),
+                      ),
+                      DataCell(
+                        TextRegular(
+                            text: DateFormat.yMMMd()
+                                .add_jm()
+                                .format(data.docs[i]['dateAndTime'].toDate()),
+                            fontSize: 14,
+                            color: Colors.black),
+                      ),
+                      DataCell(
+                        TextRegular(
+                            text: data.docs[i]['pickup'] +
+                                ' - ' +
+                                data.docs[i]['dropoff'],
+                            fontSize: 14,
+                            color: Colors.black),
+                      ),
+                      DataCell(
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
                             TextRegular(
                                 text: data.docs[i]['myname'],
                                 fontSize: 14,
                                 color: Colors.black),
-                          ),
-                          DataCell(
-                            TextRegular(
-                                text: data.docs[i]['vehicletype'],
-                                fontSize: 14,
-                                color: Colors.black),
-                          ),
-                          DataCell(
-                            TextRegular(
-                                text: 'Price',
-                                fontSize: 14,
-                                color: Colors.black),
-                          ),
-                          DataCell(
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          content:
-                                              viewDetailDialog(data.docs[i]),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                confirmationDialog(data.docs[i],
-                                                    data.docs[i].id);
-                                              },
-                                              child: TextRegular(
-                                                text: 'Complete',
-                                                fontSize: 18,
-                                                color: Colors.black,
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    // print("user data from page $recordsData");
+                                    return Dialog(
+                                      child: StreamBuilder(
+                                          stream: FirebaseFirestore.instance
+                                              .collection('Message')
+                                              .where('driverId',
+                                                  isEqualTo: FirebaseAuth
+                                                      .instance
+                                                      .currentUser!
+                                                      .uid)
+                                              .where('userId',
+                                                  isEqualTo: data.docs[i]
+                                                      ['uid'])
+                                              .orderBy('dateTime',
+                                                  descending: true)
+                                              .snapshots(),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<dynamic> snapshot) {
+                                            if (snapshot.hasError) {
+                                              print(snapshot.error);
+                                              return const Center(
+                                                  child: Text('Error'));
+                                            }
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return const Padding(
+                                                padding:
+                                                    EdgeInsets.only(top: 50),
+                                                child: Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                  color: Colors.black,
+                                                )),
+                                              );
+                                            }
+
+                                            final data1 = snapshot.requireData;
+
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      10, 20, 10, 20),
+                                              child: SizedBox(
+                                                width: 400,
+                                                height: 450,
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    data1.docs.length != 0
+                                                        ? Expanded(
+                                                            child: SizedBox(
+                                                              child: ListView
+                                                                  .separated(
+                                                                itemCount: data1
+                                                                    .docs
+                                                                    .length,
+                                                                separatorBuilder:
+                                                                    (context,
+                                                                        index) {
+                                                                  return const Divider();
+                                                                },
+                                                                itemBuilder:
+                                                                    (context,
+                                                                        index) {
+                                                                  return Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            5.0),
+                                                                    child:
+                                                                        ListTile(
+                                                                      leading:
+                                                                          const CircleAvatar(
+                                                                        minRadius:
+                                                                            35,
+                                                                        maxRadius:
+                                                                            35,
+                                                                        backgroundImage:
+                                                                            AssetImage('assets/images/profile.png'),
+                                                                      ),
+                                                                      title: TextBold(
+                                                                          text: data1.docs[index]
+                                                                              [
+                                                                              'msg'],
+                                                                          fontSize:
+                                                                              14,
+                                                                          color:
+                                                                              Colors.black),
+                                                                      subtitle: TextRegular(
+                                                                          text: data1.docs[index]
+                                                                              [
+                                                                              'name'],
+                                                                          fontSize:
+                                                                              12,
+                                                                          color:
+                                                                              Colors.grey),
+                                                                      trailing: TextRegular(
+                                                                          text: DateFormat.yMMMd().add_jm().format(data1.docs[index]['dateTime']
+                                                                              .toDate()),
+                                                                          fontSize:
+                                                                              12,
+                                                                          color:
+                                                                              Colors.black),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : Center(
+                                                            child: TextRegular(
+                                                                text:
+                                                                    'No Messages',
+                                                                fontSize: 12,
+                                                                color: Colors
+                                                                    .black),
+                                                          ),
+                                                    Align(
+                                                      alignment: Alignment
+                                                          .bottomCenter,
+                                                      child: TextFormField(
+                                                        controller: msg,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          suffixIcon:
+                                                              IconButton(
+                                                            onPressed: () {
+                                                              addMessage(
+                                                                  data.docs[i][
+                                                                      'drivername'],
+                                                                  msg.text,
+                                                                  FirebaseAuth
+                                                                      .instance
+                                                                      .currentUser!
+                                                                      .uid,
+                                                                  data.docs[i]
+                                                                      ['uid']);
+
+                                                              msg.clear();
+                                                            },
+                                                            icon: const Icon(
+                                                              Icons.send,
+                                                              color:
+                                                                  Colors.blue,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: TextRegular(
-                                                text: 'Close',
-                                                fontSize: 18,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
+                                            );
+                                          }),
                                     );
                                   },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    height: 30,
-                                    width: 125,
-                                    child: Center(
-                                      child: TextRegular(
-                                          text: 'View',
-                                          fontSize: 14,
-                                          color: Colors.white),
-                                    ),
-                                  ),
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  borderRadius: BorderRadius.circular(5),
                                 ),
-                              ],
+                                height: 30,
+                                width: 125,
+                                child: Center(
+                                  child: TextRegular(
+                                      text: 'Message',
+                                      fontSize: 14,
+                                      color: Colors.white),
+                                ),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                  ],
-                );
-              },
-            ),
-          ],
-        ));
+                      DataCell(
+                        TextRegular(
+                            text: data.docs[i]['vehicletype'],
+                            fontSize: 14,
+                            color: Colors.black),
+                      ),
+                      DataCell(
+                        TextRegular(
+                            text: 'Price', fontSize: 14, color: Colors.black),
+                      ),
+                      DataCell(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      content: viewDetailDialog(data.docs[i]),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            confirmationDialog(
+                                                data.docs[i], data.docs[i].id);
+                                          },
+                                          child: TextRegular(
+                                            text: 'Complete',
+                                            fontSize: 18,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: TextRegular(
+                                            text: 'Close',
+                                            fontSize: 18,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                height: 30,
+                                width: 125,
+                                child: Center(
+                                  child: TextRegular(
+                                      text: 'View',
+                                      fontSize: 14,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            );
+          },
+        ),
+      ],
+    ));
   }
 
   viewDetailDialog(data) {
