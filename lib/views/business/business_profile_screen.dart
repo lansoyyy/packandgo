@@ -23,6 +23,7 @@ class BusinessProfileScreen extends StatefulWidget {
 class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
   bool profiletab = true;
   bool changepasswordtab = false;
+  bool substab = false;
 
   bool ratingstab = false;
   bool vehiclestab = false;
@@ -296,6 +297,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                   profiletab = true;
                                   changepasswordtab = false;
                                   vehiclestab = false;
+                                  substab = false;
                                 });
                               },
                               child: TextRegular(
@@ -314,6 +316,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                   profiletab = false;
                                   changepasswordtab = true;
                                   vehiclestab = false;
+                                  substab = false;
                                 });
                               },
                               child: TextRegular(
@@ -332,6 +335,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                   profiletab = false;
                                   changepasswordtab = false;
                                   ratingstab = true;
+                                  substab = false;
                                   vehiclestab = false;
                                 });
                               },
@@ -351,6 +355,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                   changepasswordtab = false;
                                   ratingstab = false;
                                   vehiclestab = true;
+                                  substab = false;
                                 });
                               },
                               child: TextRegular(
@@ -358,6 +363,24 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                   fontSize: 12,
                                   color:
                                       vehiclestab ? Colors.amber : Colors.grey),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  profiletab = false;
+                                  changepasswordtab = false;
+                                  ratingstab = false;
+                                  vehiclestab = false;
+                                  substab = true;
+                                });
+                              },
+                              child: TextRegular(
+                                  text: 'Subscription',
+                                  fontSize: 12,
+                                  color: substab ? Colors.amber : Colors.grey),
                             ),
                           ],
                         ),
@@ -374,7 +397,9 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                 ? ratingsTab(userDetails)
                                 : vehiclestab
                                     ? vehicles()
-                                    : changepasswordTab(userDetails),
+                                    : substab
+                                        ? subscriptiontab()
+                                        : changepasswordTab(userDetails),
                       ],
                     ),
                   ),
@@ -1193,7 +1218,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                                               child: Padding(
                                                                 padding:
                                                                     const EdgeInsets
-                                                                            .only(
+                                                                        .only(
                                                                         left:
                                                                             10,
                                                                         right:
@@ -1348,6 +1373,128 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                     ),
                   );
                 })
+          ]),
+    );
+  }
+
+  List subs = [
+    {
+      'title': 'Monthly Subscription',
+      'details': 'Php 3,500 per month. Cancel anytime.',
+      'others': '✓ Includes 10 vehicles\n✓ Monthly Subscription'
+    },
+    {
+      'title': '6 Months Subscription',
+      'details': 'Php 19,530 per month. Cancel anytime.',
+      'others':
+          '✓ Includes 10 vehicles\n✓ Saved Php 1,470 in every 9 months\n✓ Biannual subscription'
+    },
+    {
+      'title': '9 Months Subscription',
+      'details': 'Php 28,350 per month. Cancel anytime.',
+      'others':
+          '✓ Includes 10 vehicles\n✓ Saved Php 3,150 in every 9 months\n✓ Quarterly subscription'
+    },
+    {
+      'title': '12 Months Subscription',
+      'details': 'Php 35,700 per month. Cancel anytime.',
+      'others':
+          '✓ Includes 10 vehicles\n✓ Saved Php 6,300 in every 9 months\n✓ Annual subscription'
+    }
+  ];
+
+  Widget subscriptiontab() {
+    return SingleChildScrollView(
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            TextRegular(
+              text: 'Subscription',
+              fontSize: 32,
+              color: Colors.black,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextRegular(
+                    text: 'Manage your account subscription and settings',
+                    fontSize: 14,
+                    color: Colors.grey),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const SizedBox(width: 300, child: Divider()),
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              height: 500,
+              width: 750,
+              child: GridView.builder(
+                itemCount: subs.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3),
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: primary,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            TextBold(
+                              text: subs[index]['title'],
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                            TextRegular(
+                              text: subs[index]['details'],
+                              color: Colors.white,
+                              fontSize: 10,
+                            ),
+                            const Divider(
+                              color: Colors.white,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            TextRegular(
+                              text: subs[index]['others'],
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                            const SizedBox(
+                              height: 25,
+                            ),
+                            ButtonWidget(
+                              color: Colors.blue,
+                              radius: 10,
+                              width: 100,
+                              height: 40,
+                              fontSize: 12,
+                              label: 'Select Plan',
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            )
           ]),
     );
   }
