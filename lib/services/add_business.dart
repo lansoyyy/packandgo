@@ -17,7 +17,8 @@ Future addBusiness(fname, lname, username, number, email, address) async {
     'dateTime': DateTime.now(),
     'profilePicture': 'https://cdn-icons-png.flaticon.com/256/149/149071.png',
     'address': address,
-    'usersRated': []
+    'usersRated': [],
+    'plan': {},
   };
 
   await docUser.set(json);

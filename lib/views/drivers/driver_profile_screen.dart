@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:packandgo/queries/authQuery.dart';
 import 'package:packandgo/services/add_vehicle.dart';
 import 'package:packandgo/views/drivers/auth/login_screen.dart';
@@ -57,325 +58,335 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                 return const SizedBox();
               }
               dynamic userDetails = snapshot.data;
-              return Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    height: 80,
-                    color: primary,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 50, right: 50),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                            onTap: () {},
-                            child: TextBold(
-                              text: 'Pack & Go',
-                              fontSize: 38,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, Routes.driverhomescreen);
-                                },
-                                child: TextRegular(
-                                  text: 'HOME',
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              PopupMenuButton(
-                                iconSize: 150,
-                                icon: TextRegular(
-                                  text: 'PROFILE',
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                                itemBuilder: (context) {
-                                  return [
-                                    PopupMenuItem(
-                                      onTap: () {},
-                                      child: TextRegular(
-                                        text: 'My Account',
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    PopupMenuItem(
-                                      onTap: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) => AlertDialog(
-                                                  title: const Text(
-                                                    'Logout Confirmation',
-                                                    style: TextStyle(
-                                                        fontFamily: 'QBold',
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  content: const Text(
-                                                    'Are you sure you want to Logout?',
-                                                    style: TextStyle(
-                                                        fontFamily: 'QRegular'),
-                                                  ),
-                                                  actions: <Widget>[
-                                                    MaterialButton(
-                                                      onPressed: () =>
-                                                          Navigator.of(context)
-                                                              .pop(true),
-                                                      child: const Text(
-                                                        'Close',
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                'QRegular',
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    ),
-                                                    MaterialButton(
-                                                      onPressed: () async {
-                                                        Navigator.of(context)
-                                                            .pushReplacement(
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            const DriverLoginScreen()));
-                                                      },
-                                                      child: const Text(
-                                                        'Continue',
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                'QRegular',
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ));
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) => AlertDialog(
-                                                  title: const Text(
-                                                    'Logout Confirmation',
-                                                    style: TextStyle(
-                                                        fontFamily: 'QBold',
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  content: const Text(
-                                                    'Are you sure you want to Logout?',
-                                                    style: TextStyle(
-                                                        fontFamily: 'QRegular'),
-                                                  ),
-                                                  actions: <Widget>[
-                                                    MaterialButton(
-                                                      onPressed: () =>
-                                                          Navigator.of(context)
-                                                              .pop(true),
-                                                      child: const Text(
-                                                        'Close',
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                'QRegular',
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    ),
-                                                    MaterialButton(
-                                                      onPressed: () async {
-                                                        Navigator.of(context)
-                                                            .pushReplacement(
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            const DriverLoginScreen()));
-                                                      },
-                                                      child: const Text(
-                                                        'Continue',
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                'QRegular',
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ));
-                                      },
-                                      child: TextRegular(
-                                        text: 'Logout',
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ];
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.start,
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 80,
+                      color: primary,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 50, right: 50),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            GestureDetector(
+                              onTap: () {},
+                              child: TextBold(
+                                text: 'Pack & Go',
+                                fontSize: 38,
+                                color: Colors.white,
+                              ),
+                            ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.asset(
-                                  'assets/images/profile.png',
-                                  height: 75,
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                        context, Routes.driverhomescreen);
+                                  },
+                                  child: TextRegular(
+                                    text: 'HOME',
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
                                 ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    TextBold(
-                                      text:
-                                          '${userDetails['fname']} ${userDetails['lname']}',
-                                      fontSize: 24,
-                                      color: Colors.black,
-                                    ),
-                                    TextRegular(
-                                        text: 'Edit Profile',
-                                        fontSize: 16,
-                                        color: Colors.grey),
-                                    TextRegular(
-                                        text: 'Change picture',
-                                        fontSize: 16,
-                                        color: Colors.grey),
-                                  ],
+                                PopupMenuButton(
+                                  iconSize: 150,
+                                  icon: TextRegular(
+                                    text: 'PROFILE',
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                  itemBuilder: (context) {
+                                    return [
+                                      PopupMenuItem(
+                                        onTap: () {},
+                                        child: TextRegular(
+                                          text: 'My Account',
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        onTap: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                    title: const Text(
+                                                      'Logout Confirmation',
+                                                      style: TextStyle(
+                                                          fontFamily: 'QBold',
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    content: const Text(
+                                                      'Are you sure you want to Logout?',
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              'QRegular'),
+                                                    ),
+                                                    actions: <Widget>[
+                                                      MaterialButton(
+                                                        onPressed: () =>
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(true),
+                                                        child: const Text(
+                                                          'Close',
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'QRegular',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ),
+                                                      MaterialButton(
+                                                        onPressed: () async {
+                                                          Navigator.of(context)
+                                                              .pushReplacement(
+                                                                  MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              const DriverLoginScreen()));
+                                                        },
+                                                        child: const Text(
+                                                          'Continue',
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'QRegular',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ));
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                    title: const Text(
+                                                      'Logout Confirmation',
+                                                      style: TextStyle(
+                                                          fontFamily: 'QBold',
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    content: const Text(
+                                                      'Are you sure you want to Logout?',
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              'QRegular'),
+                                                    ),
+                                                    actions: <Widget>[
+                                                      MaterialButton(
+                                                        onPressed: () =>
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(true),
+                                                        child: const Text(
+                                                          'Close',
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'QRegular',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ),
+                                                      MaterialButton(
+                                                        onPressed: () async {
+                                                          Navigator.of(context)
+                                                              .pushReplacement(
+                                                                  MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              const DriverLoginScreen()));
+                                                        },
+                                                        child: const Text(
+                                                          'Continue',
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'QRegular',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ));
+                                        },
+                                        child: TextRegular(
+                                          text: 'Logout',
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ];
+                                  },
                                 ),
                               ],
                             ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const SizedBox(width: 100, child: Divider()),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            TextBold(
-                              text: 'My Account',
-                              fontSize: 18,
-                              color: Colors.black,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  profiletab = true;
-                                  changepasswordtab = false;
-                                  vehiclestab = false;
-                                  substab = false;
-                                });
-                              },
-                              child: TextRegular(
-                                  text: 'Profile',
-                                  fontSize: 12,
-                                  color:
-                                      profiletab ? Colors.amber : Colors.grey),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  profiletab = false;
-                                  changepasswordtab = true;
-                                  vehiclestab = false;
-                                  substab = false;
-                                });
-                              },
-                              child: TextRegular(
-                                  text: 'Change Password',
-                                  fontSize: 12,
-                                  color: changepasswordtab
-                                      ? Colors.amber
-                                      : Colors.grey),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  profiletab = false;
-                                  changepasswordtab = false;
-                                  vehiclestab = true;
-                                  substab = false;
-                                });
-                              },
-                              child: TextRegular(
-                                  text: 'Vehicles',
-                                  fontSize: 12,
-                                  color:
-                                      vehiclestab ? Colors.amber : Colors.grey),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  profiletab = false;
-                                  changepasswordtab = false;
-                                  vehiclestab = false;
-                                  substab = true;
-                                });
-                              },
-                              child: TextRegular(
-                                  text: 'Subscription',
-                                  fontSize: 12,
-                                  color: substab ? Colors.amber : Colors.grey),
-                            ),
                           ],
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        const SizedBox(height: 500, child: VerticalDivider()),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        profiletab
-                            ? profileTab(userDetails)
-                            : vehiclestab
-                                ? vehicles()
-                                : substab
-                                    ? subscriptiontab()
-                                    : changepasswordTab(userDetails),
-                      ],
+                      ),
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/profile.png',
+                                    height: 75,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      TextBold(
+                                        text:
+                                            '${userDetails['fname']} ${userDetails['lname']}',
+                                        fontSize: 24,
+                                        color: Colors.black,
+                                      ),
+                                      TextRegular(
+                                          text: 'Edit Profile',
+                                          fontSize: 16,
+                                          color: Colors.grey),
+                                      TextRegular(
+                                          text: 'Change picture',
+                                          fontSize: 16,
+                                          color: Colors.grey),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const SizedBox(width: 100, child: Divider()),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              TextBold(
+                                text: 'My Account',
+                                fontSize: 18,
+                                color: Colors.black,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    profiletab = true;
+                                    changepasswordtab = false;
+                                    vehiclestab = false;
+                                    substab = false;
+                                  });
+                                },
+                                child: TextRegular(
+                                    text: 'Profile',
+                                    fontSize: 12,
+                                    color: profiletab
+                                        ? Colors.amber
+                                        : Colors.grey),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    profiletab = false;
+                                    changepasswordtab = true;
+                                    vehiclestab = false;
+                                    substab = false;
+                                  });
+                                },
+                                child: TextRegular(
+                                    text: 'Change Password',
+                                    fontSize: 12,
+                                    color: changepasswordtab
+                                        ? Colors.amber
+                                        : Colors.grey),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    profiletab = false;
+                                    changepasswordtab = false;
+                                    vehiclestab = true;
+                                    substab = false;
+                                  });
+                                },
+                                child: TextRegular(
+                                    text: 'Vehicles',
+                                    fontSize: 12,
+                                    color: vehiclestab
+                                        ? Colors.amber
+                                        : Colors.grey),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    profiletab = false;
+                                    changepasswordtab = false;
+                                    vehiclestab = false;
+                                    substab = true;
+                                  });
+                                },
+                                child: TextRegular(
+                                    text: 'Subscription',
+                                    fontSize: 12,
+                                    color:
+                                        substab ? Colors.amber : Colors.grey),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          const SizedBox(height: 500, child: VerticalDivider()),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          profiletab
+                              ? profileTab(userDetails)
+                              : vehiclestab
+                                  ? vehicles()
+                                  : substab
+                                      ? subscriptiontab(
+                                          userDetails['plan'], userDetails.id)
+                                      : changepasswordTab(userDetails),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               );
             }));
   }
@@ -782,6 +793,8 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
       "image": "10-Wheel-Truck-Open-Type.png"
     },
   ];
+
+  String _selectedOption = 'GCash';
 
   String selectedVehicle = 'Motorcycle';
 
@@ -1266,7 +1279,8 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
     }
   ];
 
-  Widget subscriptiontab() {
+  Widget subscriptiontab(Map<String, dynamic> plan, String id) {
+    print(plan);
     return SingleChildScrollView(
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1289,6 +1303,168 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                     color: Colors.grey),
               ],
             ),
+            const SizedBox(
+              height: 10,
+            ),
+            const SizedBox(width: 300, child: Divider()),
+            const SizedBox(
+              height: 20,
+            ),
+            TextRegular(
+              text: 'Your Subscription',
+              fontSize: 32,
+              color: Colors.black,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const SizedBox(width: 300, child: Divider()),
+            const SizedBox(
+              height: 20,
+            ),
+            plan.isEmpty
+                ? Center(
+                    child: TextBold(
+                      text: 'No Subscription!',
+                      fontSize: 24,
+                      color: Colors.black,
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                      width: 300,
+                      height: 250,
+                      decoration: BoxDecoration(
+                        color: primary,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            TextBold(
+                              text: plan['title'],
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                            TextRegular(
+                              text: plan['details'],
+                              color: Colors.white,
+                              fontSize: 10,
+                            ),
+                            const Divider(
+                              color: Colors.white,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TextRegular(
+                                  text: 'Billing Start Date',
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                ),
+                                TextRegular(
+                                  text: DateFormat.yMMMd()
+                                      .format(plan['dateTime'].toDate()),
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TextRegular(
+                                  text: 'Mode',
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                ),
+                                TextRegular(
+                                  text: plan['payment'],
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                ),
+                              ],
+                            ),
+                            const Divider(
+                              color: Colors.white,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            TextRegular(
+                              text: plan['others'],
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                            const SizedBox(
+                              height: 25,
+                            ),
+                            ButtonWidget(
+                              color: Colors.red,
+                              radius: 10,
+                              width: 100,
+                              height: 40,
+                              fontSize: 12,
+                              label: 'Cancel Plan',
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                          title: const Text(
+                                            'Cancel Plan Confirmation',
+                                            style: TextStyle(
+                                                fontFamily: 'QBold',
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          content: const Text(
+                                            'Are you sure you want to cancel this plan?',
+                                            style: TextStyle(
+                                                fontFamily: 'QRegular'),
+                                          ),
+                                          actions: <Widget>[
+                                            MaterialButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context)
+                                                      .pop(true),
+                                              child: const Text(
+                                                'Close',
+                                                style: TextStyle(
+                                                    fontFamily: 'QRegular',
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                            MaterialButton(
+                                              onPressed: () async {
+                                                await FirebaseFirestore.instance
+                                                    .collection('Drivers')
+                                                    .doc(id)
+                                                    .update({'plan': {}});
+                                                showToast(
+                                                    'Plan cancelled succesfully!');
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text(
+                                                'Continue',
+                                                style: TextStyle(
+                                                    fontFamily: 'QRegular',
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ],
+                                        ));
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
             const SizedBox(
               height: 10,
             ),
@@ -1348,7 +1524,186 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                               height: 40,
                               fontSize: 12,
                               label: 'Select Plan',
-                              onPressed: () {},
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      content: StatefulBuilder(
+                                          builder: (context, setState) {
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
+                                              child: Container(
+                                                width: 300,
+                                                height: 400,
+                                                decoration: BoxDecoration(
+                                                  color: primary,
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      TextBold(
+                                                        text: subs[index]
+                                                            ['title'],
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                      ),
+                                                      TextRegular(
+                                                        text: subs[index]
+                                                            ['details'],
+                                                        color: Colors.white,
+                                                        fontSize: 10,
+                                                      ),
+                                                      const Divider(
+                                                        color: Colors.white,
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          TextRegular(
+                                                            text:
+                                                                'Billing Date',
+                                                            color: Colors.white,
+                                                            fontSize: 10,
+                                                          ),
+                                                          TextRegular(
+                                                            text: DateFormat(
+                                                                    'MM/dd/yyyy')
+                                                                .format(DateTime
+                                                                    .now())
+                                                                .toString(),
+                                                            color: Colors.white,
+                                                            fontSize: 10,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      const Divider(
+                                                        color: Colors.white,
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      TextRegular(
+                                                        text: subs[index]
+                                                            ['others'],
+                                                        color: Colors.white,
+                                                        fontSize: 14,
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(20.0),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            RadioListTile(
+                                                              title: const Text(
+                                                                'GCash',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white),
+                                                              ),
+                                                              value: 'GCash',
+                                                              groupValue:
+                                                                  _selectedOption,
+                                                              onChanged:
+                                                                  (value) {
+                                                                setState(() {
+                                                                  _selectedOption =
+                                                                      value!;
+                                                                });
+                                                              },
+                                                            ),
+                                                            RadioListTile(
+                                                              title: const Text(
+                                                                'Maya',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white),
+                                                              ),
+                                                              value: 'Maya',
+                                                              groupValue:
+                                                                  _selectedOption,
+                                                              onChanged:
+                                                                  (value) {
+                                                                setState(() {
+                                                                  _selectedOption =
+                                                                      value!;
+                                                                });
+                                                              },
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 25,
+                                                      ),
+                                                      ButtonWidget(
+                                                        color: Colors.green,
+                                                        radius: 10,
+                                                        width: 100,
+                                                        height: 40,
+                                                        fontSize: 12,
+                                                        label: 'Continue',
+                                                        onPressed: () async {
+                                                          await FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'Drivers')
+                                                              .doc(id)
+                                                              .update({
+                                                            'plan': {
+                                                              'title':
+                                                                  subs[index]
+                                                                      ['title'],
+                                                              'details': subs[
+                                                                      index]
+                                                                  ['details'],
+                                                              'others': subs[
+                                                                      index]
+                                                                  ['others'],
+                                                              'payment':
+                                                                  _selectedOption,
+                                                              'dateTime':
+                                                                  DateTime
+                                                                      .now(),
+                                                            }
+                                                          });
+                                                          showToast(
+                                                              'Plan updated succesfully!');
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      }),
+                                    );
+                                  },
+                                );
+                              },
                             ),
                           ],
                         ),

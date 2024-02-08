@@ -26,7 +26,8 @@ Future addDriver(fname, lname, username, number, email, license, expiredate,
     'profilePicture': 'https://cdn-icons-png.flaticon.com/256/149/149071.png',
     'isActive': true,
     'idfront': idfront,
-    'idback': idback
+    'idback': idback,
+    'plan': {},
   };
 
   await docUser.set(json);

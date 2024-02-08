@@ -19,7 +19,8 @@ Future addUser(
     'history': [],
     'dateTime': DateTime.now(),
     'profilePicture': 'https://cdn-icons-png.flaticon.com/256/149/149071.png',
-    'type': type
+    'type': type,
+    'plan': {},
   };
 
   await docUser.set(json);
