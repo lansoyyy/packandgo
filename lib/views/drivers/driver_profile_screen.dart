@@ -1084,7 +1084,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                                                               child: Padding(
                                                                 padding:
                                                                     const EdgeInsets
-                                                                        .only(
+                                                                            .only(
                                                                         left:
                                                                             10,
                                                                         right:
@@ -1245,27 +1245,24 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
 
   List subs = [
     {
-      'title': 'Monthly Subscription',
-      'details': 'Php 3,500 per month. Cancel anytime.',
-      'others': '✓ Includes 10 vehicles\n✓ Monthly Subscription'
+      'title': ' 1 Month Subscription',
+      'details': 'Php 1,500 per month. Cancel anytime.',
+      'others': '✓ Includes one vehicles'
     },
     {
       'title': '6 Months Subscription',
-      'details': 'Php 19,530 per month. Cancel anytime.',
-      'others':
-          '✓ Includes 10 vehicles\n✓ Saved Php 1,470 in every 9 months\n✓ Biannual subscription'
+      'details': 'Php 8,550 per month. Cancel anytime.',
+      'others': '✓ Includes one vehicles\n✓ Saved Php 450'
     },
     {
       'title': '9 Months Subscription',
-      'details': 'Php 28,350 per month. Cancel anytime.',
-      'others':
-          '✓ Includes 10 vehicles\n✓ Saved Php 3,150 in every 9 months\n✓ Quarterly subscription'
+      'details': 'Php 12,555 per month. Cancel anytime.',
+      'others': '✓ Includes one vehicles\n✓ Saved Php 945'
     },
     {
       'title': '12 Months Subscription',
-      'details': 'Php 35,700 per month. Cancel anytime.',
-      'others':
-          '✓ Includes 10 vehicles\n✓ Saved Php 6,300 in every 9 months\n✓ Annual subscription'
+      'details': 'Php 16,200 per month. Cancel anytime.',
+      'others': '✓ Includes one vehicles\n✓ Saved Php 1,800'
     }
   ];
 
