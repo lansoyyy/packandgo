@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:packandgo/widgets/textfield_widget.dart';
@@ -283,13 +282,13 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                 stream: status == 'All'
                     ? FirebaseFirestore.instance
                         .collection('Orders')
-                        .where('businessid',
-                            isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                        // .where('businessid',
+                        //     isEqualTo: FirebaseAuth.instance.currentUser!.uid)
                         .snapshots()
                     : FirebaseFirestore.instance
                         .collection('Orders')
-                        .where('businessid',
-                            isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                        // .where('businessid',
+                        //     isEqualTo: FirebaseAuth.instance.currentUser!.uid)
                         .where('status', isEqualTo: status)
                         .snapshots(),
                 builder: (BuildContext context,
