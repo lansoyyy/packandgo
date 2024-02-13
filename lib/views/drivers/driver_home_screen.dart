@@ -428,14 +428,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                                       child: StreamBuilder(
                                           stream: FirebaseFirestore.instance
                                               .collection('Message')
-                                              .where('driverId',
-                                                  isEqualTo: FirebaseAuth
-                                                      .instance
-                                                      .currentUser!
-                                                      .uid)
-                                              .where('userId',
-                                                  isEqualTo: data.docs[i]
-                                                      ['uid'])
+                                              .where('recordId',
+                                                  isEqualTo: data.docs[i].id)
                                               .orderBy('dateTime',
                                                   descending: true)
                                               .snapshots(),
@@ -559,7 +553,9 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                                                                       .currentUser!
                                                                       .uid,
                                                                   data.docs[i]
-                                                                      ['uid']);
+                                                                      ['uid'],
+                                                                  data.docs[i]
+                                                                      .id);
 
                                                               msg.clear();
                                                             },

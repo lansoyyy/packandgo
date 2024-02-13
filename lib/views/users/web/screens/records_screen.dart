@@ -379,16 +379,9 @@ class _RecordsScreenState extends State<RecordsScreen> {
                                                       stream: FirebaseFirestore
                                                           .instance
                                                           .collection('Message')
-                                                          .where('userId',
-                                                              isEqualTo:
-                                                                  FirebaseAuth
-                                                                      .instance
-                                                                      .currentUser!
-                                                                      .uid)
-                                                          .where('driverId',
+                                                          .where('recordId',
                                                               isEqualTo: data
-                                                                      .docs[i]
-                                                                  ['driverid'])
+                                                                  .docs[i].id)
                                                           .orderBy('dateTime',
                                                               descending: true)
                                                           .snapshots(),
@@ -497,7 +490,8 @@ class _RecordsScreenState extends State<RecordsScreen> {
                                                                               data.docs[i]['myname'],
                                                                               msg.text,
                                                                               data.docs[i]['driverid'],
-                                                                              FirebaseAuth.instance.currentUser!.uid);
+                                                                              FirebaseAuth.instance.currentUser!.uid,
+                                                                              data.docs[i].id);
 
                                                                           msg.clear();
                                                                         },
