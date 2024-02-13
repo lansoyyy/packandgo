@@ -556,9 +556,6 @@ class _RecordsScreenState extends State<RecordsScreen> {
                                     StreamBuilder<QuerySnapshot>(
                                         stream: FirebaseFirestore.instance
                                             .collection('Business')
-                                            .where('id',
-                                                isEqualTo: data.docs[i]
-                                                    ['businessid'])
                                             .snapshots(),
                                         builder: (BuildContext context,
                                             AsyncSnapshot<QuerySnapshot>
