@@ -37,7 +37,15 @@ class _BusinessSignupScreenState extends State<BusinessSignupScreen> {
 
   final usernameController = TextEditingController();
 
-  final addressController = TextEditingController();
+  final city = TextEditingController();
+
+  final house = TextEditingController();
+  final businessname = TextEditingController();
+  final permit = TextEditingController();
+  final dti = TextEditingController();
+  final tourism = TextEditingController();
+  final contact = TextEditingController();
+  final contactnumber = TextEditingController();
 
   bool check2 = true;
 
@@ -176,7 +184,7 @@ class _BusinessSignupScreenState extends State<BusinessSignupScreen> {
                                     const SizedBox(
                                       height: 20,
                                     ),
-                                    labelText(label: "First Name"),
+                                    labelText(label: "Owner First Name"),
                                     inputField(
                                       controller: firstnameController,
                                       isDense: true,
@@ -188,7 +196,7 @@ class _BusinessSignupScreenState extends State<BusinessSignupScreen> {
                                         }
                                       },
                                     ),
-                                    labelText(label: "Last Name"),
+                                    labelText(label: "Owner Last Name"),
                                     inputField(
                                       controller: lastnameController,
                                       isDense: true,
@@ -259,12 +267,72 @@ class _BusinessSignupScreenState extends State<BusinessSignupScreen> {
                                       },
                                     ),
                                     labelText(label: "Business Address"),
+                                    labelText(
+                                        label:
+                                            "Street Name, Building, House No."),
                                     inputField(
-                                      controller: addressController,
+                                      controller: house,
                                       isDense: true,
                                       validator: (value) {
-                                        if (addressController.text.isEmpty) {
+                                        if (house.text.isEmpty) {
                                           return "Address is required";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    labelText(
+                                        label:
+                                            "Baranggay, City, Province, Postal Code"),
+                                    inputField(
+                                      controller: city,
+                                      isDense: true,
+                                      validator: (value) {
+                                        if (city.text.isEmpty) {
+                                          return "Address is required";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    labelText(label: "Business Permit Number"),
+                                    inputField(
+                                      controller: permit,
+                                      isDense: true,
+                                      validator: (value) {},
+                                    ),
+                                    labelText(label: "DTI Registration Number"),
+                                    inputField(
+                                      controller: dti,
+                                      isDense: true,
+                                      validator: (value) {},
+                                    ),
+                                    labelText(label: "City Tourism Number"),
+                                    inputField(
+                                      controller: dti,
+                                      isDense: true,
+                                      validator: (value) {},
+                                    ),
+                                    labelText(label: "Contact Person Name"),
+                                    inputField(
+                                      controller: contact,
+                                      isDense: true,
+                                      validator: (value) {
+                                        if (contact.text.isEmpty) {
+                                          return "Contact Person is required";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    labelText(
+                                        label: "Contact Person Phone Number"),
+                                    inputField(
+                                      controller: contactnumber,
+                                      isDense: true,
+                                      validator: (value) {
+                                        if (contactnumber.text.isEmpty) {
+                                          return "Contact Person Phone Number is required";
                                         } else {
                                           return null;
                                         }
@@ -334,7 +402,13 @@ class _BusinessSignupScreenState extends State<BusinessSignupScreen> {
           usernameController.text,
           contactnumberController.text,
           emailController.text,
-          addressController.text);
+          '${house.text} ${city.text}',
+          businessname.text,
+          permit.text,
+          dti.text,
+          tourism.text,
+          contact.text,
+          contactnumber.text);
 
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
