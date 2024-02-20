@@ -208,6 +208,18 @@ class _BusinessSignupScreenState extends State<BusinessSignupScreen> {
                                         }
                                       },
                                     ),
+                                    labelText(label: "Business Name"),
+                                    inputField(
+                                      controller: businessname,
+                                      isDense: true,
+                                      validator: (value) {
+                                        if (businessname.text.isEmpty) {
+                                          return "Business Name is required!";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
                                     labelText(label: "User Name"),
                                     inputField(
                                       controller: usernameController,
@@ -309,7 +321,7 @@ class _BusinessSignupScreenState extends State<BusinessSignupScreen> {
                                     ),
                                     labelText(label: "City Tourism Number"),
                                     inputField(
-                                      controller: dti,
+                                      controller: tourism,
                                       isDense: true,
                                       validator: (value) {},
                                     ),

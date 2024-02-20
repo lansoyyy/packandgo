@@ -60,6 +60,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                 return const SizedBox();
               }
               dynamic userDetails = snapshot.data;
+
               return SingleChildScrollView(
                 child: Column(
                   children: [
@@ -263,8 +264,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       TextBold(
-                                        text:
-                                            '${userDetails['fname']} ${userDetails['lname']}',
+                                        text: '${userDetails['businessname']}',
                                         fontSize: 24,
                                         color: Colors.black,
                                       ),
